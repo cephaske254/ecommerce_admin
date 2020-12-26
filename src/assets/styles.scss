@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+$dark: rgb(30, 30, 43);
+$primary: #27293d;
+$body-color: #525f7f;
+$body-bg: $dark;
+
+$font-size-base: 0.87rem;
+
+$secondary: #ba54f5;
+$white: white;
+$light: rgb(240, 240, 240);
+$info: #e14eca;
+$lighter: #27293d;
+
+$font-weight-normal: 400;
+
+$font-family-sans-serif: Poppins, sans-serif;
+
+$theme-colors: (
+  "dark": $dark,
+  "primary": $primary,
+  "light": $light,
+  "info": $info,
+  "danger": #dc3545,
+  "lighter": $lighter,
+);
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+body,
+html,
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.btn:hover,
+.btn:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+.spin {
+  -webkit-animation: spin 1.2s infinite linear;
+  -moz-animation: spin 1.2s infinite linear;
+  animation: spin 1.2s infinite linear;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@-webkit-keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(-360deg);
+  }
+}
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+$theme-colors: map-remove($theme-colors, "warning");
+
+@import "../../node_modules/bootstrap/scss/variables";
+
+@import "../../node_modules/bootstrap/scss/root";
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/type";
+@import "../../node_modules/bootstrap/scss/images";
+@import "../../node_modules/bootstrap/scss/containers";
+@import "../../node_modules/bootstrap/scss/grid";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+@import "../../node_modules/bootstrap/scss/nav";
+@import "../../node_modules/bootstrap/scss/navbar";
+
+@import "../../node_modules/bootstrap/scss/buttons";
+@import "../../node_modules/bootstrap/scss/button-group";
+@import "../../node_modules/bootstrap/scss/utilities";
+@import "../../node_modules/bootstrap/scss/bootstrap-utilities.scss";
+
+@import "../../node_modules/bootstrap/scss/transitions";
+@import "../../node_modules/bootstrap/scss/containers";
+@import "../../node_modules/bootstrap/scss/card";
+@import "../../node_modules/bootstrap/scss/helpers";
+
+@import "../../node_modules/bootstrap/scss/tables";
