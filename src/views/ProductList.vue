@@ -1,36 +1,47 @@
 <template>
   <data-list-abstract
-    :items="items"
     :fields="fields"
-    :title="title"
     :unique="unique"
-    :actions="true"
-    max="67"
-    v-on:refresh="refresh"
-    v-on:refreshItem="refreshItem"
-    v-on:edit="edit"
-    v-on:view="view"
+    :items="items"
+    :cfg="options"
     :loading="loading"
   />
 </template>
 
 <script>
 export default {
-  data: () => ({
-    loading: false,
-    fields: ["id", "name", "description", "price"],
-    title: "Products",
-    unique: "id",
-    items: [
-      {
-        id: "2x3D",
-        name: "Cephas Too",
-        description:
-          "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
-        price: "Ksh 220",
+  data: function () {
+    return {
+      options: {
+        actions: {
+          add: this.add,
+          refresh: this.refresh,
+          delete: this.delete,
+        },
+        title: "Products",
       },
-    ],
-  }),
+      fields: ["id", "name", "description", "price"],
+      unique: "id",
+      loading: false,
+
+      items: [
+        {
+          id: "2x3D",
+          name: "Cephas Too",
+          description:
+            "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
+          price: "Ksh 220",
+        },
+        {
+          id: "asE4X",
+          name: "Cephas Too",
+          description:
+            "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
+          price: "Ksh 220",
+        },
+      ],
+    };
+  },
 
   methods: {
     refresh: function () {
@@ -39,14 +50,14 @@ export default {
     view: (id) => {
       console.log(id);
     },
-    refreshItem: (id) => {
-      console.log(id);
-    },
     edit: function (id) {
       console.log(id);
     },
     delete: function (id) {
       console.log(id);
+    },
+    add: function () {
+      console.log("ADD");
     },
   },
   mounted: function () {

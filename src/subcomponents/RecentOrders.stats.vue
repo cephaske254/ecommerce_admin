@@ -17,7 +17,7 @@
       </div>
       <div class="card-body table-card">
         <table class="table table-sm table-bordered border-dark">
-          <thead class="bg-dark sticky-top">
+          <thead class="bg-dark">
             <tr>
               <th scope="col">Order ID</th>
               <th scope="col">First</th>
@@ -58,120 +58,125 @@ function getRandom() {
 }
 
 export default {
-  data: () => ({
-    loading: false,
-    items: [
-      {
-        order_id: getRandom(),
-        first_name: "Cephas",
-        last_name: "Too",
-        status: "B",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Ken",
-        last_name: "Too",
-        status: "A",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-      {
-        order_id: getRandom(),
-        first_name: "Bruno",
-        last_name: "Too",
-        status: "G",
-      },
-    ],
-  }),
+  data: function () {
+    return {
+      loading: false,
+      items: [
+        {
+          order_id: getRandom(),
+          first_name: "Cephas",
+          last_name: "Too",
+          status: "B",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Ken",
+          last_name: "Too",
+          status: "A",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+        {
+          order_id: getRandom(),
+          first_name: "Bruno",
+          last_name: "Too",
+          status: "G",
+        },
+      ],
+    };
+  },
   methods: {
-    refreshData: function () {
+    refresh: function () {
       this.loading = !this.loading;
     },
+    refreshSingle: function () {
+      this.loading = !this.loading;
+    },
+    delete: function (e) {},
   },
   computed: {},
 };
 </script>
 
 <style scoped>
-table {
-  color: hsla(0, 0%, 100%, 0.8) !important;
-}
+/* table {
+} */
 .table-card {
   overflow: scroll;
   max-height: 380px;

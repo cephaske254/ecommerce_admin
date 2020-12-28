@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-12 bg-dark" id="performanceCol">
+  <div class="col-sm-12 bg-dark full-col" id="performanceCol">
     <div class="card card-stats bg-lighter">
       <div class="card-header py-1">
         <div class="d-flex">
@@ -94,8 +94,7 @@ export default {
         buildReturning(ctx.getContext("2d"))(self.type);
     },
     toggleFullscreen: function () {
-      const col = document.getElementById("performanceCol");
-      col.classList.toggle("fullscreen");
+      const col = document.body.classList.toggle("fullscreen");
       this.$options.hideNav();
       this.mountChart();
     },
@@ -132,12 +131,12 @@ export default {
   font-size: small;
 }
 
-.fullscreen,
-.nav-open .fullscreen {
+.fullscreen .full-col,
+.nav-open .fullscreen .full-col {
   position: fixed !important;
   top: 0;
   right: 0;
-  z-index: 10000;
+  z-index: 10002 !important;
   width: 100vw;
   height: 100vh;
 }
@@ -150,5 +149,8 @@ export default {
 }
 .fullscreen .canvas-cont canvas {
   height: 90% !important;
+}
+.card {
+  display: block;
 }
 </style>

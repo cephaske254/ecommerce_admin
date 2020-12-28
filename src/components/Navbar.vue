@@ -9,7 +9,7 @@
         </button>
       </div>
       <div class="d-flex flex-fill align-items-center">
-        <a href="#" class="navbar-brand mt-1" id="current-page"></a>
+        <div class="navbar-brand mt-1" id="current-page">DASHBOARD</div>
       </div>
       <div style="margin-right: 3rem">
         <button
@@ -60,7 +60,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .searchIcon {
   font-weight: bold;
   font-size: 1rem;
@@ -80,5 +80,11 @@ export default {
   font-size: 1.4rem !important;
   font-weight: 500 !important;
   border: none !important;
+}
+
+.fullscreen .sticky-top,
+.fullscreen .navbar {
+  transition: 1s;
+  display: none !important;
 }
 </style>

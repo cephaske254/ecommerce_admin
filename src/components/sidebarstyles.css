@@ -41,7 +41,6 @@
     position: sticky !important;
     left: 0;
     height: max-content;
-    float: left;
   }
   .sidebar:before {
     content: unset;

@@ -13,6 +13,12 @@ const routes = [
     component: () => import("../views/ProductList"),
     children: [],
   },
+  {
+    path: "/orders",
+    name: "Orders",
+    component: () => import("../views/OrdersList"),
+    children: [],
+  },
 ];
 
 const router = createRouter({

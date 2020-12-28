@@ -1,7 +1,5 @@
 import debounce from "lodash.debounce";
 
-
-
 export default {
   currentPage: (page, title = false) => {
     try {

@@ -15,19 +15,27 @@
           </router-link>
 
           <hr class="my-1" />
-          <a href="/" class="nav-item nav-link">
+          <router-link
+            @focus="click"
+            class="text-white nav-link nav-item"
+            to="/orders"
+          >
             <div class="top">
               <i class="bi icon bi-cart"></i>
               <div class="text">ORDERS</div>
             </div>
-          </a>
+          </router-link>
 
-          <a href="/" class="nav-item nav-link">
+          <router-link
+            @focus="click"
+            class="text-white nav-link nav-item"
+            to="/invoices"
+          >
             <div class="top">
               <i class="bi icon bi-receipt"></i>
               <div class="text">INVOICES</div>
             </div>
-          </a>
+          </router-link>
 
           <li class="nav-item">
             <div
@@ -40,11 +48,16 @@
               <i class="bi bi-caret-down-fill caret"></i>
             </div>
             <div class="links collapse" id="links-inventory">
-              <a href="#" class="nav-link">CATEGORIES</a>
+              <router-link
+                @focus="click"
+                class="text-white nav-link"
+                to="/categories"
+                >CATEGORIES</router-link
+              >
               <router-link @focus="click" to="/products" class="nav-link"
                 >PRODUCTS</router-link
               >
-              <a href="#" class="nav-link">MANUFACTURERS</a>
+              <!-- <a href="#" class="nav-link">MANUFACTURERS</a> -->
             </div>
           </li>
 
@@ -59,25 +72,38 @@
               <i class="bi bi-caret-down-fill caret"></i>
             </div>
             <div class="links collapse" id="links-deals">
-              <router-link @focus="click" to="/products" class="nav-link"
+              <router-link @focus="click" to="/deals" class="nav-link"
                 >DEALS</router-link
               >
-              <a href="#" class="nav-link">PROMOS</a>
+              <router-link
+                @focus="click"
+                class="text-white nav-link"
+                to="/promos"
+                >PROMOS</router-link
+              >
             </div>
           </li>
           <hr class="my-1" />
-          <a href="/" class="nav-item nav-link">
+          <router-link
+            @focus="click"
+            class="text-white nav-link nav-item"
+            to="/tasks"
+          >
             <div class="top">
               <i class="bi icon bi-stopwatch"></i>
               <div class="text">TASKS</div>
             </div>
-          </a>
-          <a href="/" class="nav-item nav-link">
+          </router-link>
+          <router-link
+            @focus="click"
+            class="text-white nav-link nav-item"
+            to="/settings"
+          >
             <div class="top">
               <i class="bi icon bi-gear"></i>
               <div class="text">SETTINGS</div>
             </div>
-          </a>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -106,14 +132,15 @@ export default {
   background: linear-gradient(180deg, var(--bs-info), var(--bs-gradient-info));
   display: block;
   position: fixed;
-  z-index: 1032 !important;
+  z-index: 10001 !important;
   top: 0;
   height: 100vh;
   width: 260px;
   background-size: cover;
   background-position: 50%;
   overflow: scroll !important;
-  padding-bottom: 4rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
 }
 .nav-open .main-panel {
   transform: translate3d(260px, 0, 0);
@@ -137,7 +164,6 @@ export default {
     position: sticky !important;
     left: 0;
     height: max-content;
-    float: left;
   }
   .sidebar:before {
     content: unset;
@@ -273,12 +299,18 @@ export default {
 }
 .navItems li.nav-item a {
   border-radius: 1.8rem;
+  margin-bottom: 0.1rem;
 }
-.navItems li.nav-item a:hover {
-  background: rgba(0, 0, 0, 0.05);
+.navItems li.nav-item a:hover,
+.navItems a.router-link-exact-active,
+.navItems a.router-link-active {
+  background: rgba(0, 0, 0, 0.144) !important;
 }
-
 .caret {
   float: right !important;
+}
+.fullscreen .sidebar {
+  transition: var(--transition2) !important;
+  transform: translate3d(-260px, 0, 0) !important;
 }
 </style>
