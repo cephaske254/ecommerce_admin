@@ -1,4 +1,5 @@
 import debounce from "lodash.debounce";
+var prevScrollpos = window.pageYOffset;
 
 export default {
   currentPage: (page, title = false) => {
@@ -17,10 +18,38 @@ export default {
     }, delay)();
   },
   scrollPercentage: function() {
-    var h = document.documentElement,
+    const h = document.documentElement,
       b = document.body,
-      st = "scrollTop",
       sh = "scrollHeight";
-    return ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
+
+    const data = { percent: 0, increase: false };
+
+    var currentScrollPos = window.pageYOffset;
+
+    if (prevScrollpos < currentScrollPos) {
+      data["increase"] = true;
+    } else {
+      data["increase"] = false;
+    }
+
+    prevScrollpos = currentScrollPos;
+    data["percent"] =
+      (currentScrollPos / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
+    return data;
   },
 };
+// ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100
+
+// const data = { position: 0, increase: false };
+
+// var currentScrollPos = window.pageYOffset;
+
+// if (prevScrollpos < currentScrollPos) {
+//   data["increase"] = true;
+// } else {
+//   data["increase"] = false;
+// }
+
+// prevScrollpos = currentScrollPos;
+// data["position"] = currentScrollPos;
+// return data;

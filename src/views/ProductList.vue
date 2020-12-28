@@ -74,19 +74,22 @@ export default {
     },
     fetch: function (param) {
       if (param === "next") {
-        
-        return;
       }
+      axios
+        .get("/")
+        .then((data) => {
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => (this.loading = false));
     },
   },
   mounted: function () {
-    this.$options.currentPage("Products");
     window.onscroll = () => {
       const percent = this.$options.scrollPercentage();
-      if (percent > 80) {
-        console.log(percent);
-        this.fetch("next");
-      }
+      console.log(percent);
+      this.fetch("next");
     };
   },
 };
