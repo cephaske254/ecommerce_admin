@@ -54,89 +54,19 @@
         </div>
       </div>
     </div>
-    <div class="col-12 py-1 card bg-lighter mt-2">
-      <div class="row">
-        <div class="card-body">
-          <table class="table table-sm table-bordered border-dark">
-            <thead class="bg-dark">
-              <tr>
-                <th>
-                  <input
-                    @click="select('__all__')"
-                    type="checkbox"
-                    class="bg-dark"
-                    name=""
-                    hidden
-                    :checked="checked.includes('__all__')"
-                  />
-                </th>
-                <th
-                  class="text-capitalize"
-                  v-for="field in fields"
-                  :key="field"
-                  scope="col"
-                >
-                  {{ field }}
-                </th>
-                <th v-if="config.actions && unique && fields.includes(unique)">
-                  ACTIONS
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in items" :key="item.order_id">
-                <td>
-                  <div class="d-block my-auto">
-                    <input
-                      :checked="
-                        checked.includes(item[unique]) ||
-                        checked.includes('__all__')
-                      "
-                      @click="select(item[unique])"
-                      type="checkbox"
-                      name="selected"
-                    />
-                  </div>
-                </td>
-                <td v-for="field in fields" :key="field">
-                  {{ trimText(item[field], config.max) }}
-                </td>
-                <td v-if="config.actions && unique && fields.includes(unique)">
-                  <div class="btn-group actions">
-                    <button
-                      v-if="config.actions.refreshSingle"
-                      @click="config.actions.refreshSingle(item[unique])"
-                      class="btn btn-sm text-info"
-                      :id="item[unique]"
-                    >
-                      <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
-                    <button
-                      v-if="view && !config.noview"
-                      class="btn btn-sm text-info"
-                      @click="view(item[unique])"
-                    >
-                      <i class="bi bi-eye-fill"></i>
-                    </button>
-                    <button
-                      class="btn btn-sm text-light"
-                      v-if="edit && !config.readonly"
-                      @click="edit(item[unique])"
-                    >
-                      <i class="bi bi-pen"></i>
-                    </button>
-                    <button class="btn btn-sm text-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="row">
+      <div
+        v-for="item in items"
+        :key="item[unique]"
+        class="col-sm-10 col-md-4 col-lg-3 py-2"
+      >
+        <div class="card bg-lighter">
+          <div class="card-header">
+            <h5 class="card-title">{{ item }}</h5>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card-body overflow-scroll hide-scroll"></div>
   </div>
 </template>
 
