@@ -1,7 +1,7 @@
-import Vuex, { createStore, mapState } from "vuex";
+import { createStore, mapState } from "vuex";
 import mutations from "./mutations";
 
-const store = new Vuex.Store({
+const store = createStore({
   state: {
     products: [],
   },
