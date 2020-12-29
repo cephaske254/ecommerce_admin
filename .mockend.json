@@ -3,6 +3,9 @@
     "name": "string",
     "views": "int",
     "available": "boolean",
-    "createdAt": "date"
-  }
+    "createdAt": "date",
+    "images": "Image[]"
+  },
+
+  "Image": "string"
 }

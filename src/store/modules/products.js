@@ -44,9 +44,9 @@ export default {
     },
   },
   actions: {
-    getProducts({ state }, payload) {
-      const url = "https://google.com";
-      if (payload === "next" && state.next) url["page"] = state.next;
+    getProducts({ commit }, payload) {
+      const url = "/posts";
+      // if (payload === "next" && state.next) url["page"] = state.next;
       return new Promise((resolve, reject) => {
         axios
           .get(url)
