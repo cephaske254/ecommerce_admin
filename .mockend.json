@@ -7,5 +7,7 @@
     "images": "Image[]"
   },
 
-  "Image": "string"
+  "Image": {
+    "url": "string"
+  }
 }
