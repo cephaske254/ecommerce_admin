@@ -7,7 +7,7 @@ import mixins from "@/utils/mixins";
 import store from "./store";
 // AXIOS CONFIG
 import axios from "axios";
-axios.defaults.baseURL = "https://mockend.com/cephaske254/ecommerce_admin/";
+axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
 createApp(App)
   .use(store)

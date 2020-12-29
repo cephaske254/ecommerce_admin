@@ -1,6 +1,6 @@
 {
   "Post": {
-    "name": "text",
+    "name": "string",
     "views": "int",
     "available": "boolean",
     "createdAt": "date"
