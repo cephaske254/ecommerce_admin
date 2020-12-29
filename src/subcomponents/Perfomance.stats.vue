@@ -94,7 +94,7 @@ export default {
         buildReturning(ctx.getContext("2d"))(self.type);
     },
     toggleFullscreen: function () {
-      const col = document.body.classList.toggle("fullscreen");
+      document.body.classList.toggle("fullscreen");
       this.$options.hideNav();
       this.mountChart();
     },

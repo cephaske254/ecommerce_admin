@@ -168,7 +168,7 @@ export default {
     refreshSingle: function () {
       this.loading = !this.loading;
     },
-    delete: function (e) {},
+    delete: function (e) {console.log(e)},
   },
   computed: {},
 };

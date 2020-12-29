@@ -200,7 +200,7 @@ export default {
           e.target.children["selectedFunc"].selectedOptions[0].value;
         const func = this.config.checkActions[option];
         func(this.checked);
-      } catch {}
+      } catch {return}
     },
   },
 };

@@ -104,3 +104,5 @@ $theme-colors: map-remove($theme-colors, "warning");
 @import "../../node_modules/bootstrap/scss/helpers";
 
 @import "../../node_modules/bootstrap/scss/tables";
+
+@import "../../node_modules/bootstrap/scss/spinners";

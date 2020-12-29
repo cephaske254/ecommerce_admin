@@ -1,15 +1,5 @@
-import { createStore, mapState } from "vuex";
-import mutations from "./mutations";
-
-const store = createStore({
-  state: {
-    products: [],
-  },
-  mutations,
-  actions: {},
-  modules,
-});
-export default store;
+import { createStore } from "vuex";
+// import products from "./modules/products";
 
 const { context, modules } = loadModules();
 function loadModules() {
@@ -38,3 +28,11 @@ if (module.hot) {
     });
   });
 }
+
+const store = createStore({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules,
+});
+export default store;

@@ -10,13 +10,20 @@
         :key="item.id"
       />
     </div>
+    <div v-if="loading" class="spinner-border"></div>
   </div>
 </template>
 <script>
 import ProductCard from "../subcomponents/ProductCard.vue";
+import * as types from "../store/types";
+
 export default {
   components: { ProductCard },
-
+  computed: {
+    items() {
+      return this.$store.getters.getProducts;
+    },
+  },
   data: function () {
     return {
       options: {
@@ -30,25 +37,6 @@ export default {
       fields: ["id", "name", "description", "price"],
       unique: "id",
       loading: false,
-
-      items: [
-        {
-          id: "2x3D",
-          name: "Cephas Too",
-          description:
-            "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
-          price: "Ksh 220",
-          imageCount: 3,
-        },
-        {
-          id: "asE4X",
-          name: "Cephas Too",
-          description:
-            "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
-          price: "Ksh 220",
-          imageCount: 8,
-        },
-      ],
     };
   },
 
@@ -73,24 +61,28 @@ export default {
       console.log("ADD");
     },
     fetch: function (param) {
-      if (param === "next") {
-      }
-      axios
-        .get("/")
-        .then((data) => {
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => (this.loading = false));
+      this.loading = true;
+      this.$store.dispatch(types.GET_PRODUCTS, param).finally(() => {
+        this.loading = false;
+      });
     },
   },
   mounted: function () {
     window.onscroll = () => {
       const percent = this.$options.scrollPercentage();
-      console.log(percent);
-      this.fetch("next");
+      if (
+        percent.percent >= 80 &&
+        percent.increase === true &&
+        this.loading === false
+      ) {
+        this.fetch("next");
+      }
     };
+  },
+  watch: {
+    loading: function (val) {
+      console.log(val), "Loading";
+    },
   },
 };
 </script>

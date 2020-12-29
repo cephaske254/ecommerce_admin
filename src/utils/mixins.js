@@ -7,7 +7,7 @@ export default {
       const element = document.getElementById("current-page");
       element.innerHTML = page.toUpperCase();
       if (title) document.title = title;
-    } catch {}
+    } catch {return}
   },
   hideNav: () => {
     document.getElementsByTagName("html")[0].classList.remove("nav-open");
@@ -38,18 +38,4 @@ export default {
     return data;
   },
 };
-// ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100
 
-// const data = { position: 0, increase: false };
-
-// var currentScrollPos = window.pageYOffset;
-
-// if (prevScrollpos < currentScrollPos) {
-//   data["increase"] = true;
-// } else {
-//   data["increase"] = false;
-// }
-
-// prevScrollpos = currentScrollPos;
-// data["position"] = currentScrollPos;
-// return data;
