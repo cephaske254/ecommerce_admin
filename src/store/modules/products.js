@@ -39,14 +39,14 @@ export default {
     },
   },
   mutations: {
-    pushProducts(state, payload = []) {
-      state.products.push(...payload);
+    [types.COMMIT_PRODUCTS](state, payload = []) {
+      return [...state, ...payload.data];
     },
   },
   actions: {
-    getProducts({ commit }, payload) {
+    getProducts({ commit, state }, payload) {
       const url = "/posts";
-      // if (payload === "next" && state.next) url["page"] = state.next;
+      if (payload === "next" && state.next) url["page"] = state.next;
       return new Promise((resolve, reject) => {
         axios
           .get(url)

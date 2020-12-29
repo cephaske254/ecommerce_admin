@@ -4,10 +4,11 @@
     "views": "int",
     "available": "boolean",
     "createdAt": "date",
-    "images": "Image[]"
+    "comments": "Comment[]"
   },
 
-  "Image": {
-    "url": "string"
+  "Comment": {
+    "body": "string",
+    "post": "Post"
   }
 }
