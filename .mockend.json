@@ -1,8 +1,8 @@
 {
   "Post": {
-    "title": "string",
+    "name": "text",
     "views": "int",
-    "published": "boolean",
+    "available": "boolean",
     "createdAt": "date"
   }
 }

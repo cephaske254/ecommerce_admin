@@ -4,12 +4,13 @@ import router from "./router";
 import DataListAbstract from "@/subcomponents/DataList.abstract.vue";
 import mixins from "@/utils/mixins";
 
-import Axios from "axios";
-import store from './store'
+import store from "./store";
+// AXIOS CONFIG
+import axios from "axios";
+axios.defaults.baseURL = "https://mockend.com/cephaske254/ecommerce_admin/";
 
-window.axios = Axios;
-
-createApp(App).use(store)
+createApp(App)
+  .use(store)
   .mixin(mixins)
   .component("data-list", DataListAbstract)
   .use(router)
