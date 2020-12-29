@@ -1,26 +1,7 @@
 import axios from "axios";
 import * as types from "../types";
 
-const defaultState = [
-  {
-    id: "2x3D",
-    name: "Cephas Too",
-    available: true,
-    description:
-      "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
-    price: "Ksh 220",
-    imageCount: 3,
-  },
-  {
-    id: "asE4X",
-    name: "Cephas Too",
-    available: true,
-    description:
-      "As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this As an example, you could use the jQuery code above to restrict the user from entering more than 10 characters while he's typing; the following code snippet does exactly this",
-    price: "Ksh 220",
-    imageCount: 8,
-  },
-];
+const defaultState = [];
 
 export default {
   state: defaultState,
@@ -40,7 +21,8 @@ export default {
   },
   mutations: {
     [types.COMMIT_PRODUCTS](state, payload = []) {
-      return [...state, ...payload.data];
+      console.log(payload.data, state);
+      state = payload.data;
     },
   },
   actions: {
@@ -53,7 +35,7 @@ export default {
           .then((data) => {
             setTimeout(() => {
               commit(types.COMMIT_PRODUCTS, data);
-              return resolve(data);
+              resolve(data);
             }, 1000);
           })
           .catch((error) => reject(error));

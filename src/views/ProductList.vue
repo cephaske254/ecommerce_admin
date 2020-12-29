@@ -16,12 +16,16 @@
 <script>
 import ProductCard from "../subcomponents/ProductCard.vue";
 import * as types from "../store/types";
+import store from "../store";
 
 export default {
   components: { ProductCard },
   computed: {
     items() {
-      return this.$store.getters.getProducts;
+      return store.getters.getProducts;
+    },
+    state() {
+      return store.state;
     },
   },
   data: function () {
@@ -62,9 +66,12 @@ export default {
     },
     fetch: function (param) {
       this.loading = true;
-      this.$store.dispatch(types.GET_PRODUCTS, param).finally(() => {
-        this.loading = false;
-      });
+
+      store
+        .dispatch(types.GET_PRODUCTS, param)
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
   mounted: function () {
@@ -78,10 +85,11 @@ export default {
         this.fetch("next");
       }
     };
+    this.fetch();
   },
   watch: {
-    loading: function (val) {
-      console.log(val), "Loading";
+    state(val) {
+      console.log(val,'STATE');
     },
   },
 };
