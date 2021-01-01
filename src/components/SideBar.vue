@@ -113,7 +113,9 @@
 export default {
   methods: {
     click: function () {
-      document.getElementsByTagName("html")[0].classList.remove("nav-open");
+      setTimeout(() => {
+        document.getElementsByTagName("html")[0].classList.remove("nav-open");
+      }, 200);
     },
   },
   computed: {},

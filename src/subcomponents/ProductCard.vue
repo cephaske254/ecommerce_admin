@@ -1,18 +1,21 @@
 <template>
   <div class="col-sm-12 column col-md-4 col-lg-3 col-sm-6 col-6 col-xs-6 py-2">
-    <div class="card bg-lighter product-card">
+    <div class="card bg-lighter product-card h-100">
       <img
         @click="$emit('view', item.id)"
-        src="http://placehold.it/250x250"
-        alt=""
-        class="card-img-top"
+        :src="item.image"
+        :alt="item.name + ' image'"
+        loading="lazy"
+        class="card-img-top border-0 h-100"
       />
       <div @click="$emit('view', item.id)" class="card-body">
         <h6 class="card-title">
           {{ trimText(item.name, 30).toUpperCase() }}
         </h6>
         <div class="d-flex">
-          <p class="col prc card-subtitle text-uppercase small">Ksh 3,000</p>
+          <p class="col prc card-subtitle text-uppercase small">
+            {{ $options.usd(item.price) }}
+          </p>
           <p class="col small card-subtitle text-end">IN STOCK</p>
         </div>
       </div>
@@ -52,7 +55,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* 768 576 */
 @media only screen and (min-width: 576px) and (max-width: 768px) {
   .column {
@@ -66,5 +69,11 @@ export default {
 }
 .product-card {
   cursor: pointer;
+  color: hsla(0, 0%, 100%, 0.8) !important;
+}
+.prc {
+  font-weight: 600;
+  letter-spacing: 0.07rem;
+  margin-left: .5rem;
 }
 </style>

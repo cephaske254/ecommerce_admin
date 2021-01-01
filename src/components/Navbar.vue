@@ -9,7 +9,9 @@
         </button>
       </div>
       <div class="d-flex flex-fill align-items-center">
-        <div class="navbar-brand mt-1" id="current-page">DASHBOARD</div>
+        <div class="navbar-brand mt-1" id="current-page">
+          {{ currentRoute.toUpperCase() }}
+        </div>
       </div>
       <div style="margin-right: 3rem">
         <button
@@ -57,6 +59,13 @@ export default {
       html[0].classList.toggle("nav-open");
     },
   },
+  computed: {
+    currentRoute() {
+      const current = this.$router.currentRoute.value.name;
+      return current || "Dashboard";
+    },
+  },
+  watch: {},
 };
 </script>
 

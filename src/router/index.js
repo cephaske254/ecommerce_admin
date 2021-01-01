@@ -1,17 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home";
+import PassThrough from "../components/PassThrough";
 
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "Dashboard",
     component: Home,
+    exact: true,
   },
   {
     path: "/products",
-    name: "Products",
-    component: () => import("../views/ProductList"),
-    children: [],
+    component: PassThrough,
+    children: [
+      {
+        name: "Products",
+        path: "",
+        component: () => import("../views/products/List"),
+      },
+      {
+        name: "Add Products",
+        path: "add",
+        component: () => import("../views/products/Add"),
+      },
+    ],
   },
   {
     path: "/orders",

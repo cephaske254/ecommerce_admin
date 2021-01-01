@@ -7,7 +7,7 @@ import DashboardVue from "../components/Dashboard.vue";
 export default {
   name: "Home",
   mounted: function () {
-    this.$options.currentPage("Dashboard");
+    this.$options.currentPage("Home");
   },
   components: {
     DashboardVue,

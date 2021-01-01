@@ -12,11 +12,15 @@
 <script>
 import NavbarVue from "./components/Navbar.vue";
 import SideBarVue from "./components/SideBar.vue";
+// eslint-disable-next-line
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle";
 
 export default {
   components: {
     NavbarVue,
     SideBarVue,
+  },
+  mounted: function () {
   },
 };
 </script>

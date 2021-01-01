@@ -1,13 +1,14 @@
 import debounce from "lodash.debounce";
 var prevScrollpos = window.pageYOffset;
 
+const price = (value) => {
+  value = parseFloat(value).toFixed(2);
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 export default {
-  currentPage: (page, title = false) => {
-    try {
-      const element = document.getElementById("current-page");
-      element.innerHTML = page.toUpperCase();
-      if (title) document.title = title;
-    } catch {return}
+  currentPage: (page) => {
+    document.title = `${process.env.VUE_APP_SITE_TITLE} | ${page}`;
   },
   hideNav: () => {
     document.getElementsByTagName("html")[0].classList.remove("nav-open");
@@ -37,5 +38,8 @@ export default {
       (currentScrollPos / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
     return data;
   },
+  usd(value) {
+    const data = price(value);
+    return "$" + data;
+  },
 };
-

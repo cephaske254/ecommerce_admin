@@ -76,7 +76,7 @@ export default {
     const self = this;
     self.mountChart();
     window.onresize = function () {
-      self.$options.debounce(self.mountChart, { maxWait: 1000 });
+      self.$options.debounce(self.mountChart);
     };
   },
   data: () => ({

@@ -1,45 +1,40 @@
 <template>
   <div class="container-fluid">
+    <div class="bg-lighter p-2 rounded text-light d-flex">
+      <i class="bi-filter h4 m-0"></i>
+      <div class="w-100">
+        <router-link to="/products/add/" class="btn btn-sm btn-info float-end">
+          <i class="bi bi-plus"></i>
+        </router-link>
+      </div>
+    </div>
     <div class="row">
-      <ProductCard
-        :onView="view"
-        :onEdit="edit"
-        :onDelete="deleteItem"
+      <product-card
         v-for="item in items"
+        unique="id"
+        :key="item"
         :item="item"
-        :key="item.id"
       />
     </div>
-    <div v-if="loading" class="spinner-border"></div>
+    <loadingsm :next="next" :loading="loading" />
   </div>
 </template>
 <script>
-import ProductCard from "../subcomponents/ProductCard.vue";
-import * as types from "../store/types";
-import store from "../store";
+import ProductCard from "@/subcomponents/ProductCard.vue";
+import * as types from "@/store/types";
 
 export default {
   components: { ProductCard },
   computed: {
     items() {
-      return store.getters.getProducts;
+      return this.$store.getters["products/getProducts"];
     },
-    state() {
-      return store.state;
+    next() {
+      return this.$store.getters["products/getNext"];
     },
   },
   data: function () {
     return {
-      options: {
-        actions: {
-          add: this.add,
-          refresh: this.refresh,
-          delete: this.delete,
-        },
-        title: "Products",
-      },
-      fields: ["id", "name", "description", "price"],
-      unique: "id",
       loading: false,
     };
   },
@@ -65,35 +60,37 @@ export default {
       console.log("ADD");
     },
     fetch: function (param) {
+      if ((param === "next" && !this.next) || this.loading === true) return;
+      const self = this;
       this.loading = true;
-
-      store
-        .dispatch(types.GET_PRODUCTS, param)
-        .finally(() => {
-          this.loading = false;
-        });
+      setTimeout(function () {
+        clearTimeout(300);
+        self.$store
+          .dispatch("products/" + types.GET_PRODUCTS, param)
+          .finally((self.loading = false));
+      }, 300);
     },
   },
-  mounted: function () {
+  created: function () {
+    window.scrollTo({ top: 0 });
     window.onscroll = () => {
       const percent = this.$options.scrollPercentage();
+      const self = this;
       if (
         percent.percent >= 80 &&
         percent.increase === true &&
         this.loading === false
       ) {
-        this.fetch("next");
+        self.fetch("next");
       }
     };
-    this.fetch();
-  },
-  watch: {
-    state(val) {
-      console.log(val,'STATE');
-    },
+    if (!this.items.length) this.fetch();
   },
 };
 </script>
 
-<style>
+<style scoped>
+.bi {
+  font-size: 1.2rem;
+}
 </style>
