@@ -1,32 +1,44 @@
 <template>
-  <div class="container-fluid">
-    <div class="bg-lighter p-2 rounded text-light d-flex">
-      <i class="bi-filter h4 m-0"></i>
-      <div class="w-100">
-        <router-link to="/products/add/" class="btn btn-sm btn-info float-end">
-          <i class="bi bi-plus"></i>
-        </router-link>
+  <Suspense>
+    <template #default>
+      <div class="container-fluid">
+        <div class="bg-lighter p-2 rounded text-light d-flex">
+          <i class="bi-filter h4 m-0"></i>
+          <div class="w-100">
+            <router-link
+              to="/products/add/"
+              class="btn btn-sm btn-info float-end"
+            >
+              <i class="bi bi-plus"></i>
+            </router-link>
+          </div>
+        </div>
+        <div class="row">
+          <product-card
+            v-for="product in products"
+            :key="product.id || product.slug"
+            :product="product"
+            :onView="view"
+            :onEdit="edit"
+            :onError="error"
+          />
+        </div>
+        <loadingsm :next="next" :loading="loading" />
       </div>
-    </div>
-    <div class="row">
-      <product-card
-        v-for="item in items"
-        unique="id"
-        :key="item"
-        :item="item"
-      />
-    </div>
-    <loadingsm :next="next" :loading="loading" />
-  </div>
+    </template>
+
+    <template #fallback> Loading... </template>
+  </Suspense>
 </template>
 <script>
 import ProductCard from "@/subcomponents/ProductCard.vue";
 import * as types from "@/store/types";
+import { Suspense } from "vue";
 
 export default {
-  components: { ProductCard },
+  components: { ProductCard, Suspense },
   computed: {
-    items() {
+    products() {
       return this.$store.getters["products/getProducts"];
     },
     next() {
@@ -40,24 +52,17 @@ export default {
   },
 
   methods: {
-    view: function (id) {
-      this.$router.push({
-        path: `${this.$router.currentRoute.value.path}/${id}`,
-      });
+    view: function (slug) {
+      this.$router.push({ name: "Product Detail", params: { slug } });
     },
     refresh: function () {
       this.loading = !this.loading;
     },
-    edit: function (id) {
-      this.$router.push({
-        path: `${this.$router.currentRoute.value.path}/${id}/edit`,
-      });
+    edit: function (slug) {
+      this.$router.push({ name: "Edit Product", params: { slug: slug } });
     },
-    deleteItem: function (id) {
-      console.log(id);
-    },
-    add: function () {
-      console.log("ADD");
+    error: function (e) {
+      console.log(e);
     },
     fetch: function (param) {
       if ((param === "next" && !this.next) || this.loading === true) return;
@@ -84,7 +89,7 @@ export default {
         self.fetch("next");
       }
     };
-    if (!this.items.length) this.fetch();
+    if (!this.products.length) this.fetch();
   },
 };
 </script>

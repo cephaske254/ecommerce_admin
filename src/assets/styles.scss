@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
 $dark: rgb(30, 30, 43);
-$primary: #27293d;
+$primary: rgb(0, 189, 145);
 $body-color: #525f7f;
 $body-bg: $dark;
 
@@ -15,7 +15,7 @@ $lighter: #27293d;
 
 $font-weight-normal: 400;
 
-$font-family-sans-serif: Poppins, sans-serif;
+// $font-family-sans-serif: Poppins, sans-serif;
 
 $theme-colors: (
   "dark": $dark,
@@ -72,6 +72,13 @@ html,
     -moz-transform: rotate(-360deg);
   }
 }
+.btn-gradient {
+  color: white !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none !important;
+  background: linear-gradient(95deg, var(--bs-primary) 50%, #007ef3 100%);
+}
 
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
@@ -108,3 +115,8 @@ $theme-colors: map-remove($theme-colors, "warning");
 @import "../../node_modules/bootstrap/scss/tables";
 
 @import "../../node_modules/bootstrap/scss/spinners";
+
+@import "../../node_modules/bootstrap/scss/badge";
+@import "../../node_modules/bootstrap/scss/progress";
+
+@import "../../node_modules/bootstrap/scss/carousel";

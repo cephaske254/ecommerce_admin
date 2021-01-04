@@ -4,17 +4,30 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-
+    <link rel="prefetch" href="<%= BASE_URL %>loader.svg" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, 
      user-scalable=0"
     />
-
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>
       <%= VUE_APP_SITE_TITLE %>
     </title>
+    <style>
+      #dataLoader {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        z-index: 10000;
+      }
+    </style>
   </head>
   <body>
     <noscript>
@@ -24,6 +37,9 @@
         continue.</strong
       >
     </noscript>
+    <div id="dataLoader" class="data-loader">
+      <img src="<%=BASE_URL%>loader.svg" alt="" />
+    </div>
     <div id="app"></div>
   </body>
 </html>

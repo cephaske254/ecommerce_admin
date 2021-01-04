@@ -9,7 +9,7 @@
               <button
                 title="Returning & New customers"
                 class="btn btn-sm"
-                :class="[chart === 'general' ? 'btn-info' : 'btn-outline-info']"
+                :class="[chart === 'general' ? 'btn-primary' : 'btn-outline-primary']"
                 @click="chart = 'general'"
               >
                 General
@@ -18,7 +18,7 @@
                 title="Returning customers"
                 class="btn btn-sm"
                 :class="[
-                  chart === 'returning' ? 'btn-info' : 'btn-outline-info',
+                  chart === 'returning' ? 'btn-primary' : 'btn-outline-primary',
                 ]"
                 @click="chart = 'returning'"
               >
@@ -34,7 +34,7 @@
               class="btn btn-sm"
               title="Bar Graph"
               @click="type = 'bar'"
-              :class="[type === 'bar' ? 'btn-info' : 'btn-outline-info']"
+              :class="[type === 'bar' ? 'btn-primary' : 'btn-outline-primary']"
             >
               <i class="bi bi-bar-chart"></i>
             </button>
@@ -42,14 +42,14 @@
               class="btn btn-sm"
               title="Line Graph"
               @click="type = 'line'"
-              :class="[type === 'line' ? 'btn-info' : 'btn-outline-info']"
+              :class="[type === 'line' ? 'btn-primary' : 'btn-outline-primary']"
             >
               <i class="bi bi-alt"></i>
             </button>
             <button
               @click="toggleFullscreen()"
               title="fullscreen"
-              class="btn btn-sm btn-outline-info"
+              class="btn btn-sm btn-outline-primary"
             >
               <i class="bi bi-arrows-fullscreen"></i>
             </button>
@@ -113,7 +113,7 @@ export default {
 <style scoped>
 @media screen and (min-width: 768px) {
   canvas {
-    min-height: 40vh !important;
+    height: 40vh !important;
   }
 }
 .canvas-cont {
@@ -121,7 +121,7 @@ export default {
 }
 @media screen and (max-width: 768px) {
   canvas {
-    min-height: 28vh !important;
+    height: 28vh !important;
   }
 }
 .controls button {

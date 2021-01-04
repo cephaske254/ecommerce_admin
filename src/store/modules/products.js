@@ -1,4 +1,4 @@
-import { apiGetProducts } from "@/api/products";
+import { apiGetProducts, apiAddProduct, apiGetProduct } from "@/api/products";
 import * as types from "../types";
 
 const defaultState = {
@@ -6,6 +6,7 @@ const defaultState = {
   next: null,
   previous: null,
   count: null,
+  productDetail: {},
 };
 
 export default {
@@ -14,6 +15,10 @@ export default {
   getters: {
     getProducts(state) {
       return state.data;
+    },
+    getProductDetail(state) {
+      console.log("CALLED");
+      return state.productDetail;
     },
     getNext(state) {
       return state.next;
@@ -35,14 +40,42 @@ export default {
       state.previous = payload.previous;
       state.count = payload.count;
     },
+    [types.COMMIT_PRODUCT](state, payload) {
+      const product = { ...payload, image: payload["images"][0].image };
+      state.data = [product, ...state.data];
+    },
+    [types.COMMIT_PRODUCT_DETAIL](state, payload) {
+      state.productDetail = { ...payload };
+    },
   },
   actions: {
-    getProducts({ commit, state }, payload) {
+    [types.GET_PRODUCTS]({ commit, state }, payload) {
       return new Promise((resolve, reject) => {
         apiGetProducts(payload, state.next)
           .then((response) => {
             const data = response.data;
             commit(types.COMMIT_PRODUCTS, data);
+            resolve(data);
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    [types.ADD_PRODUCT]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiAddProduct(payload)
+          .then((response) => {
+            const data = response.data;
+            commit(types.COMMIT_PRODUCT, data);
+            resolve(data);
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    [types.GET_PRODUCT_DETAIL]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiGetProduct(payload)
+          .then((data) => {
+            commit(types.COMMIT_PRODUCT_DETAIL, data.data);
             resolve(data);
           })
           .catch((error) => reject(error));

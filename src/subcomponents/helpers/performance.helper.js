@@ -8,7 +8,7 @@ export const chartNames = {
 function buildBg(ctx) {
   let grd = ctx.createLinearGradient(70, 360, 70, 0);
   grd.addColorStop(0, "transparent");
-  grd.addColorStop(1, "rgba(228, 81, 195, .3)");
+  grd.addColorStop(1, "rgb(0, 195, 145,.35)");
   return grd;
 }
 function buildDataSet(context, data, label) {
@@ -16,7 +16,7 @@ function buildDataSet(context, data, label) {
     backgroundColor: buildBg(context),
     label,
     borderWidth: 2,
-    borderColor: "#e451ce",
+    borderColor: "rgba(0, 189, 145)",
     data,
   };
 }

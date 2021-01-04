@@ -5,7 +5,7 @@
         <div class="d-flex">
           <h5 class="card-title w-100">RECENT ORDERS</h5>
           <button
-            class="btn btn-sm btn-info text-white refresh"
+            class="btn btn-sm btn-primary text-white refresh"
             @click="refreshData"
           >
             <i

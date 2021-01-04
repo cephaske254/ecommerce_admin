@@ -1,0 +1,40 @@
+.carousel-item {
+  min-height: 200px;
+}
+
+.carousel-item .imageCont {
+  align-items: center;
+  justify-content: center;
+}
+.img-fluid {
+  max-width: 90% !important;
+  max-height: 90% !important;
+  margin: auto
+}
+.title {
+  font-size: 1.8em;
+}
+.subTitle {
+  font-size: 1em;
+}
+.carousel-indicators {
+  position: relative !important;
+  display: block !important;
+}
+.carousel-indicators li {
+  background-size: contain;
+  height: 40px !important;
+  width: 40px !important;
+  float: left;
+}
+.color-pad,
+.pad {
+  cursor: pointer;
+  margin: auto 2px;
+  border-radius: 2px;
+  border: 1px solid #0000008e;
+  min-width: 40px;
+  min-height: 20px;
+  font-size: small;
+  text-align: center;
+}

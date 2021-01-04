@@ -126,12 +126,13 @@ export default {
   --transition1: ease-in-out 0.4s cubic-bezier(0.685, 0.0473, 0.346, 1);
   --transition2: 0.3s cubic-bezier(0.685, 0.0473, 0.346, 1);
   --bs-gradient-info: #8c0eb3;
+  --nav-item-hover: #00a27c;
 }
 .sidebar {
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.4), 0 2px 30px 0 rgba(0, 0, 0, 0.35) !important;
   color: white;
-  background: var(--bs-info);
-  background: linear-gradient(180deg, var(--bs-info), var(--bs-gradient-info));
+  background: var(--bs-primary);
+  background: linear-gradient(180deg, var(--bs-primary) 50%, var(--bs-info) 100%);
   display: block;
   position: fixed;
   z-index: 10001 !important;
@@ -140,6 +141,7 @@ export default {
   width: 260px;
   background-size: cover;
   background-position: 50%;
+  background-attachment: fixed;
   overflow: scroll !important;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
@@ -297,7 +299,7 @@ export default {
 .navItems li:focus,
 .navItems a.nav-item:hover,
 .navItems a.nav-item:focus {
-  background: var(--bs-info);
+  background: var(--nav-item-hover);
 }
 .navItems li.nav-item a {
   border-radius: 1.8rem;
@@ -314,5 +316,6 @@ export default {
 .fullscreen .sidebar {
   transition: var(--transition2) !important;
   transform: translate3d(-260px, 0, 0) !important;
+  display: none;
 }
 </style>

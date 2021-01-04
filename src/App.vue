@@ -1,19 +1,23 @@
 
 <template>
-  <navbar-vue />
-  <div class="d-flex">
-    <side-bar-vue />
-    <section class="section main-panel w-100 mt-1">
-      <router-view />
-    </section>
+  <div>
+    <navbar-vue />
+    <div class="d-flex">
+      <side-bar-vue />
+      <section class="section main-panel w-100 mt-1">
+        <router-view />
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 import NavbarVue from "./components/Navbar.vue";
 import SideBarVue from "./components/SideBar.vue";
+import { _ } from "./utils/functions";
+
 // eslint-disable-next-line
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle";
+import "bootstrap/dist/js/bootstrap.bundle";
 
 export default {
   components: {
@@ -21,6 +25,10 @@ export default {
     SideBarVue,
   },
   mounted: function () {
+    _("dataLoader").fade("out", 1000);
+  },
+  beforeUnmount() {
+    _("dataLoader").fade("in");
   },
 };
 </script>
@@ -41,7 +49,10 @@ export default {
   overflow: hidden;
 }
 .bi {
-  font-family: initial;
+  font-family: initial !important;
   display: flex;
+}
+.list-style-none {
+  list-style-type: none;
 }
 </style>
