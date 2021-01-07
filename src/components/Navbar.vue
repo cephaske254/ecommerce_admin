@@ -26,7 +26,7 @@
         <img
           style="width: 2rem; height: 2rem"
           class="rounded-circle"
-          src="../assets/user.jpg"
+          src="../assets/images/user.jpg"
         />
       </div>
       <div

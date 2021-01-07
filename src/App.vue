@@ -16,8 +16,9 @@ import NavbarVue from "./components/Navbar.vue";
 import SideBarVue from "./components/SideBar.vue";
 import { _ } from "./utils/functions";
 
-// eslint-disable-next-line
-import "bootstrap/dist/js/bootstrap.bundle";
+import "bootstrap/js/dist/carousel";
+import "bootstrap/js/dist/collapse";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default {
   components: {
@@ -25,7 +26,9 @@ export default {
     SideBarVue,
   },
   mounted: function () {
-    _("dataLoader").fade("out", 1000);
+    setTimeout(() => {
+      _("dataLoader").fade("out", 600);
+    }, 1000);
   },
   beforeUnmount() {
     _("dataLoader").fade("in");
@@ -35,7 +38,6 @@ export default {
 
 <style>
 @import url("assets/styles.css");
-@import url("~bootstrap-icons/font/bootstrap-icons.css");
 
 .main-panel {
   transition: ease-in-out 0.4s;

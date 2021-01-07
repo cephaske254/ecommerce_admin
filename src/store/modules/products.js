@@ -1,4 +1,5 @@
 import { apiGetProducts, apiAddProduct, apiGetProduct } from "@/api/products";
+import { apiUpdateProduct } from "../../api/products";
 import * as types from "../types";
 
 const defaultState = {
@@ -41,7 +42,10 @@ export default {
       state.count = payload.count;
     },
     [types.COMMIT_PRODUCT](state, payload) {
-      const product = { ...payload, image: payload["images"][0].image };
+      const product = {
+        ...payload,
+        image: payload["images"].length ? payload["images"][0].image : null,
+      };
       state.data = [product, ...state.data];
     },
     [types.COMMIT_PRODUCT_DETAIL](state, payload) {
@@ -77,6 +81,17 @@ export default {
           .then((data) => {
             commit(types.COMMIT_PRODUCT_DETAIL, data.data);
             resolve(data);
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    [types.UPDATE_PRODUCT]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiUpdateProduct(payload)
+          .then((data) => {
+            commit(types.COMMIT_PRODUCT_DETAIL, data.data);
+            resolve(data);
+            return data;
           })
           .catch((error) => reject(error));
       });

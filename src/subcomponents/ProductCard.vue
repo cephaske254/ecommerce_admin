@@ -4,7 +4,7 @@
       class="card bg-lighter p-2 text border-0 shadow-sm h-100 text-decoration-none"
     >
       <div
-        class="card-top text-decoration-none"
+        class="card-top text-decoration-none h-100"
         @click="$emit('view', product.slug)"
       >
         <div class="product-image-cont">
@@ -14,7 +14,7 @@
             alt=""
             loading="lazy"
             class="card-img-top"
-            @error="$emit('error')"
+            @error="$emit('error', $event)"
           />
         </div>
         <div
@@ -25,15 +25,15 @@
           </p>
           <div class="d-flex small">
             <div class="col p-0">
-              {{ product.price }}
+              {{ formatPrice(product.price) }}
             </div>
-            <div class="text-right strike text-muted">
-              {{ product.old_price }}
+            <div v-if="product.old_price" class="text-right strike text-muted">
+              {{ formatPrice(product.old_price) }}
             </div>
           </div>
         </div>
       </div>
-      <div class="d-flex mt-1 p-2">
+      <div class="d-flex mt-1 p-2 justify-self-end">
         <button
           @click="$emit('edit', product.slug)"
           class="btn btn-mono btn-gradient btn-sm w-100"
@@ -46,11 +46,11 @@
 </template>
 
 <script>
-import loadingSvg from "../assets/loader.svg";
-
+import loadingSvg from "../assets/images/loader.svg";
 import { trimText } from "@/utils/functions";
+import { formatPrice } from "../utils/functions";
 export default {
-  props: ["product", "onView", "onEdit", "onDelete"],
+  props: ["product", "onView", "onEdit", "onDelete", "onError"],
   data() {
     return {
       loadingSvg,
@@ -58,6 +58,7 @@ export default {
   },
   methods: {
     trimText,
+    formatPrice,
   },
   mounted() {},
 };

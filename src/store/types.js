@@ -5,4 +5,6 @@ export const GET_PRODUCTS = "getProducts";
 export const COMMIT_PRODUCTS = "pushProducts";
 
 export const ADD_PRODUCT = "addProducts";
-export const COMMIT_PRODUCT = 'pushProduct'
+export const COMMIT_PRODUCT = "pushProduct";
+
+export const UPDATE_PRODUCT = "updateProduct";

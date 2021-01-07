@@ -1,42 +1,32 @@
 <template>
-  <Suspense>
-    <template #default>
-      <div class="container-fluid">
-        <div class="bg-lighter p-2 rounded text-light d-flex">
-          <i class="bi-filter h4 m-0"></i>
-          <div class="w-100">
-            <router-link
-              to="/products/add/"
-              class="btn btn-sm btn-info float-end"
-            >
-              <i class="bi bi-plus"></i>
-            </router-link>
-          </div>
-        </div>
-        <div class="row">
-          <product-card
-            v-for="product in products"
-            :key="product.id || product.slug"
-            :product="product"
-            :onView="view"
-            :onEdit="edit"
-            :onError="error"
-          />
-        </div>
-        <loadingsm :next="next" :loading="loading" />
+  <div class="container-fluid">
+    <div class="bg-lighter p-2 rounded text-light d-flex">
+      <i class="bi-filter h4 m-0"></i>
+      <div class="w-100">
+        <router-link to="/products/add/" class="btn btn-sm btn-info float-end">
+          <i class="bi bi-plus"></i>
+        </router-link>
       </div>
-    </template>
-
-    <template #fallback> Loading... </template>
-  </Suspense>
+    </div>
+    <div class="row">
+      <product-card
+        v-for="product in products"
+        :key="product.id || product.slug"
+        :product="product"
+        :onView="view"
+        :onEdit="edit"
+        :onError="error"
+      />
+    </div>
+    <loadingsm :next="next" :loading="loading" />
+  </div>
 </template>
 <script>
 import ProductCard from "@/subcomponents/ProductCard.vue";
 import * as types from "@/store/types";
-import { Suspense } from "vue";
-
+import errorImage from '@/assets/images/error.png'
 export default {
-  components: { ProductCard, Suspense },
+  components: { ProductCard },
   computed: {
     products() {
       return this.$store.getters["products/getProducts"];
@@ -62,7 +52,8 @@ export default {
       this.$router.push({ name: "Edit Product", params: { slug: slug } });
     },
     error: function (e) {
-      console.log(e);
+      e.target.onerror = null;
+      e.target.src = errorImage;
     },
     fetch: function (param) {
       if ((param === "next" && !this.next) || this.loading === true) return;

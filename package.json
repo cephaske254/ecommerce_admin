@@ -11,6 +11,7 @@
     "@ckeditor/ckeditor5-build-classic": "^24.0.0",
     "@ckeditor/ckeditor5-vue": "^2.0.1",
     "@vue/cli-plugin-eslint": "^4.5.9",
+    "@vue/devtools": "^5.3.3",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta1",
     "bootstrap-icons": "^1.2.1",

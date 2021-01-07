@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-group">
-      <label class="btn border-info text-info btn-sm" for="imgUpload">
+      <label class="btn border-primary text-primary btn-sm" for="imgUpload">
         <span class="d-flex align-items-center">
           ADD PRODUCT IMAGE
           <i class="bi bi-image mx-1 font-weight-bold"></i>
@@ -19,7 +19,7 @@
     </div>
     <div class="cr-cont d-flex">
       <div class="controls">
-        <button type="button" class="btn btn-info" @click="crop">
+        <button type="button" class="btn btn-primary" @click="crop">
           <i class="bi bi-crop"></i>
         </button>
       </div>
@@ -31,7 +31,7 @@
       <div class="card bg-lighter shadow mb-2">
         <div class="card-header">
           <span
-            class="float-end badge text-info border py-2 border-info p-1 d-flex align-items-center rounded px-1"
+            class="float-end badge text-primary border py-2 border-primary p-1 d-flex align-items-center rounded px-1"
           >
             <i class="bi bi-images mx-1"></i>
             {{ images.length }}
@@ -81,7 +81,7 @@ import "croppie/croppie.css";
 import { trimText } from "@/utils/functions";
 
 export default {
-  props: ["config", "onChange"],
+  props: ["config", "onChange", "rawImages", "edit"],
   data() {
     return {
       croppieImage: "",
@@ -130,6 +130,7 @@ export default {
       if (this.cropping === id) this.cropping = null;
       if (window.confirm("Sure to delete? This action cant be reversed!")) {
         this.images = this.images.filter((img) => img.id !== id);
+        this.$emit("removeImage", id);
       }
     },
     load: function (e) {
@@ -170,6 +171,7 @@ export default {
       this.$refs.croppieInput.value = null;
     },
     openCroppie(id) {
+      console.log("OPEN");
       const imageObject = this.images.find((image) => image.id === id);
       if (!id || !imageObject) return;
       document.getElementsByTagName("html")[0].classList.add("fullscreen");
@@ -187,8 +189,8 @@ export default {
     this.closeCroppie();
   },
   watch: {
-    images() {
-      this.sendImages();
+    images(val1) {
+      if (val1) this.sendImages();
     },
     cropping(val1, val2) {
       if (val1 === null || !val1 || val1 === val2) {
@@ -199,6 +201,10 @@ export default {
       if (image) this.bind(image.original, val1);
       this.openCroppie(val1);
       this.resetField();
+    },
+    rawImages(val1) {
+      // if (val1 && val1.length) this.images = [...this.images, val1];
+      console.log(val1);
     },
   },
 };

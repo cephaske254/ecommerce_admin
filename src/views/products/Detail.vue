@@ -86,12 +86,12 @@ export default {
   },
   methods: {
     getProduct() {
-      this.$store
-        .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.productId)
-        .then((data) => {
-          console.log(data.status);
-        })
-        .finally(console.log(this.product));
+      this.$store.dispatch(
+        "products/" + types.GET_PRODUCT_DETAIL,
+        this.productId
+      );
+
+      // THEN and FINALLY HERE
     },
   },
   mounted: function () {

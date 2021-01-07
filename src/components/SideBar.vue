@@ -126,13 +126,13 @@ export default {
   --transition1: ease-in-out 0.4s cubic-bezier(0.685, 0.0473, 0.346, 1);
   --transition2: 0.3s cubic-bezier(0.685, 0.0473, 0.346, 1);
   --bs-gradient-info: #8c0eb3;
-  --nav-item-hover: #00a27c;
+  --nav-item-hover: #8c0eb363;
 }
 .sidebar {
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.4), 0 2px 30px 0 rgba(0, 0, 0, 0.35) !important;
   color: white;
   background: var(--bs-primary);
-  background: linear-gradient(180deg, var(--bs-primary) 50%, var(--bs-info) 100%);
+  background: linear-gradient(180deg, var(--bs-primary), var(--bs-secondary));
   display: block;
   position: fixed;
   z-index: 10001 !important;
@@ -276,6 +276,7 @@ export default {
 }
 .navItems {
   font-size: 0.73412rem;
+  font-weight: 400;
   text-transform: uppercase;
   line-height: 1.625rem;
 }

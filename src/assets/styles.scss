@@ -1,21 +1,28 @@
-// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
 $dark: rgb(30, 30, 43);
 $primary: rgb(0, 189, 145);
 $body-color: #525f7f;
 $body-bg: $dark;
 
-$font-size-base: 0.87rem;
+// $font-size-base: 0.7434rem;
+$font-size-base: 0.83rem;
+// // $font-weight-base: 300;
 
-$secondary: #ba54f5;
+// $secondary: #ba54f5;
+// $white: white;
+// $light: rgb(240, 240, 240);
+// $info: #e14eca;
+// $lighter: #27293d;
+
+$primary: rgb(225, 78, 202);
+$secondary: rgb(12, 119, 220);
 $white: white;
 $light: rgb(240, 240, 240);
-$info: #e14eca;
+$info: rgb(0, 189, 145);
 $lighter: #27293d;
 
-$font-weight-normal: 400;
-
-// $font-family-sans-serif: Poppins, sans-serif;
+$font-family-sans-serif: "Poppins", sans-serif;
 
 $theme-colors: (
   "dark": $dark,
@@ -24,6 +31,7 @@ $theme-colors: (
   "info": $info,
   "danger": #dc3545,
   "lighter": $lighter,
+  "secondary": $secondary,
 );
 
 html::-webkit-scrollbar,
@@ -84,17 +92,17 @@ html,
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
 
-$theme-colors: map-remove($theme-colors, "warning");
+// $theme-colors: map-remove($theme-colors, "secondary");
 
 @import "../../node_modules/bootstrap/scss/variables";
 
 @import "../../node_modules/bootstrap/scss/root";
 @import "../../node_modules/bootstrap/scss/reboot";
-@import "../../node_modules/bootstrap/scss/type";
+// @import "../../node_modules/bootstrap/scss/type";
+
 @import "../../node_modules/bootstrap/scss/images";
 @import "../../node_modules/bootstrap/scss/containers";
 @import "../../node_modules/bootstrap/scss/grid";
-@import "../../node_modules/bootstrap/scss/mixins";
 
 @import "../../node_modules/bootstrap/scss/nav";
 @import "../../node_modules/bootstrap/scss/navbar";
@@ -104,7 +112,7 @@ $theme-colors: map-remove($theme-colors, "warning");
 
 @import "../../node_modules/bootstrap/scss/forms";
 
-@import "../../node_modules/bootstrap/scss/utilities";
+// @import "../../node_modules/bootstrap/scss/utilities";
 @import "../../node_modules/bootstrap/scss/bootstrap-utilities.scss";
 
 @import "../../node_modules/bootstrap/scss/transitions";
@@ -120,3 +128,7 @@ $theme-colors: map-remove($theme-colors, "warning");
 @import "../../node_modules/bootstrap/scss/progress";
 
 @import "../../node_modules/bootstrap/scss/carousel";
+
+.bi-lg {
+  font-size: 1.2rem;
+}

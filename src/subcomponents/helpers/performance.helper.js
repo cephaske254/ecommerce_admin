@@ -1,4 +1,4 @@
-import Chart from "chart.js";
+import Chart from "chart.js/dist/Chart.js";
 export const chartNames = {
   general: "All Customers",
   returning: "Returning Customers",
@@ -8,7 +8,8 @@ export const chartNames = {
 function buildBg(ctx) {
   let grd = ctx.createLinearGradient(70, 360, 70, 0);
   grd.addColorStop(0, "transparent");
-  grd.addColorStop(1, "rgb(0, 195, 145,.35)");
+  // grd.addColorStop(.01, "rgb(0, 195, 145,.1)");
+  grd.addColorStop(1, "rgba(225, 78, 202,.3)");
   return grd;
 }
 function buildDataSet(context, data, label) {
@@ -16,7 +17,8 @@ function buildDataSet(context, data, label) {
     backgroundColor: buildBg(context),
     label,
     borderWidth: 2,
-    borderColor: "rgba(0, 189, 145)",
+    // borderColor: "rgba(0, 189, 145)",
+    borderColor: "rgb(225, 78, 202)",
     data,
   };
 }
@@ -43,7 +45,6 @@ const options = {
   tooltips: {
     mode: "nearest",
   },
-
 };
 
 export function buildGeneral(

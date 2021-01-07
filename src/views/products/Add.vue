@@ -8,33 +8,50 @@
               <label for="name">Product Name</label>
               <span class="required"></span>
               <input
+                @blur="blur"
+                @focus="focus"
                 id="name"
-                v-model="name"
+                v-model="product.name"
                 class="form-control"
                 type="text"
                 placeholder="Product Name"
               />
+              <form-errors name="name" :errors="validate" :touched="touched" />
             </div>
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="category">Category</label>
                 <span class="required"></span>
                 <input
+                  @blur="blur"
+                  @focus="focus"
                   id="category"
-                  v-model="category"
+                  v-model="product.category"
                   type="text"
                   class="form-control"
                   placeholder="Category"
+                />
+                <form-errors
+                  name="category"
+                  :errors="validate"
+                  :touched="touched"
                 />
               </div>
               <div class="form-group col-md-6">
                 <label for="brand">Brand</label>
                 <input
+                  @blur="blur"
+                  @focus="focus"
                   placeholder="Product brand"
-                  v-model="brand"
+                  v-model="product.brand"
                   id="brand"
                   type="text"
                   class="form-control"
+                />
+                <form-errors
+                  name="brand"
+                  :errors="validate"
+                  :touched="touched"
                 />
               </div>
 
@@ -42,12 +59,55 @@
                 <label for="price">Price</label>
                 <span class="required"></span>
                 <input
+                  @blur="blur"
+                  @focus="focus"
+                  @keyup="clean"
                   placeholder="Price in KES"
-                  v-model="price"
+                  v-model="product.price"
                   id="price"
-                  type="number"
+                  type="text"
+                  class="form-control"
+                />
+                <form-errors
+                  name="price"
+                  :errors="validate"
+                  :touched="touched"
+                />
+              </div>
+              <div v-if="!discount" class="col-md-6 d-flex align-items-center">
+                <button
+                  @click="product.discount_price = 0.0"
+                  type="button"
+                  class="btn text-primary btn-sm mt-1 d-flex align-items-center"
+                >
+                  <i class="bi bi-plus bi-lg"></i>
+                  <span> Add Discount Price </span>
+                </button>
+              </div>
+              <div v-if="discount === true" class="form-group col-md-6">
+                <label for="discount_price">Discount Price</label>
+                <span class="required"></span>
+                <button
+                  @click="product.discount_price = null"
+                  class="btn my-0 py-0 btn-sm text-danger float-end"
+                >
+                  remove discount
+                </button>
+                <input
+                  @blur="blur"
+                  @focus="focus"
+                  @keyup="clean"
+                  placeholder="Price in KES"
+                  v-model="product.discount_price"
+                  id="discount_price"
+                  type="text"
                   min="0"
                   class="form-control"
+                />
+                <form-errors
+                  name="discount_price"
+                  :errors="validate"
+                  :touched="touched"
                 />
               </div>
             </div>
@@ -55,11 +115,18 @@
               <label for="description">Description</label>
 
               <span class="required"></span>
-              <ckeditor
-                :editor="editor"
-                v-model="description"
-                :config="editorConfig"
-              ></ckeditor>
+              <textarea
+                @click="blur"
+                ref="ckeditor"
+                v-model="product.description"
+                class="form-control"
+                id="ckeditor"
+              ></textarea>
+              <form-errors
+                name="description"
+                :errors="validate"
+                :touched="touched"
+              />
             </div>
           </div>
         </div>
@@ -68,14 +135,15 @@
             <label for="images">Product Images</label>
             <span class="required"></span>
           </div>
-          <croppie :onChange="(data) => (images = data)" />
+          <croppie
+            :rawImages="rawImages"
+            :edit="slug ? true : false"
+            :onChange="(data) => (product.images = data)"
+          />
+          <form-errors name="images" :errors="validate" :touched="touched" />
         </div>
         <div class="col-12">
-          <button
-            type="submit"
-            :disabled="!valid"
-            class="btn btn-info mb-2 float-end"
-          >
+          <button type="submit" class="btn btn-primary mb-2 float-end">
             SUBMIT
           </button>
         </div>
@@ -84,9 +152,9 @@
     <div class="container-fluid uploading-cont bg-dark" v-if="uploading">
       <div class="row align-items-center justify-content-center">
         <div class="col-md-6 col-lg-4 col-sm-10 d-block">
-          <div class="progress border border-info">
+          <div class="progress border border-primary">
             <div
-              class="progress-bar progress-bar-stripped bg-info"
+              class="progress-bar progress-bar-stripped bg-primary"
               :aria-valuenow="progress"
               role="progressbar"
               aria-valuemin="0"
@@ -103,126 +171,176 @@
   </div>
 </template> 
 <script>
-import { component as ckeditor } from "@ckeditor/ckeditor5-vue";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Croppie from "@/subcomponents/Croppie.vue";
+import FormErrors from "./formErrors";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic/build/ckeditor";
+import validateFunc from "./validators";
+import { cleanPrice, fields, buildImages } from "./helpers";
 import * as types from "@/store/types";
 
-const defaults = {
-  name: "Product another",
-  category: "phones & accessories",
-  brand: "oraimo",
-  price: "16424",
-  description: "<p>description here</p>",
-  available: true,
-};
-
 export default {
-  beforeMount() {
-    const self = this;
-    if (!self.submitted) {
-      window.addEventListener("beforeunload", self.preventNav);
-    }
-  },
-
-  components: { ckeditor, Croppie },
-  data: () => ({
-    editor: ClassicEditor,
-
-    name: "",
-    category: "",
-    brand: "",
-    price: "",
-    description: "",
-    available: true,
-    images: [],
-    submitted: false,
-    ...defaults,
-    progress: 0,
-    uploading: false,
-
-    editorConfig: {
-      toolbar: {
-        items: [
-          "heading",
-          "bold",
-          "italic",
-          "link",
-          "undo",
-          "redo",
-          "numberedList",
-          "bulletedList",
-          "indent",
-          "outdent",
-          "blockquote",
-        ],
+  data() {
+    return {
+      product: {
+        name: null,
+        category: null,
+        brand: null,
+        price: null,
+        discount_price: null,
+        description: "",
+        available: "",
+        images: [],
       },
-    },
-  }),
+      rawImages: [],
+      submitted: false,
+      progress: 0,
+      uploading: false,
+      touched: [],
+      errors: {},
+      focused: false,
+    };
+  },
+  components: { FormErrors, Croppie },
   computed: {
-    valid() {
+    editor() {
+      return ClassicEditor.create(this.$refs.ckeditor);
+    },
+    discount() {
       if (
-        this.name &&
-        this.category &&
-        this.brand &&
-        this.description &&
-        this.images.length
-      ) {
+        (this.product &&
+          this.product.discount_price !== null &&
+          this.product.discount_price !== undefined &&
+          this.product.discount_price !== "") ||
+        this.focused
+      )
         return true;
-      }
       return false;
     },
+    validate: function () {
+      return validateFunc(this.product, { discount: this.discount });
+    },
+    slug() {
+      if (this.$route.name === "Edit Product") return this.$route.params.slug;
+      return null;
+    },
+    getImages() {
+      if (this.product.images && !this.product.images.length > 0) return [];
+      return this.product.images;
+    },
   },
-  mounted() {},
-  preventNav(event) {
-    event.preventDefault();
-    event.returnValue = "";
+  methods: {
+    blur(e) {
+      if (!this.touched.includes(e.target.id)) {
+        this.touched = [...this.touched, e.target.id];
+      }
+      if (e.target.id === "discount_price") this.focused = false;
+    },
+    focus(e) {
+      const id = e.target.id;
+      if (!this.touched.includes(id && this.errors[id])) {
+        this.touched = this.touched.filter((t) => t !== id);
+      }
+      if (e.target.id === "discount_price") this.focused = true;
+    },
+    clean(e) {
+      this.product[e.target.id] = cleanPrice(e.target.value);
+    },
+    submit(e) {
+      e.preventDefault();
+      this.touched = fields;
+      if (this.validate.valid !== true) return;
+
+      this.uploading = true;
+
+      const self = this;
+      function done() {
+        setTimeout(() => {
+          self.progress = 100;
+          self.uploading = false;
+        }, 500);
+      }
+
+      const data = {
+        ...this.product,
+        price: cleanPrice(this.product.price),
+        discount_price: cleanPrice(this.product.discount_price),
+      };
+      if (this.slug) {
+        this.$store
+          .dispatch("products/" + types.UPDATE_PRODUCT, data, this.slug)
+          .then(done());
+      } else {
+        this.$store.dispatch("products/" + types.ADD_PRODUCT, data);
+      }
+    },
+    getProduct() {
+      this.$store
+        .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.slug)
+        .then((data) => {
+          this.product = {
+            ...data.data,
+            brand: data.data.brand ? data.data.brand.name : "",
+            category: data.data.category ? data.data.category.name : "",
+            images: [],
+          };
+          const self = this;
+
+          buildImages(data.data.images, function (result) {
+            const image = self.rawImages.find((i) => i.id === result.id);
+            if (image) {
+              image.original = result.original;
+              return;
+            }
+            self.rawImages = [...self.rawImages, result];
+          });
+
+          this.editor.then((editor) =>
+            editor.setData(data.data["description"])
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
-  beforeUnmount() {
+  mounted() {
     const self = this;
-    window.removeEventListener("beforeunload", self.preventNav);
+    if (self.slug) self.getProduct();
+
+    const ckTarget = { target: { id: "description" } };
+    self.editor
+      .then((editor) => {
+        editor.setData(self.product.description);
+        return editor;
+      })
+      .then((editor) => {
+        editor.model.document.on("change:data", function () {
+          self.product.description = editor.getData();
+          return editor;
+        });
+
+        editor.ui.focusTracker.on(
+          "change:isFocused",
+          (evt, name, isFocused) => {
+            if (isFocused === true) {
+              self.focus(ckTarget);
+              return;
+            }
+            self.blur(ckTarget);
+          }
+        );
+      });
   },
+  // eslint-disable-next-line
   beforeRouteLeave(to, from, next) {
     if (this.submitted) next();
     if (
       !this.submitted &&
-      !window.confirm("You have unsaved changes. Do you want to leave?")
+      !window.confirm("You might have unsaved changes. Do you want to leave?")
     ) {
       return;
     }
     next();
-  },
-  methods: {
-    submit(e) {
-      e.preventDefault();
-      const self = this;
-
-      this.uploading = true;
-      this.submitted = true;
-      document.body.classList.add("uploading");
-      const data = {
-        name: this.name,
-        category: this.category,
-        brand: this.brand,
-        price: this.price,
-        description: this.description,
-        images: this.images,
-        available: this.available,
-        watcher: this.uploadProgress,
-      };
-      this.$store
-        .dispatch("products/" + types.ADD_PRODUCT, data)
-        .then((response) => {
-          setTimeout(() => {
-            self.uploading = false;
-            const id = response.id;
-            console.log(id);
-          }, 1000);
-        });
-    },
-    uploadProgress(value) {
-      this.progress = value;
-    },
   },
 };
 </script>
@@ -243,7 +361,7 @@ span.required:before {
   content: "*";
   font-size: 1rem;
   position: absolute;
-  color: var(--bs-info);
+  color: var(--bs-primary);
   margin: 0.1rem;
 }
 .form-group {
@@ -273,7 +391,8 @@ span.required:before {
   background: var(--bs-lighter);
 }
 :root {
-  --ck-color-toolbar-background: var(--bs-lighter);
+  --ck-color-toolbar-background: var(--bs-lighter) !important;
+  --ck-color-toolbar-border: var(--bs-lighter) !important;
 }
 .ck button {
   background: var(--bs-dark) !important;
@@ -291,7 +410,7 @@ span.required:before {
   min-height: 200px;
 }
 .ck button.ck-on {
-  background: var(--bs-info) !important;
+  background: var(--bs-primary) !important;
 }
 .ck br,
 .ck p {
@@ -299,7 +418,7 @@ span.required:before {
   margin-top: 0 !important;
 }
 .ck.ck-dropdown__panel {
-  border-color: var(--bs-info);
+  border-color: var(--bs-primary);
 }
 .tooltip {
   z-index: 1000 !important;

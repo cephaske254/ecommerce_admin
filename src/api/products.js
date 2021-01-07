@@ -29,3 +29,23 @@ export const apiAddProduct = (data) => {
     }
   );
 };
+
+export const apiUpdateProduct = (data) => {
+  const watcher = data["watcher"];
+  const slug = data["slug"];
+  delete data["slug"];
+  
+  let url = `/products/${slug}/`;
+  return axios.put(
+    url,
+    { ...data },
+    {
+      onUploadProgress: function(progressEvent) {
+        let uploadPercentage = parseInt(
+          Math.round((progressEvent.loaded / progressEvent.total) * 100)
+        );
+        if (watcher) watcher(uploadPercentage);
+      }.bind(this),
+    }
+  );
+};

@@ -1,4 +1,4 @@
-export function trimText(str, max = 80, dots = true) {
+export function trimText(str = "", max = 80, dots = true) {
   if (str.length > max) {
     str = str.substring(0, max);
     if (dots) str = str + "...";
@@ -6,6 +6,21 @@ export function trimText(str, max = 80, dots = true) {
   return str;
 }
 
+export function toPrice(text) {
+  const price = text
+    ? text
+        .toString()
+        .toLowerCase()
+        .replace(/[^0-9.]+/g, "")
+    : 0.0;
+
+  return parseFloat(price).toFixed(2);
+}
+export function formatPrice(text) {
+  return toPrice(text).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+//
+// DOM FUNCTIONS
 export function _(el) {
   if (!(this instanceof _)) {
     return new _(el);
