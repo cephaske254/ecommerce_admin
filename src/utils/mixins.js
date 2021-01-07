@@ -1,4 +1,4 @@
-import debounce from "lodash.debounce";
+// import debounce from "lodash.debounce";
 var prevScrollpos = window.pageYOffset;
 
 const price = (value) => {
@@ -13,11 +13,11 @@ export default {
   hideNav: () => {
     document.getElementsByTagName("html")[0].classList.remove("nav-open");
   },
-  debounce: function(func, delay) {
-    debounce(function() {
-      func();
-    }, delay)();
-  },
+  // debounce: function(func, delay) {
+  //   debounce(function() {
+  //     func();
+  //   }, delay)();
+  // },
   scrollPercentage: function() {
     const h = document.documentElement,
       b = document.body,
