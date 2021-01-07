@@ -16,7 +16,8 @@ export default function(
 
   if (!data["name"]) errors["name"] = [required];
   if (!data["price"]) errors["price"] = [required];
-  if (!data["categories"]) errors["categories"] = [required];
+  if (!data["categories"].length)
+    errors["categories"] = ["Please add atleast one category"];
   if (!data["description"]) errors["description"] = [required];
 
   let price = null;
@@ -63,5 +64,6 @@ export default function(
       errors["valid"] = false;
     }
   });
+
   return errors;
 }

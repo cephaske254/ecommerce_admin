@@ -23,29 +23,29 @@
                 <label for="categories">Categories</label>
                 <span class="required"></span>
 
-                <div class="bg-dark d-flex flex-wrap">
+                <div
+                  class="bg-dark d-flex flex-wrap borders border-lighter py-2 rounded"
+                >
                   <div
                     v-for="(category, index) in product.categories"
                     :key="'axA-' + index"
-                    class="badge bg-lighter d-flex align-items-center mx-1"
+                    class="badge bg-lighter d-flex align-items-center m-1"
                   >
-                    <span v-if="typeof category === 'object'">{{
-                      category.name
-                    }}</span>
-                    <span v-else>{{ category }}</span>
+                    <span>{{ category }}</span>
                     <i
                       @click="removeCategory(index)"
-                      class="btn p-0 text-danger bi bi-dash bi-lg"
+                      class="p-0 btn text-danger bi bi-dash bi-lg"
                     ></i>
                   </div>
+                  <CommaSeparated />
+                  <button
+                    @click="focused = true"
+                    type="button"
+                    class="btn btn-sm btn-light m-2 rounded-md py-0"
+                  >
+                    ADD
+                  </button>
                 </div>
-                <button
-                  @click="focused = true"
-                  type="button"
-                  class="btn btn-sm btn-light m-2 rounded-md py-0 shadow"
-                >
-                  ADD
-                </button>
 
                 <form-errors
                   name="categories"
@@ -161,6 +161,7 @@ import validateFunc from "./validators";
 import { cleanPrice, fields, buildImages } from "./helpers";
 import * as types from "@/store/types";
 import { commaValues } from "../../utils/functions";
+import CommaSeparated from "./CommaSeparated.vue";
 
 export default {
   data() {
@@ -184,7 +185,7 @@ export default {
       focused: false,
     };
   },
-  components: { FormErrors, Croppie },
+  components: { FormErrors, Croppie, CommaSeparated },
   computed: {
     editor() {
       return ClassicEditor.create(this.$refs.ckeditor);

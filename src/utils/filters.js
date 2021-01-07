@@ -13,7 +13,7 @@ const filterData = (data, rawQuery) => {
 
   const filteredData = data.filter((item) => {
     for (let key in query) {
-      if (item[key] === undefned || !query[key].includes(item[key])) {
+      if (item[key] === undefined || !query[key].includes(item[key])) {
         return false;
       }
       return true;

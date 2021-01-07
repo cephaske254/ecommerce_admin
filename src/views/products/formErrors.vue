@@ -3,7 +3,7 @@
     class="errors"
     v-if="
       (errors && errors[name] && touched.includes(name)) ||
-      (name === 'images' && touched.length)
+      (touched.length && name == 'images')
     "
   >
     <p v-for="error in errors[name]" :key="error" class="my-0">{{ error }}</p>
@@ -18,7 +18,7 @@ export default {
 
 <style  scoped>
 .errors {
-  color: rgba(255, 0, 34, 0.885);
+  color: rgba(237, 34, 61, 0.809);
   margin-left: 0.8rem;
 }
 </style>
