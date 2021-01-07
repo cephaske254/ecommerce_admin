@@ -19,20 +19,36 @@
               <form-errors name="name" :errors="validate" :touched="touched" />
             </div>
             <div class="row">
-              <div class="form-group col-md-6">
-                <label for="category">Category</label>
+              <div class="form-group col-md-12">
+                <label for="categories">Categories</label>
                 <span class="required"></span>
-                <input
-                  @blur="blur"
-                  @focus="focus"
-                  id="category"
-                  v-model="product.category"
-                  type="text"
-                  class="form-control"
-                  placeholder="Category"
-                />
+
+                <div class="bg-dark d-flex flex-wrap">
+                  <div
+                    v-for="(category, index) in product.categories"
+                    :key="'axA-' + index"
+                    class="badge bg-lighter d-flex align-items-center mx-1"
+                  >
+                    <span v-if="typeof category === 'object'">{{
+                      category.name
+                    }}</span>
+                    <span v-else>{{ category }}</span>
+                    <i
+                      @click="removeCategory(index)"
+                      class="btn p-0 text-danger bi bi-dash bi-lg"
+                    ></i>
+                  </div>
+                </div>
+                <button
+                  @click="focused = true"
+                  type="button"
+                  class="btn btn-sm btn-light m-2 rounded-md py-0 shadow"
+                >
+                  ADD
+                </button>
+
                 <form-errors
-                  name="category"
+                  name="categories"
                   :errors="validate"
                   :touched="touched"
                 />
@@ -74,42 +90,6 @@
                   :touched="touched"
                 />
               </div>
-              <div v-if="!discount" class="col-md-6 d-flex align-items-center">
-                <button
-                  @click="product.discount_price = 0.0"
-                  type="button"
-                  class="btn text-primary btn-sm mt-1 d-flex align-items-center"
-                >
-                  <i class="bi bi-plus bi-lg"></i>
-                  <span> Add Discount Price </span>
-                </button>
-              </div>
-              <div v-if="discount === true" class="form-group col-md-6">
-                <label for="discount_price">Discount Price</label>
-                <span class="required"></span>
-                <button
-                  @click="product.discount_price = null"
-                  class="btn my-0 py-0 btn-sm text-danger float-end"
-                >
-                  remove discount
-                </button>
-                <input
-                  @blur="blur"
-                  @focus="focus"
-                  @keyup="clean"
-                  placeholder="Price in KES"
-                  v-model="product.discount_price"
-                  id="discount_price"
-                  type="text"
-                  min="0"
-                  class="form-control"
-                />
-                <form-errors
-                  name="discount_price"
-                  :errors="validate"
-                  :touched="touched"
-                />
-              </div>
             </div>
             <div class="form-group">
               <label for="description">Description</label>
@@ -143,6 +123,9 @@
           <form-errors name="images" :errors="validate" :touched="touched" />
         </div>
         <div class="col-12">
+          <p class="text-muted float-start small" v-if="slug">
+            CHANGES WILL BE COMMITED AFTER CLICKING SUBMIT
+          </p>
           <button type="submit" class="btn btn-primary mb-2 float-end">
             SUBMIT
           </button>
@@ -177,13 +160,14 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic/build/ckeditor";
 import validateFunc from "./validators";
 import { cleanPrice, fields, buildImages } from "./helpers";
 import * as types from "@/store/types";
+import { commaValues } from "../../utils/functions";
 
 export default {
   data() {
     return {
       product: {
         name: null,
-        category: null,
+        categories: ["name", "second", "again"],
         brand: null,
         price: null,
         discount_price: null,
@@ -229,6 +213,7 @@ export default {
     },
   },
   methods: {
+    commaValues,
     blur(e) {
       if (!this.touched.includes(e.target.id)) {
         this.touched = [...this.touched, e.target.id];
@@ -280,7 +265,7 @@ export default {
           this.product = {
             ...data.data,
             brand: data.data.brand ? data.data.brand.name : "",
-            category: data.data.category ? data.data.category.name : "",
+            categories: data.data.categories ? data.data.categories.name : "",
             images: [],
           };
           const self = this;
@@ -301,6 +286,11 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    removeCategory(index) {
+      const categories = this.product.categories;
+      const category = categories[index];
+      this.product.categories = categories.filter((i) => i !== category);
     },
   },
   mounted() {

@@ -42,7 +42,7 @@
           <div class="d-flex disp-img py-1" v-for="img in images" :key="img.id">
             <div class="w-100 align-self-center">
               <p class="small m-0">{{ trimText(img.name, 32) }}</p>
-              <div class="">
+              <div class="bg-info">
                 <button
                   @click="remove(img.id)"
                   type="button"
@@ -64,9 +64,8 @@
               </div>
             </div>
             <img
-              class="img-thumbnail"
+              class="rounded shadow-sm"
               :src="[img.current && img.original ? img.current : img.original]"
-              alt=""
             />
           </div>
         </div>
@@ -203,8 +202,7 @@ export default {
       this.resetField();
     },
     rawImages(val1) {
-      // if (val1 && val1.length) this.images = [...this.images, val1];
-      console.log(val1);
+      if (val1 && val1.length) this.images = [...this.images, ...val1];
     },
   },
 };

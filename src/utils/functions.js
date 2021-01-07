@@ -19,6 +19,15 @@ export function toPrice(text) {
 export function formatPrice(text) {
   return toPrice(text).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export const commaValues = (data, option = "encode") => {
+  if (option === "decode") {
+    return data && data.length ? data.join(",") : "";
+  } else if (option === "encode") {
+    return data && data.length ? data.split(",") : [];
+  }
+};
+
 //
 // DOM FUNCTIONS
 export function _(el) {

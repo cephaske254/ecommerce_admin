@@ -3,7 +3,7 @@ import { cleanPrice } from "./helpers";
 export default function(
   data = {
     name: null,
-    category: null,
+    categories: null,
     price: 0,
     discount_price: null,
     description: null,
@@ -16,7 +16,7 @@ export default function(
 
   if (!data["name"]) errors["name"] = [required];
   if (!data["price"]) errors["price"] = [required];
-  if (!data["category"]) errors["category"] = [required];
+  if (!data["categories"]) errors["categories"] = [required];
   if (!data["description"]) errors["description"] = [required];
 
   let price = null;

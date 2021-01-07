@@ -3,9 +3,18 @@
     <div class="bg-lighter p-2 rounded text-light d-flex">
       <i class="bi-filter h4 m-0"></i>
       <div class="w-100">
-        <router-link to="/products/add/" class="btn btn-sm btn-info float-end">
-          <i class="bi bi-plus"></i>
-        </router-link>
+        <div class="btn-group float-end">
+          <button title="refresh" class="btn btn-outline-primary btn-sm">
+            <i
+              class="bi bi-arrow-counterclockwise"
+              :class="[loading ? 'spin' : '']"
+              @click="fetch('refresh')"
+            ></i>
+          </button>
+          <router-link to="/products/add/" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus"></i>
+          </router-link>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -24,7 +33,7 @@
 <script>
 import ProductCard from "@/subcomponents/ProductCard.vue";
 import * as types from "@/store/types";
-import errorImage from '@/assets/images/error.png'
+import errorImage from "@/assets/images/error.png";
 export default {
   components: { ProductCard },
   computed: {

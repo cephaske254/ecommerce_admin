@@ -1,3 +1,5 @@
+export const RESET_PRODUCT_STATE = "resetProductState";
+
 export const GET_PRODUCT_DETAIL = "getProductDetail";
 export const COMMIT_PRODUCT_DETAIL = "commitProductDetail";
 

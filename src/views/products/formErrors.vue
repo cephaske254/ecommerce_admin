@@ -2,9 +2,8 @@
   <div
     class="errors"
     v-if="
-      errors &&
-      errors[name] &&
-      (touched.includes(name) || name === 'images')
+      (errors && errors[name] && touched.includes(name)) ||
+      (name === 'images' && touched.length)
     "
   >
     <p v-for="error in errors[name]" :key="error" class="my-0">{{ error }}</p>

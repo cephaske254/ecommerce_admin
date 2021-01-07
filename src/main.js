@@ -10,8 +10,21 @@ import store from "./store";
 // AXIOS CONFIG
 import axios from "axios";
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+axios.interceptors.response.use(null, (error) => {
+  let path = "/error/";
+  switch (error.response.status) {
+    case 401:
+      path = "/login/";
+      break;
+    case 404:
+      path = "/404/";
+      break;
+  }
+  router.replace(path);
+  return Promise.reject(error);
+});
 
-console.log(axios.defaults.baseURL);
+//
 
 const app = createApp(App)
   .use(store)

@@ -33,7 +33,9 @@ $theme-colors: (
   "lighter": $lighter,
   "secondary": $secondary,
 );
-
+.rounded-md {
+  border-radius: 1rem !important;
+}
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 .hide-scroll::-webkit-scrollbar {

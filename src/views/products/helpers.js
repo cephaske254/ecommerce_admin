@@ -14,7 +14,7 @@ export const beforeMount = () => {
 export const productInterface = {
   product: {
     name: null,
-    category: null,
+    categories: null,
     brand: null,
     price: null,
     discount_price: null,
@@ -31,7 +31,7 @@ export const cleanPrice = (val) => {
 };
 export const fields = [
   "name",
-  "category",
+  "categories",
   "brand",
   "price",
   "discount_price",
@@ -43,7 +43,10 @@ export const fields = [
 function toDataUrl(image, callback) {
   axios.get(image.image, { responseType: "blob" }).then((response) => {
     var reader = new FileReader();
-    const name = new URL(image.image).pathname.replace(/C:\\fakepath\\/gi, "");
+    const name = '_'+new URL(image.image).pathname.replace(
+      /\/media\/products\//gi,
+      ""
+    );
 
     reader.readAsDataURL(response.data);
     reader.onloadend = async () => {

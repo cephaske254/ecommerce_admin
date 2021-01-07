@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home";
+import FourOFour from "../views/handlers/404";
 
 const routes = [
   {
@@ -38,6 +39,10 @@ const routes = [
     component: () => import("../views/OrdersList"),
     children: [],
   },
+
+  { path: "/404/", component: FourOFour },
+
+  { path: "/:pathMatch(.*)*", component: FourOFour, replace: true },
 ];
 
 const router = createRouter({

@@ -18,7 +18,6 @@ export default {
       return state.data;
     },
     getProductDetail(state) {
-      console.log("CALLED");
       return state.productDetail;
     },
     getNext(state) {
@@ -51,6 +50,9 @@ export default {
     [types.COMMIT_PRODUCT_DETAIL](state, payload) {
       state.productDetail = { ...payload };
     },
+    [types.RESET_PRODUCT_STATE](state) {
+      state.data = [];
+    },
   },
   actions: {
     [types.GET_PRODUCTS]({ commit, state }, payload) {
@@ -58,7 +60,8 @@ export default {
         apiGetProducts(payload, state.next)
           .then((response) => {
             const data = response.data;
-            commit(types.COMMIT_PRODUCTS, data);
+            if (payload === "refresh") commit(types.RESET_PRODUCT_STATE);
+            commit(types.COMMIT_PRODUCTS, data, payload);
             resolve(data);
           })
           .catch((error) => reject(error));

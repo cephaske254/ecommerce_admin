@@ -34,7 +34,7 @@ export const apiUpdateProduct = (data) => {
   const watcher = data["watcher"];
   const slug = data["slug"];
   delete data["slug"];
-  
+
   let url = `/products/${slug}/`;
   return axios.put(
     url,
