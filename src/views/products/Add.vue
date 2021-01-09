@@ -1,5 +1,5 @@
 <template>
-  <div class="container add-cont mt-3">
+  <div v-if="!errored" class="container add-cont mt-3">
     <form @submit="submit">
       <div class="row">
         <div class="col-md-6 h-100">
@@ -22,6 +22,9 @@
               <div class="form-group col-md-12">
                 <label for="categories">Categories</label>
                 <span class="required"></span>
+                <p class="smaller float-end mt-0 mb-0 text-end text-muted">
+                  Categories that dont exist will be created automatically
+                </p>
 
                 <div
                   class="bg-dark d-flex flex-wrap borders border-lighter py-2 rounded"
@@ -37,14 +40,7 @@
                       class="p-0 btn text-danger bi bi-dash bi-lg"
                     ></i>
                   </div>
-                  <CommaSeparated />
-                  <button
-                    @click="focused = true"
-                    type="button"
-                    class="btn btn-sm btn-light m-2 rounded-md py-0"
-                  >
-                    ADD
-                  </button>
+                  <CommaSeparated :onChange="setCategories" />
                 </div>
 
                 <form-errors
@@ -53,43 +49,84 @@
                   :touched="touched"
                 />
               </div>
-              <div class="form-group col-md-6">
-                <label for="brand">Brand</label>
-                <input
-                  @blur="blur"
-                  @focus="focus"
-                  placeholder="Product brand"
-                  v-model="product.brand"
-                  id="brand"
-                  type="text"
-                  class="form-control"
-                />
-                <form-errors
-                  name="brand"
-                  :errors="validate"
-                  :touched="touched"
-                />
-              </div>
 
               <div class="form-group col-md-6">
-                <label for="price">Price</label>
+                <label for="market_price">Market Price</label>
                 <span class="required"></span>
                 <input
                   @blur="blur"
                   @focus="focus"
                   @keyup="clean"
                   placeholder="Price in KES"
-                  v-model="product.price"
-                  id="price"
+                  v-model="product.market_price"
+                  id="market_price"
                   type="text"
                   class="form-control"
                 />
                 <form-errors
-                  name="price"
+                  name="market_price"
                   :errors="validate"
                   :touched="touched"
                 />
               </div>
+              <div v-if="!discount" class="col-md-6 d-flex">
+                <button
+                  type="button"
+                  @click="
+                    ($event) => {
+                      focus({ target: { id: 'discount_price' } });
+                    }
+                  "
+                  class="btn btn-sm text-info d-flex align-items-center p-0"
+                >
+                  <i class="bi bi-plus bi-lg"></i>
+                  Add Discount
+                </button>
+              </div>
+              <div v-else class="form-group col-md-6">
+                <label for="discount_price">Discount Price</label>
+                <span class="required"></span>
+                <button
+                  @click="
+                    product.discount_price = null;
+                    blur({ target: { id: 'discount_price' } });
+                  "
+                  class="btn btn-sm my-0 p-0 text-danger float-end"
+                >
+                  remove
+                </button>
+                <input
+                  @blur="blur"
+                  @focus="focus"
+                  @keyup="clean"
+                  placeholder="Price in KES"
+                  v-model="product.discount_price"
+                  id="discount_price"
+                  type="text"
+                  class="form-control"
+                />
+                <form-errors
+                  name="discount_price"
+                  :errors="validate"
+                  :touched="touched"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="brand">Brand</label>
+              <p class="smaller float-end mt-0 mb-0 text-end text-muted">
+                Brand that dont exist will be created automatically
+              </p>
+              <input
+                @blur="blur"
+                @focus="focus"
+                placeholder="Product brand"
+                v-model="product.brand"
+                id="brand"
+                type="text"
+                class="form-control"
+              />
+              <form-errors name="brand" :errors="validate" :touched="touched" />
             </div>
             <div class="form-group">
               <label for="description">Description</label>
@@ -119,39 +156,41 @@
             :rawImages="rawImages"
             :edit="slug ? true : false"
             :onChange="(data) => (product.images = data)"
+            :onRemoveImage="removeImage"
+            :onCropImage="cropImage"
           />
           <form-errors name="images" :errors="validate" :touched="touched" />
         </div>
         <div class="col-12">
-          <p class="text-muted float-start small" v-if="slug">
+          <p class="text-muted small" hidden v-if="slug">
             CHANGES WILL BE COMMITED AFTER CLICKING SUBMIT
           </p>
-          <button type="submit" class="btn btn-primary mb-2 float-end">
-            SUBMIT
-          </button>
+          <div class="w-100 d-flex my-2 card-footer bg-dark">
+            <div class="w-100 d-flex align-items-center">
+              <label class="form-check-label" for="available"
+                >Product availability</label
+              >
+              <div class="form-check form-switch mx-1 py-1">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="available"
+                  :checked="product && product.available === true"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              v-html="slug ? 'UPDATE' : 'SUBMIT'"
+              class="btn btn-primary mb-2 float-end"
+            ></button>
+          </div>
         </div>
       </div>
     </form>
-    <div class="container-fluid uploading-cont bg-dark" v-if="uploading">
-      <div class="row align-items-center justify-content-center">
-        <div class="col-md-6 col-lg-4 col-sm-10 d-block">
-          <div class="progress border border-primary">
-            <div
-              class="progress-bar progress-bar-stripped bg-primary"
-              :aria-valuenow="progress"
-              role="progressbar"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              :style="{ width: progress + '%' }"
-            >
-              {{ progress + "%" }}
-            </div>
-          </div>
-          <p class="text-white small text-center">UPLOADING IMAGES...</p>
-        </div>
-      </div>
-    </div>
+    <uploading :uploading="uploading" :progress="progress" :failed="false" />
   </div>
+  <error-abstract v-if="errored" :onRetry="getProduct" />
 </template> 
 <script>
 import Croppie from "@/subcomponents/Croppie.vue";
@@ -162,30 +201,35 @@ import { cleanPrice, fields, buildImages } from "./helpers";
 import * as types from "@/store/types";
 import { commaValues } from "../../utils/functions";
 import CommaSeparated from "./CommaSeparated.vue";
+import Uploading from "../../subcomponents/Uploading.vue";
+import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 
 export default {
   data() {
     return {
       product: {
         name: null,
-        categories: ["name", "second", "again"],
+        categories: [],
         brand: null,
         price: null,
         discount_price: null,
         description: "",
-        available: "",
+        available: true,
         images: [],
+        removedImages: [],
+        recroppedImages: [],
       },
       rawImages: [],
       submitted: false,
       progress: 0,
       uploading: false,
       touched: [],
-      errors: {},
       focused: false,
+      errors: {},
+      errored: false,
     };
   },
-  components: { FormErrors, Croppie, CommaSeparated },
+  components: { FormErrors, Croppie, CommaSeparated, Uploading, ErrorAbstract },
   computed: {
     editor() {
       return ClassicEditor.create(this.$refs.ckeditor);
@@ -207,10 +251,6 @@ export default {
     slug() {
       if (this.$route.name === "Edit Product") return this.$route.params.slug;
       return null;
-    },
-    getImages() {
-      if (this.product.images && !this.product.images.length > 0) return [];
-      return this.product.images;
     },
   },
   methods: {
@@ -236,13 +276,21 @@ export default {
       this.touched = fields;
       if (this.validate.valid !== true) return;
 
+      this.submitted = fields;
       this.uploading = true;
+      this.errored = false;
 
       const self = this;
-      function done() {
+      function done(status, slug) {
         setTimeout(() => {
           self.progress = 100;
           self.uploading = false;
+
+          if (status < 400) {
+            self.navigate(slug);
+          } else {
+            self.errored = true;
+          }
         }, 500);
       }
 
@@ -250,23 +298,35 @@ export default {
         ...this.product,
         price: cleanPrice(this.product.price),
         discount_price: cleanPrice(this.product.discount_price),
+        watcher: this.progressWatcher,
       };
       if (this.slug) {
         this.$store
           .dispatch("products/" + types.UPDATE_PRODUCT, data, this.slug)
-          .then(done());
+          .then((data) => {
+            done(data.status, data.data.slug);
+          });
       } else {
-        this.$store.dispatch("products/" + types.ADD_PRODUCT, data);
+        this.$store
+          .dispatch("products/" + types.ADD_PRODUCT, data)
+          .then((data) => {
+            done(data.status, data.data.slug);
+          });
       }
+    },
+    progressWatcher(progress) {
+      this.progress = progress;
     },
     getProduct() {
       this.$store
         .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.slug)
         .then((data) => {
+          this.errored = false;
           this.product = {
+            ...this.product,
             ...data.data,
             brand: data.data.brand ? data.data.brand.name : "",
-            categories: data.data.categories ? data.data.categories.name : "",
+            categories: data.data.categories,
             images: [],
           };
           const self = this;
@@ -284,14 +344,38 @@ export default {
             editor.setData(data.data["description"])
           );
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => (this.errored = true));
     },
     removeCategory(index) {
       const categories = this.product.categories;
       const category = categories[index];
       this.product.categories = categories.filter((i) => i !== category);
+    },
+    removeImage(image) {
+      if (image.remote !== true) return;
+      const images = this.product.removedImages;
+      this.product.removedImages = [...images, image.id];
+    },
+    cropImage(image) {
+      const images = this.product.recropedImages || [];
+      if (image.remote !== true && !images.find((img) => img.id === image.id))
+        return;
+      this.product.recroppedImages = [...images, image.id];
+    },
+    setCategories(values) {
+      const categories = this.product.categories;
+      const incoming = values.filter(
+        (value) =>
+          value !== undefined &&
+          value.trim() != "" &&
+          value != null &&
+          !categories.includes(value.trim())
+      );
+
+      this.product.categories = [...this.product.categories, ...incoming];
+    },
+    navigate(slug) {
+      this.$router.push({ name: "Product Detail", params: { slug: slug } });
     },
   },
   mounted() {
@@ -324,14 +408,17 @@ export default {
   },
   // eslint-disable-next-line
   beforeRouteLeave(to, from, next) {
-    if (this.submitted) next();
-    if (
+    if (this.submitted) {
+      next();
+      return;
+    } else if (
       !this.submitted &&
       !window.confirm("You might have unsaved changes. Do you want to leave?")
     ) {
       return;
+    } else {
+      next();
     }
-    next();
   },
 };
 </script>
@@ -340,13 +427,18 @@ export default {
 .add-cont {
   color: hsla(0, 0%, 100%, 0.8) !important;
 }
-input,
+input[type="text"],
+input.input[type="text"],
 textarea {
   background: var(--bs-lighter) !important;
   border: none;
   border-radius: 1px;
   color: hsla(0, 0%, 100%, 0.6) !important;
   padding: 0.8rem 1rem;
+}
+input[type="checkbox"] {
+  border-color: var(--bs-primary);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='%23e14eca'/></svg>");
 }
 span.required:before {
   content: "*";
@@ -359,20 +451,6 @@ span.required:before {
   margin-bottom: 0.5rem;
 }
 
-.uploading-cont .progress {
-  background: transparent;
-}
-.uploading-cont {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1000 !important;
-  bottom: 0;
-}
-.uploading-cont .row {
-  height: 100%;
-  width: 100%;
-}
 .fullscreen button[type="submit"] {
   display: none;
 }
@@ -398,7 +476,7 @@ span.required:before {
 .ck.ck-editor__editable_inline {
   background: rgba(255, 255, 255, 0.118) !important;
   border: none !important;
-  min-height: 200px;
+  min-height: 100px;
 }
 .ck button.ck-on {
   background: var(--bs-primary) !important;
@@ -414,5 +492,8 @@ span.required:before {
 .tooltip {
   z-index: 1000 !important;
   /* background: ; */
+}
+.smaller {
+  font-size: 0.53rem;
 }
 </style>

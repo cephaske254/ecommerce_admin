@@ -7,19 +7,16 @@
             <div
               class="carousel slide w-100"
               id="carousel"
-              data-ride="carousel"
-              data-wrap="true"
-              data-keyboard="true"
+              data-bs-ride="carousel"
+              data-bs-wrap="true"
+              data-bs-keyboard="true"
             >
-              <div
-                v-for="(image, index) in product.images"
-                :key="'image' + index"
-                class="carousel-inner"
-              >
+              <div class="carousel-inner">
                 <div
-                  :key="'carousel-img-'"
-                  index
-                  :class="['carousel-item' + index === 0 ? ' active' : '']"
+                  v-for="(image, index) in product.images"
+                  :key="'carousel-img-' + index"
+                  class="carousel-item"
+                  :class="[index === 0 ? ' active' : '']"
                 >
                   <div class="d-flex imageCont">
                     <img :src="image.image" alt="" class="img-fluid" />
@@ -30,8 +27,8 @@
                 <li
                   v-for="(image, index) in product.images"
                   :key="index"
-                  data-target="#carousel"
-                  :data-slide-to="index"
+                  data-bs-target="#carousel"
+                  :data-bs-slide-to="index"
                   :style="{
                     backgroundImage: `url(${image.image})`,
                   }"
@@ -98,9 +95,7 @@ export default {
     this.getProduct();
   },
   watch: {
-    product() {
-      console.log(JSON.stringify(this.product.description));
-    },
+    product() {},
   },
 };
 </script>

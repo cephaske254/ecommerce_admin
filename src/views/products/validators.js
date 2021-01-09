@@ -12,24 +12,25 @@ export default function(
   config = { discount: false }
 ) {
   const required = "This field is required!";
+  const price_format_err = "Enter a valid price";
   const errors = {};
 
   if (!data["name"]) errors["name"] = [required];
-  if (!data["price"]) errors["price"] = [required];
-  if (!data["categories"].length)
+  if (!data["market_price"]) errors["market_price"] = [required];
+  if (!data["categories"] || !data["categories"].length)
     errors["categories"] = ["Please add atleast one category"];
   if (!data["description"]) errors["description"] = [required];
 
-  let price = null;
+  let market_price = null;
   let discount_price = null;
 
   if (config.discount === true) {
     if (!data["discount_price"]) errors["discount_price"] = [required];
 
     try {
-      price = parseFloat(cleanPrice(data["price"]));
+      market_price = parseFloat(cleanPrice(data["market_price"]));
     } catch {
-      price = "ERROR";
+      market_price = "ERROR";
     }
     try {
       discount_price = parseFloat(cleanPrice(data["discount_price"]));
@@ -37,22 +38,22 @@ export default function(
       discount_price = "ERROR";
     }
 
-    const price_format_err = "Enter a valid price";
-
-    if (discount_price === "ERROR" && price === "ERROR") {
+    if (discount_price === "ERROR" && market_price === "ERROR") {
       errors["discount_price"] = errors["price"] = [price_format_err];
-    } else if (price === "ERROR") {
-      errors["price"] = [price_format_err];
-    } else if (discount_price === "ERROR") {
+    } else if (market_price === "ERROR" || market_price < 1) {
+      errors["market_price"] = [price_format_err];
+    } else if (discount_price === "ERROR" || discount_price < 1) {
       errors["discount_price"] = [price_format_err];
+    } else {
+      if (discount_price > market_price)
+        errors["discount_price"] = [
+          "Discount price cannot exceed the market price",
+        ];
+      if (discount_price === market_price)
+        errors["discount_price"] = [
+          "Discount price cannot be equalto the market price",
+        ];
     }
-
-    if (discount_price > price)
-      errors["discount_price"] = ["Discount price cannot exceed the old price"];
-    if (discount_price === price)
-      errors["discount_price"] = [
-        "Discount price cannot be equalto the old price",
-      ];
   }
 
   if (!data["images"] || !data["images"].length)
@@ -64,6 +65,5 @@ export default function(
       errors["valid"] = false;
     }
   });
-
   return errors;
 }

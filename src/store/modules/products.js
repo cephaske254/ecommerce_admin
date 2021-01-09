@@ -71,9 +71,8 @@ export default {
       return new Promise((resolve, reject) => {
         apiAddProduct(payload)
           .then((response) => {
-            const data = response.data;
-            commit(types.COMMIT_PRODUCT, data);
-            resolve(data);
+            commit(types.COMMIT_PRODUCT,response.data);
+            resolve(response);
           })
           .catch((error) => reject(error));
       });
@@ -94,10 +93,22 @@ export default {
           .then((data) => {
             commit(types.COMMIT_PRODUCT_DETAIL, data.data);
             resolve(data);
-            return data;
           })
           .catch((error) => reject(error));
       });
     },
   },
 };
+
+// function getSum(a, b) {
+//   if (a === b) return a || b;
+
+//   const integers = [a, b].sort();
+//   const numbers = [];
+//   for (let i = integers[0]; i <= integers[1]; i++) {
+//     numbers.push(i);
+//   }
+
+//   return numbers.reduce((a, b) => a + b, 0);
+// }
+// const data = getSum(-2, 1);

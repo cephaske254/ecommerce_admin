@@ -19,6 +19,7 @@ export default {
 <style  scoped>
 .errors {
   color: rgba(237, 34, 61, 0.809);
-  margin-left: 0.8rem;
+  margin-left: 0.2rem;
+  font-size: .7rem;
 }
 </style>

@@ -7,10 +7,17 @@ import Loadingsm from "@/subcomponents/Loadingsm.vue";
 import Loading from "@/subcomponents/Loading.vue";
 
 import store from "./store";
-// AXIOS CONFIG
 import axios from "axios";
-axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+
+// AXIOS CONFIG
+
+const devUrl = "http://" + window.location.hostname + ":8000";
+
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "production" ? process.env.API_URL : devUrl;
+
 axios.interceptors.response.use(null, (error) => {
+  if (!error || !error.response) return Promise.reject(error);
   let path = "/error/";
   switch (error.response.status) {
     case 401:
@@ -20,18 +27,18 @@ axios.interceptors.response.use(null, (error) => {
       path = "/404/";
       break;
   }
-  router.replace(path);
+  router.push(path);
   return Promise.reject(error);
 });
 
 //
 
 const app = createApp(App)
+  .use(router)
   .use(store)
   .mixin(mixins)
   .component("loadingsm", Loadingsm)
-  .component("loading", Loading)
-  .use(router);
+  .component("loading", Loading);
 
 app.config.devtools = true;
 app.mount("#app");

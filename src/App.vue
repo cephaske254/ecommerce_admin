@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <navbar-vue />
@@ -15,11 +14,9 @@
 import NavbarVue from "./components/Navbar.vue";
 import SideBarVue from "./components/SideBar.vue";
 import { _ } from "./utils/functions";
-
 import "bootstrap/js/dist/carousel";
 import "bootstrap/js/dist/collapse";
 import "bootstrap-icons/font/bootstrap-icons.css";
-
 export default {
   components: {
     NavbarVue,
@@ -38,7 +35,6 @@ export default {
 
 <style>
 @import url("assets/styles.css");
-
 .main-panel {
   transition: ease-in-out 0.4s;
 }
@@ -56,5 +52,8 @@ export default {
 }
 .list-style-none {
   list-style-type: none;
+}
+.strike {
+  text-decoration: line-through;
 }
 </style>

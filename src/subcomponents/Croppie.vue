@@ -28,7 +28,7 @@
 
     <div v-if="images.length">
       <hr />
-      <div class="card bg-lighter shadow mb-2">
+      <div class="card bg-lighter mb-2">
         <div class="card-header">
           <span
             class="float-end badge text-primary border py-2 border-primary p-1 d-flex align-items-center rounded px-1"
@@ -42,7 +42,7 @@
           <div class="d-flex disp-img py-1" v-for="img in images" :key="img.id">
             <div class="w-100 align-self-center">
               <p class="small m-0">{{ trimText(img.name, 32) }}</p>
-              <div class="bg-info">
+              <div class="w-100">
                 <button
                   @click="remove(img.id)"
                   type="button"
@@ -80,7 +80,7 @@ import "croppie/croppie.css";
 import { trimText } from "@/utils/functions";
 
 export default {
-  props: ["config", "onChange", "rawImages", "edit"],
+  props: ["config", "onChange", "rawImages", "edit", "onRemoveImage"],
   data() {
     return {
       croppieImage: "",
@@ -126,10 +126,13 @@ export default {
       });
     },
     remove(id) {
-      if (this.cropping === id) this.cropping = null;
+      const self = this;
+      if (self.cropping === id) self.cropping = null;
+      const image = self.images.find((img) => img.id === id);
+
       if (window.confirm("Sure to delete? This action cant be reversed!")) {
-        this.images = this.images.filter((img) => img.id !== id);
-        this.$emit("removeImage", id);
+        self.$emit("removeImage", image);
+        self.images = self.images.filter((img) => img !== image);
       }
     },
     load: function (e) {
@@ -161,6 +164,7 @@ export default {
         data["name"] = name;
         data["original"] = result;
         data["current"] = null;
+        data["remote"] = false;
 
         this.images = [...this.images, data];
       }
@@ -212,6 +216,7 @@ export default {
 .card {
   z-index: 0 !important;
   position: initial !important;
+  border-radius: 1px;
 }
 .controls {
   display: none;

@@ -27,8 +27,11 @@
             <div class="col p-0">
               {{ formatPrice(product.price) }}
             </div>
-            <div v-if="product.old_price" class="text-right strike text-muted">
-              {{ formatPrice(product.old_price) }}
+            <div
+              v-if="product.market_price && product.discount_price"
+              class="text-right strike text-muted"
+            >
+              {{ formatPrice(product.market_price) }}
             </div>
           </div>
         </div>

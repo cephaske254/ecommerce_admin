@@ -1,5 +1,10 @@
 import axios from "axios";
-
+export const getCategorySuggestions = (value) => {
+  // return axios.get(`/search/products/?q=${value}`);
+  return axios.get(
+    `https://api.kilimall.com/ke/v1/wordAutoComplete?term=${value}`
+  );
+};
 export const apiGetProducts = (payload, next) => {
   let url = "/products/?page_size=20";
   if (payload === "next") url = next;
@@ -13,7 +18,11 @@ export const apiGetProduct = (id) => {
 
 export const apiAddProduct = (data) => {
   let url = "/products/";
-  const images = data["images"].map((img) => img.current);
+  const images = data["images"].map((img) => {
+    const output = { ...img };
+    if (img.current && img.original) output["original"] = null;
+    return output;
+  });
   const watcher = data["watcher"];
 
   return axios.post(
@@ -35,10 +44,19 @@ export const apiUpdateProduct = (data) => {
   const slug = data["slug"];
   delete data["slug"];
 
+  const recropped = data["recroppedImages"] || [];
+
+  // eslint-disable-next-line
+  const images = data.images.filter(
+    (img) =>
+      (img.remote === true && recropped.includes(img.id)) ||
+      img.remote === false
+  );
+
   let url = `/products/${slug}/`;
   return axios.put(
     url,
-    { ...data },
+    { ...data, images },
     {
       onUploadProgress: function(progressEvent) {
         let uploadPercentage = parseInt(
