@@ -31,7 +31,13 @@ const routes = [
     name: "Edit Product",
     path: "/products/:slug/edit/",
     component: () => import("../views/products/Add"),
-    exact: true,
+    children: [
+      {
+        name: "Delete Product",
+        path: "#delete",
+        component: () => import("../views/products/Delete"),
+      },
+    ],
   },
   {
     path: "/orders",

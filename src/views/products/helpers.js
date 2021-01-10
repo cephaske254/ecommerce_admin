@@ -21,7 +21,7 @@ export const productInterface = {
 };
 
 export const cleanPrice = (val) => {
-  if (!val) return null;
+  if (!val) return "";
   const text = val.toString();
   return text.replace(/[^0-9.+]/gi, "");
 };
@@ -60,7 +60,7 @@ function toDataUrl(image, callback) {
   xhr.send();
 }
 
-export function buildImages(images = [], callback) {
+export function buildImages(images, callback) {
   if (!images.length) return;
   images.forEach((image) => {
     toDataUrl(image, callback);

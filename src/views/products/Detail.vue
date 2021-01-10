@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="product">
+  <div class="container" v-if="product && product.name && errored === false">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-7 py-2 imagesScroll">
         <div class="fluid">
@@ -67,12 +67,20 @@
       </div>
     </div>
   </div>
+  <error-abstract v-else :onRetry="getProduct" />
 </template>
 
 <script>
 import * as types from "@/store/types";
+import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 
 export default {
+  components: { ErrorAbstract },
+  data() {
+    return {
+      errored: false,
+    };
+  },
   computed: {
     productId() {
       return this.$route.params.slug;
@@ -83,15 +91,23 @@ export default {
   },
   methods: {
     getProduct() {
-      this.$store.dispatch(
-        "products/" + types.GET_PRODUCT_DETAIL,
-        this.productId
-      );
-
-      // THEN and FINALLY HERE
+      this.$store
+        .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.productId)
+        .then(() => (this.errored = false))
+        .catch(() => {
+          this.errored = true;
+        });
     },
   },
   mounted: function () {
+    if (this.$route.query.ref === "Edit Product") {
+      if (
+        this.product &&
+        this.description &&
+        this.$route.params.slug === this.product.slug
+      )
+        return;
+    }
     this.getProduct();
   },
   watch: {

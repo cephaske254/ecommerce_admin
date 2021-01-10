@@ -172,6 +172,7 @@
               >
               <div class="form-check form-switch mx-1 py-1">
                 <input
+                  @change="changeAvailability"
                   class="form-check-input"
                   type="checkbox"
                   id="available"
@@ -179,17 +180,26 @@
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              v-html="slug ? 'UPDATE' : 'SUBMIT'"
-              class="btn btn-primary mb-2 float-end"
-            ></button>
+            <div class="fload-end d-flex">
+              <router-link
+                :to="{ name: 'Delete Product' }"
+                class="btn btn-danger mx-1"
+                v-if="slug"
+                >DELETE</router-link
+              >
+              <button
+                type="submit"
+                v-html="slug ? 'UPDATE' : 'SUBMIT'"
+                class="btn btn-primary mx-1"
+              ></button>
+            </div>
           </div>
         </div>
       </div>
     </form>
     <uploading :uploading="uploading" :progress="progress" :failed="false" />
   </div>
+  <router-view />
   <error-abstract v-if="errored" :onRetry="getProduct" />
 </template> 
 <script>
@@ -249,7 +259,7 @@ export default {
       return validateFunc(this.product, { discount: this.discount });
     },
     slug() {
-      if (this.$route.name === "Edit Product") return this.$route.params.slug;
+      if (this.$route.params.slug) return this.$route.params.slug;
       return null;
     },
   },
@@ -270,6 +280,9 @@ export default {
     },
     clean(e) {
       this.product[e.target.id] = cleanPrice(e.target.value);
+    },
+    changeAvailability(e) {
+      this.product.available = e.target.checked;
     },
     submit(e) {
       e.preventDefault();
@@ -318,26 +331,27 @@ export default {
       this.progress = progress;
     },
     getProduct() {
+      const self = this;
       this.$store
         .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.slug)
         .then((data) => {
-          this.errored = false;
-          this.product = {
-            ...this.product,
+          self.errored = false;
+          self.product = {
+            ...self.product,
             ...data.data,
             brand: data.data.brand ? data.data.brand.name : "",
             categories: data.data.categories,
             images: [],
           };
-          const self = this;
 
           buildImages(data.data.images, function (result) {
             const image = self.rawImages.find((i) => i.id === result.id);
-            if (image) {
+            if (image && image.id === result.id) {
               image.original = result.original;
               return;
+            } else {
+              self.rawImages = [...self.rawImages, result];
             }
-            self.rawImages = [...self.rawImages, result];
           });
 
           this.editor.then((editor) =>
@@ -375,7 +389,11 @@ export default {
       this.product.categories = [...this.product.categories, ...incoming];
     },
     navigate(slug) {
-      this.$router.push({ name: "Product Detail", params: { slug: slug } });
+      this.$router.replace({
+        name: "Product Detail",
+        params: { slug: slug },
+        query: { ref: this.$route.name },
+      });
     },
   },
   mounted() {

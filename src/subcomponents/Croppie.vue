@@ -17,7 +17,7 @@
         :multiple="false"
       />
     </div>
-    <div class="cr-cont d-flex">
+    <div class="cr-cont d-flex" v-if="cropping">
       <div class="controls">
         <button type="button" class="btn btn-primary" @click="crop">
           <i class="bi bi-crop"></i>
@@ -174,7 +174,6 @@ export default {
       this.$refs.croppieInput.value = null;
     },
     openCroppie(id) {
-      console.log("OPEN");
       const imageObject = this.images.find((image) => image.id === id);
       if (!id || !imageObject) return;
       document.getElementsByTagName("html")[0].classList.add("fullscreen");
@@ -205,8 +204,11 @@ export default {
       this.openCroppie(val1);
       this.resetField();
     },
-    rawImages(val1) {
-      if (val1 && val1.length) this.images = [...this.images, ...val1];
+    rawImages(val1, val2) {
+      val1.forEach((image) => {
+        if (val2.find((img) => image.id === img.id)) return;
+        this.images = [...this.images, image];
+      });
     },
   },
 };

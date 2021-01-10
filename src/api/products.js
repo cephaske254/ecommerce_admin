@@ -1,4 +1,7 @@
 import axios from "axios";
+import store from "../store/index";
+import { COMMIT_PRODUCT_DETAIL } from "../store/types";
+
 export const getCategorySuggestions = (value) => {
   // return axios.get(`/search/products/?q=${value}`);
   return axios.get(
@@ -46,7 +49,6 @@ export const apiUpdateProduct = (data) => {
 
   const recropped = data["recroppedImages"] || [];
 
-  // eslint-disable-next-line
   const images = data.images.filter(
     (img) =>
       (img.remote === true && recropped.includes(img.id)) ||
@@ -54,16 +56,21 @@ export const apiUpdateProduct = (data) => {
   );
 
   let url = `/products/${slug}/`;
-  return axios.put(
-    url,
-    { ...data, images },
-    {
-      onUploadProgress: function(progressEvent) {
-        let uploadPercentage = parseInt(
-          Math.round((progressEvent.loaded / progressEvent.total) * 100)
-        );
-        if (watcher) watcher(uploadPercentage);
-      }.bind(this),
-    }
-  );
+  return axios
+    .put(
+      url,
+      { ...data, images },
+      {
+        onUploadProgress: function(progressEvent) {
+          let uploadPercentage = parseInt(
+            Math.round((progressEvent.loaded / progressEvent.total) * 100)
+          );
+          if (watcher) watcher(uploadPercentage);
+        }.bind(this),
+      }
+    )
+    .then((data) => {
+      store.commit("products/" + COMMIT_PRODUCT_DETAIL, data.data);
+      return data;
+    });
 };
