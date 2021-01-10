@@ -1,23 +1,39 @@
-# ecommerce-admin
+# Ecommerce Admin Panel
 
+## Getting Started
+This application is an admin panel for [Ecommerce Client Side]( https://github.com/cephaske254/ecommerce_front), and is powered by a Django Backend API available [Here](https://github.com/cephaske254/ecommerce_backend)
+
+## Prerequisites
+This application is depends on a Django Backend API.   
+Visit this [Github Repo](https://github.com/cephaske254/ecommerce_backend) to install it.
+
+---
 ## Project setup
+
+Clone this product to your preferred location on your pc, then cd into the root folder of this project.
+```bash
+$ git clone https://github.com/cephaske254/ecommerce_admin.git
+$ cd ecommerce_admin
 ```
-yarn install
+
+Install the dependencies
+```
+$ yarn install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+$ yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn build
+$ yarn build
 ```
 
 ### Lints and fixes files
 ```
-yarn lint
+$ yarn lint
 ```
 
 ### Customize configuration
