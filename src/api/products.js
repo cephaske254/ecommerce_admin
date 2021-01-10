@@ -14,9 +14,14 @@ export const apiGetProducts = (payload, next) => {
   return axios.get(url);
 };
 
-export const apiGetProduct = (id) => {
-  let url = `/products/${id}/`;
+export const apiGetProduct = (slug) => {
+  let url = `/products/${slug}/`;
   return axios.get(url);
+};
+
+export const apiDeleteProduct = (slug) => {
+  let url = `/products/${slug}/`;
+  return axios.delete(url);
 };
 
 export const apiAddProduct = (data) => {

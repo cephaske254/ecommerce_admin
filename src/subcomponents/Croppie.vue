@@ -17,7 +17,7 @@
         :multiple="false"
       />
     </div>
-    <div class="cr-cont d-flex" v-if="cropping">
+    <div class="cr-cont d-flex" v-show="cropping">
       <div class="controls">
         <button type="button" class="btn btn-primary" @click="crop">
           <i class="bi bi-crop"></i>
@@ -184,11 +184,21 @@ export default {
     sendImages() {
       this.$emit("change", this.images);
     },
+    enventHandler(e) {
+      if (e.code === "Escape") {
+        const image = this.images.find((img) => img.id === this.cropping);
+        if ((image && image.current) || image.remote === true)
+          this.cropping = null;
+      }
+    },
   },
   beforeUnmount() {
     this.croppie.destroy();
-    window.removeEventListener("keydown", () => null);
+    document.removeEventListener("keydown", this.enventHandler);
     this.closeCroppie();
+  },
+  beforeMount() {
+    document.addEventListener("keydown", this.enventHandler);
   },
   watch: {
     images(val1) {

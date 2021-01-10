@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div key="Aslfnakfkajf " class="container-fluid">
     <div class="bg-lighter p-2 rounded text-light d-flex">
       <i class="bi-filter h4 m-0"></i>
       <div class="w-100">

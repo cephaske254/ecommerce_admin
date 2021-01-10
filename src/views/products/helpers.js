@@ -21,7 +21,7 @@ export const productInterface = {
 };
 
 export const cleanPrice = (val) => {
-  if (!val) return "";
+  if (!val) return null;
   const text = val.toString();
   return text.replace(/[^0-9.+]/gi, "");
 };

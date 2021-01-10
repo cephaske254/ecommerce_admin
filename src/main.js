@@ -10,7 +10,6 @@ import store from "./store";
 import axios from "axios";
 
 // AXIOS CONFIG
-
 const devUrl = "http://" + window.location.hostname + ":8000";
 
 axios.defaults.baseURL =
@@ -18,7 +17,7 @@ axios.defaults.baseURL =
 
 axios.interceptors.response.use(null, (error) => {
   if (!error || !error.response) return Promise.reject(error);
-  let path = "/error/";
+  let path = "";
   switch (error.response.status) {
     case 401:
       path = "/login/";
@@ -27,8 +26,11 @@ axios.interceptors.response.use(null, (error) => {
       path = "/404/";
       break;
   }
-  router.push(path);
-  return Promise.reject(error);
+  if (path) {
+    router.push(path);
+    return Promise.reject(error);
+  }
+  return Promise.resolve()
 });
 
 //

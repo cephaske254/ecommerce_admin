@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <navbar-vue />
-    <div class="d-flex">
-      <side-bar-vue />
-      <section class="section main-panel w-100 mt-1">
-        <router-view />
-      </section>
-    </div>
+  <navbar-vue />
+  <div class="d-flex">
+    <side-bar-vue />
+    <section class="section main-panel w-100 mt-1">
+      <router-view> </router-view>
+    </section>
   </div>
 </template>
 
@@ -55,5 +53,22 @@ export default {
 }
 .strike {
   text-decoration: line-through;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 1s, transform 1s !important;
+}
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30%) !important;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
 }
 </style>

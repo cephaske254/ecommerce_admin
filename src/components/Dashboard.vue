@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div key="ajNmMALDLs" class="container-fluid">
     <stats-vue />
   </div>
 </template>

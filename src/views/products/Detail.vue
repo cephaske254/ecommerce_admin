@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-7 py-2 imagesScroll">
         <div class="fluid">
-          <div class="card bg-lighter border-0 shadow-sm">
+          <div class="card bg-dark border-0 shadow-sm">
             <div
               class="carousel slide w-100"
               id="carousel"
@@ -41,7 +41,18 @@
       </div>
       <div class="col-sm-12 col-md-6 col-lg-5 py-2 px-3">
         <div class="title">
-          <p class="my-0 d-flex">{{ product.name }}</p>
+          <p class="my-0 d-flex h3">{{ product.name }}</p>
+        </div>
+        <div class="d-flex">
+          <p class="prc m-0 col prc h5">
+            KES {{ formatPrice(product.price) }}
+          </p>
+          <p
+            v-if="product.market_price && product.discount_price"
+            class="prc m-0 col strike"
+          >
+            KES {{ formatPrice(product.market_price) }}
+          </p>
         </div>
 
         <h5>Description</h5>
@@ -55,10 +66,6 @@
           No Description Provided
         </p>
 
-        <!-- {this.props.product.attributes && (
-                <AttributeCont attributes={this.props.product.attributes} />
-              )} -->
-        <p class="prc m-0">{{ product.price }}</p>
         <router-link
           :to="{ name: 'Edit Product', params: { slug: product.slug } }"
           class="btn btn-gradient w-100 btn-sm"
@@ -73,7 +80,7 @@
 <script>
 import * as types from "@/store/types";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
-
+import { formatPrice } from "../../utils/functions";
 export default {
   components: { ErrorAbstract },
   data() {
@@ -90,6 +97,7 @@ export default {
     },
   },
   methods: {
+    formatPrice,
     getProduct() {
       this.$store
         .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.productId)

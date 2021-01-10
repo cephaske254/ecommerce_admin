@@ -198,9 +198,9 @@
       </div>
     </form>
     <uploading :uploading="uploading" :progress="progress" :failed="false" />
+    <router-view />
   </div>
-  <router-view />
-  <error-abstract v-if="errored" :onRetry="getProduct" />
+  <error-abstract v-else :onRetry="getProduct" />
 </template> 
 <script>
 import Croppie from "@/subcomponents/Croppie.vue";
@@ -284,6 +284,31 @@ export default {
     changeAvailability(e) {
       this.product.available = e.target.checked;
     },
+    buildEditor() {
+      const self = this;
+      const ckTarget = { target: { id: "description" } };
+      self.editor
+        .then((editor) => {
+          return editor;
+        })
+        .then((editor) => {
+          editor.model.document.on("change:data", function () {
+            self.product.description = editor.getData();
+            return editor;
+          });
+
+          editor.ui.focusTracker.on(
+            "change:isFocused",
+            (evt, name, isFocused) => {
+              if (isFocused === true) {
+                self.focus(ckTarget);
+                return;
+              }
+              self.blur(ckTarget);
+            }
+          );
+        });
+    },
     submit(e) {
       e.preventDefault();
       this.touched = fields;
@@ -298,7 +323,6 @@ export default {
         setTimeout(() => {
           self.progress = 100;
           self.uploading = false;
-
           if (status < 400) {
             self.navigate(slug);
           } else {
@@ -354,9 +378,9 @@ export default {
             }
           });
 
-          this.editor.then((editor) =>
-            editor.setData(data.data["description"])
-          );
+          this.editor.then((editor) => {
+            editor.setData(data.data.description || "");
+          });
         })
         .catch(() => (this.errored = true));
     },
@@ -397,32 +421,8 @@ export default {
     },
   },
   mounted() {
-    const self = this;
-    if (self.slug) self.getProduct();
-
-    const ckTarget = { target: { id: "description" } };
-    self.editor
-      .then((editor) => {
-        editor.setData(self.product.description);
-        return editor;
-      })
-      .then((editor) => {
-        editor.model.document.on("change:data", function () {
-          self.product.description = editor.getData();
-          return editor;
-        });
-
-        editor.ui.focusTracker.on(
-          "change:isFocused",
-          (evt, name, isFocused) => {
-            if (isFocused === true) {
-              self.focus(ckTarget);
-              return;
-            }
-            self.blur(ckTarget);
-          }
-        );
-      });
+    if (this.slug) this.getProduct();
+    this.buildEditor();
   },
   // eslint-disable-next-line
   beforeRouteLeave(to, from, next) {
