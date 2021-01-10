@@ -1,7 +1,7 @@
 # Ecommerce Admin Panel
 
 ## Getting Started
-This application is an admin panel for [Ecommerce Client Side]( https://github.com/cephaske254/ecommerce_front), and is powered by a Django Backend API available [Here](https://github.com/cephaske254/ecommerce_backend)
+This application is an admin panel for [Ecommerce Client Side](https://github.com/cephaske254/ecomerce-frontend), and is powered by a Django Backend API available [Here](https://github.com/cephaske254/ecommerce_backend)
 
 ## Prerequisites
 This application is depends on a Django Backend API.   
