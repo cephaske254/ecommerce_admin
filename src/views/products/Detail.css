@@ -9,7 +9,7 @@
 .img-fluid {
   max-width: 90% !important;
   max-height: 90% !important;
-  margin: auto
+  margin: auto;
 }
 .title {
   font-size: 1.8em;
@@ -37,4 +37,12 @@
   min-height: 20px;
   font-size: small;
   text-align: center;
+}
+
+.prc:not(.strike) {
+  color: rgba(255, 0, 183, 0.85);
+  font-weight: 500;
+}
+.prc.strike {
+  color: rgba(255, 0, 183, 0.563);
 }

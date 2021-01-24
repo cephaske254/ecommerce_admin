@@ -67,3 +67,11 @@ export default function(
   });
   return errors;
 }
+
+export function ValidateEmail(mail) {
+  if (!mail) return;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+    return true;
+  }
+  return "You have entered an invalid email address!";
+}

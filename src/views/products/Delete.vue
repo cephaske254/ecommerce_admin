@@ -59,10 +59,6 @@ export default {
 </script>
 
 <style scoped>
-.container-fluid .row {
-  color: hsla(0, 0%, 100%, 0.8) !important;
-  background: rgba(30, 30, 43, 0.64);
-}
 .card-cont {
   background: linear-gradient(
     40deg,
@@ -90,8 +86,5 @@ export default {
 .bi {
   font-size: 7rem;
 }
-.btns {
-  display: flex;
-  justify-content: center;
-}
+
 </style>

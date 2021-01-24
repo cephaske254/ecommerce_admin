@@ -17,8 +17,8 @@
         :multiple="false"
       />
     </div>
-    <div class="cr-cont d-flex" v-show="cropping">
-      <div class="controls">
+    <div class="cr-cont d-flex">
+      <div class="controls" v-if="cropping">
         <button type="button" class="btn btn-primary" @click="crop">
           <i class="bi bi-crop"></i>
         </button>
@@ -30,7 +30,7 @@
       <hr />
       <div class="card bg-lighter mb-2">
         <div class="card-header">
-          <span
+          <span v-if="cropping"
             class="float-end badge text-primary border py-2 border-primary p-1 d-flex align-items-center rounded px-1"
           >
             <i class="bi bi-images mx-1"></i>

@@ -6,7 +6,7 @@ svg {
   margin-left: -400px;
 }
 .message-box {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   margin-top: -100px;
@@ -59,4 +59,18 @@ svg {
     margin-left: -190px;
     text-align: center;
   }
+}
+.svg-cont {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+.cont {
+  z-index: 12;
+  top: 0 !important;
+  position: absolute !important;
+  min-height: 95vh;
+  overflow: visible;
 }

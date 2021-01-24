@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid vh-100 bg-dark cont">
-    <div v-html="svgIcon"></div>
+  <div class="container-fluid bg-dark cont fixed-top d-flex">
+    <div class="svg-cont h-100" v-html="svgIcon"></div>
     <div class="message-box">
       <h1>{{ code }}</h1>
       <p v-if="message">{{ message }}</p>

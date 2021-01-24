@@ -10,3 +10,14 @@ export const ADD_PRODUCT = "addProducts";
 export const COMMIT_PRODUCT = "pushProduct";
 
 export const UPDATE_PRODUCT = "updateProduct";
+
+export const RESET_CATEGORY_STATE = "resetCategoryState";
+
+export const GET_CATEGORIES = "getCategories";
+export const COMMIT_CATEGORIES = "commitCategories";
+
+export const ADD_CATEGORY = "addCategory";
+export const COMMIT_CATEGORY = "commitCategory";
+
+export const GET_CATEGORY = "getCategory";
+export const UPDATE_CATEGORY = "updageCategory";

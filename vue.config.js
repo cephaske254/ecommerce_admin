@@ -1,1 +1,7 @@
-module.exports = {};
+module.exports = {
+  configureWebpack: {
+    externals: {
+      moment: "moment",
+    },
+  },
+};

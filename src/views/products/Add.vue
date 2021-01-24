@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!errored" class="container add-cont mt-3">
+  <div v-show="!errored && !loading" class="container add-cont mt-3">
     <form @submit="submit">
       <div class="row">
         <div class="col-md-6 h-100">
@@ -12,7 +12,7 @@
                 @focus="focus"
                 id="name"
                 v-model="product.name"
-                class="form-control"
+                class="form-control input"
                 type="text"
                 placeholder="Product Name"
               />
@@ -61,7 +61,7 @@
                   v-model="product.market_price"
                   id="market_price"
                   type="text"
-                  class="form-control"
+                  class="form-control input"
                 />
                 <form-errors
                   name="market_price"
@@ -103,7 +103,7 @@
                   v-model="product.discount_price"
                   id="discount_price"
                   type="text"
-                  class="form-control"
+                  class="form-control input"
                 />
                 <form-errors
                   name="discount_price"
@@ -124,7 +124,7 @@
                 v-model="product.brand"
                 id="brand"
                 type="text"
-                class="form-control"
+                class="form-control input"
               />
               <form-errors name="brand" :errors="validate" :touched="touched" />
             </div>
@@ -136,7 +136,7 @@
                 @click="blur"
                 ref="ckeditor"
                 v-model="product.description"
-                class="form-control"
+                class="form-control input"
                 id="ckeditor"
               ></textarea>
               <form-errors
@@ -200,11 +200,11 @@
     <uploading :uploading="uploading" :progress="progress" :failed="false" />
     <router-view />
   </div>
-  <error-abstract v-else :onRetry="getProduct" />
+  <error-abstract v-if="errored" :onRetry="getProduct" />
+  <loadingsm :loading="loading" :noNav="true" />
 </template> 
 <script>
 import Croppie from "@/subcomponents/Croppie.vue";
-import FormErrors from "./formErrors";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic/build/ckeditor";
 import validateFunc from "./validators";
 import { cleanPrice, fields, buildImages } from "./helpers";
@@ -213,6 +213,7 @@ import { commaValues } from "../../utils/functions";
 import CommaSeparated from "./CommaSeparated.vue";
 import Uploading from "../../subcomponents/Uploading.vue";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
+import Loadingsm from "../../subcomponents/Loadingsm.vue";
 
 export default {
   data() {
@@ -233,13 +234,20 @@ export default {
       submitted: false,
       progress: 0,
       uploading: false,
+      loading: false,
       touched: [],
       focused: false,
       errors: {},
       errored: false,
     };
   },
-  components: { FormErrors, Croppie, CommaSeparated, Uploading, ErrorAbstract },
+  components: {
+    Croppie,
+    CommaSeparated,
+    Uploading,
+    ErrorAbstract,
+    Loadingsm,
+  },
   computed: {
     editor() {
       return ClassicEditor.create(this.$refs.ckeditor);
@@ -356,10 +364,14 @@ export default {
     },
     getProduct() {
       const self = this;
+      self.loading = true;
+
       this.$store
         .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.slug)
         .then((data) => {
           self.errored = false;
+          self.loading = false;
+
           self.product = {
             ...self.product,
             ...data.data,
@@ -445,26 +457,7 @@ export default {
 .add-cont {
   color: hsla(0, 0%, 100%, 0.8) !important;
 }
-input[type="text"],
-input.input[type="text"],
-textarea {
-  background: var(--bs-lighter) !important;
-  border: none;
-  border-radius: 1px;
-  color: hsla(0, 0%, 100%, 0.6) !important;
-  padding: 0.8rem 1rem;
-}
-input[type="checkbox"] {
-  border-color: var(--bs-primary);
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='%23e14eca'/></svg>");
-}
-span.required:before {
-  content: "*";
-  font-size: 1rem;
-  position: absolute;
-  color: var(--bs-primary);
-  margin: 0.1rem;
-}
+
 .form-group {
   margin-bottom: 0.5rem;
 }

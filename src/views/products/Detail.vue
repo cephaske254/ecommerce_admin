@@ -1,5 +1,8 @@
 <template>
-  <div class="container" v-if="product && product.name && errored === false">
+  <div
+    class="container text-light-tr"
+    v-if="product && product.name && errored === false"
+  >
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-7 py-2 imagesScroll">
         <div class="fluid">
@@ -39,38 +42,44 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-5 py-2 px-3">
-        <div class="title">
-          <p class="my-0 d-flex h3">{{ product.name }}</p>
+      <div class="col-sm-12 col-md-6 col-lg-5 py-2">
+        <div class="card bg-dark">
+          <div class="card-title">
+            <p class="my-0 d-flex h3">{{ product.name }}</p>
+          </div>
+          <div class="d-flex card-subtitle">
+            <p class="prc m-0 col prc h6 mx-2">
+              KES {{ formatPrice(product.price) }}
+            </p>
+            <p
+              v-if="product.market_price && product.discount_price"
+              class="prc m-0 col strike"
+            >
+              KES {{ formatPrice(product.market_price) }}
+            </p>
+          </div>
+          <div class="p-2">
+            <router-link
+              :to="{ name: 'Edit Product', params: { slug: product.slug } }"
+              class="btn btn-gradient w-100 btn-sm"
+              >EDIT PRODUCT</router-link
+            >
+          </div>
+
+          <hr />
+          <h5 class="card-title m-0">Description</h5>
+          <div class="card-body">
+            <div
+              v-if="product.description"
+              class="card-text h-100"
+              v-html="product.description"
+            />
+
+            <p v-if="!product.description" class="text-muted text-center">
+              No Description Provided
+            </p>
+          </div>
         </div>
-        <div class="d-flex">
-          <p class="prc m-0 col prc h5">
-            KES {{ formatPrice(product.price) }}
-          </p>
-          <p
-            v-if="product.market_price && product.discount_price"
-            class="prc m-0 col strike"
-          >
-            KES {{ formatPrice(product.market_price) }}
-          </p>
-        </div>
-
-        <h5>Description</h5>
-        <div
-          v-if="product.description"
-          class="text"
-          v-html="product.description"
-        />
-
-        <p v-if="!product.description" class="text-muted text-center">
-          No Description Provided
-        </p>
-
-        <router-link
-          :to="{ name: 'Edit Product', params: { slug: product.slug } }"
-          class="btn btn-gradient w-100 btn-sm"
-          >EDIT PRODUCT</router-link
-        >
       </div>
     </div>
   </div>

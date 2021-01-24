@@ -14,7 +14,7 @@
             {{ progress + "%" }}
           </div>
         </div>
-        <p class="text-white small text-center">UPLOADING IMAGES...</p>
+        <p class="text-white small text-center">PLEASE WAIT...</p>
       </div>
     </div>
   </div>

@@ -71,7 +71,7 @@ export default {
       return new Promise((resolve, reject) => {
         apiAddProduct(payload)
           .then((response) => {
-            commit(types.COMMIT_PRODUCT,response.data);
+            commit(types.COMMIT_PRODUCT, response.data);
             resolve(response);
           })
           .catch((error) => reject(error));
