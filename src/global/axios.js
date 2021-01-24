@@ -4,6 +4,7 @@ import router from "../router";
 
 // LocalstorageService
 const localStorageService = LocalStorageService.getService();
+const devUrl = "http://" + window.location.hostname + ":8000";
 
 // Add a request interceptor
 axios.interceptors.request.use(
@@ -12,7 +13,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
-    config.headers['Content-Type'] = 'application/json';
+    config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error) => {
@@ -29,16 +30,24 @@ axios.interceptors.response.use(
   function(error) {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && originalRequest.url === "auth/token") {
+    if (
+      error.response.status === 401 &&
+      originalRequest.url === `${devUrl}/token/`
+    ) {
       router.push("/login");
       return Promise.reject(error);
     }
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    const refreshToken = localStorageService.getRefreshToken();
+
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      refreshToken
+    ) {
       originalRequest._retry = true;
-      const refreshToken = localStorageService.getRefreshToken();
       return axios
-        .post("/auth/token", {
+        .post("/token/refresh/", {
           refresh_token: refreshToken,
         })
         .then((res) => {
@@ -55,7 +64,6 @@ axios.interceptors.response.use(
 );
 
 // GLOBAL AXIOS CONFIG
-const devUrl = "http://" + window.location.hostname + ":8000";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production" ? process.env.VUE_APP_API_URL : devUrl;

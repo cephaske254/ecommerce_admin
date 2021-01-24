@@ -1,7 +1,14 @@
 import { apiLogin } from "../../api/auth";
+import LocalStorageService from "../../global/localStorageService";
+
+// LocalstorageService
+const localStorageService = LocalStorageService.getService();
 
 const defaultState = {
-  token: { refresh: null, access: null },
+  token: {
+    access: localStorageService.getAccessToken(),
+    refresh: localStorageService.getRefreshToken(),
+  },
 };
 
 export default {
@@ -15,20 +22,29 @@ export default {
   },
   mutations: {
     setToken(state, payload) {
+      localStorageService.setToken(payload);
       state.token = payload;
+    },
+    clearToken(state) {
+      localStorageService.clearToken();
+      state.token = {};
     },
   },
   actions: {
+    logout({ commit }) {
+      return new Promise((resolve) => {
+        commit("clearToken");
+        resolve();
+      });
+    },
     login({ commit }, payload = { email: null, password: null }) {
-      new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         apiLogin(payload.email, payload.password)
           .then((data) => {
             commit("setToken", data.data);
             resolve(data);
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     },
   },

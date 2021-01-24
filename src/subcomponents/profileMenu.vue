@@ -2,7 +2,12 @@
   <div v-if="showProfileMenu" class="menu card shadow-sm">
     <ul class="p-0 nav-items m-0">
       <li class="nav-item">
-        <a href="#" class="nav-link">LOGIN</a>
+        <a @click="logout" v-if="isLoggedIn" href="#" class="nav-link"
+          >LOGOUT</a
+        >
+        <router-link v-else :to="{ name: 'Login' }" class="nav-link"
+          >LOGIN</router-link
+        >
       </li>
       <li class="nav-item">
         <a href="#" class="nav-link">SETTINGS</a>
@@ -13,7 +18,23 @@
 
 <script>
 export default {
-  props: ["showProfileMenu", "loggedIn"],
+  props: ["showProfileMenu", "isLoggedIn"],
+  emits: ["closeProfileMenu"],
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    },
+    handleClick() {
+      if (this.showProfileMenu) return;
+      this.$emit("closeProfileMenu");
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.handleClick);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleClick);
+  },
 };
 </script>
 

@@ -28,7 +28,7 @@
         style="right: 0"
       >
         <img
-          v-if="loggedIn"
+          v-if="isLoggedIn"
           style="width: 2rem; height: 2rem"
           class="rounded-circle"
           src="../assets/images/user.jpg"
@@ -40,7 +40,11 @@
           ></i>
         </button>
       </div>
-      <profile-menu :showProfileMenu="showProfileMenu" :loggedIn="loggedIn" />
+      <profile-menu
+        :isLoggedIn="isLoggedIn"
+        :showProfileMenu="showProfileMenu"
+        v-on:closeProfileMenu="showProfileMenu = false"
+      />
       <div
         class="navbar-collapse collapse"
         id="navbarCollapse"
@@ -69,7 +73,6 @@ export default {
   components: { profileMenu },
   data() {
     return {
-      loggedIn: false,
       showProfileMenu: false,
     };
   },
@@ -83,6 +86,9 @@ export default {
     currentRoute() {
       const current = this.$router.currentRoute.value.name;
       return current || "Dashboard";
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
     },
   },
   watch: {},

@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-5 py-2">
+      <div class="col-sm-12 col-md-6 col-lg-5 py-2 flex-fill">
         <div class="card bg-dark">
           <div class="card-title">
             <p class="my-0 d-flex h3">{{ product.name }}</p>
@@ -83,7 +83,7 @@
       </div>
     </div>
   </div>
-  <error-abstract v-else :onRetry="getProduct" />
+  <error-abstract v-else-if="!loading" :onRetry="getProduct" />
 </template>
 
 <script>

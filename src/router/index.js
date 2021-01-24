@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home";
 import FourOFour from "../views/handlers/404";
 import Base from "../components/Base";
+import authGuard from "./authGuard";
 
 const routes = [
   {
@@ -45,13 +46,13 @@ const routes = [
         ],
       },
       {
-        path: "/orders",
+        path: "/orders/",
         name: "Orders",
         component: () => import("../views/OrdersList"),
         children: [],
       },
       {
-        path: "/categories",
+        path: "/categories/",
         name: "Categories",
         component: () => import("../views/categories/List"),
         children: [
@@ -70,8 +71,11 @@ const routes = [
     ],
   },
 
-  { path: "/login", component: () => import("../views/handlers/Login") },
-
+  {
+    path: "/login/",
+    name: "Login",
+    component: () => import("../views/handlers/Login"),
+  },
   { path: "/404/", component: FourOFour },
 
   { path: "/:pathMatch(.*)*", component: FourOFour, replace: true },
@@ -81,5 +85,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+router.beforeEach(authGuard);
 
 export default router;
