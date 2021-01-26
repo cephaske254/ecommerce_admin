@@ -4,6 +4,11 @@ import FourOFour from "../views/handlers/404";
 import Base from "../components/Base";
 import authGuard from "./authGuard";
 
+import order_urls from "./order_urls";
+import banner_ads_urls from "./banner_ads_urls";
+import categories_urls from "./categories_urls";
+import product_urls from "./product_urls";
+
 const routes = [
   {
     path: "",
@@ -16,58 +21,10 @@ const routes = [
         exact: true,
       },
 
-      {
-        name: "Products",
-        path: "/products/",
-        component: () => import("../views/products/List"),
-        exact: true,
-      },
-      {
-        name: "Add Product",
-        path: "/products/add/",
-        component: () => import("../views/products/Add"),
-        exact: true,
-      },
-      {
-        name: "Product Detail",
-        path: "/products/:slug/",
-        component: () => import("../views/products/Detail"),
-      },
-      {
-        name: "Edit Product",
-        path: "/products/:slug/edit/",
-        component: () => import("../views/products/Add"),
-        children: [
-          {
-            name: "Delete Product",
-            path: "#delete",
-            component: () => import("../views/products/Delete"),
-          },
-        ],
-      },
-      {
-        path: "/orders/",
-        name: "Orders",
-        component: () => import("../views/OrdersList"),
-        children: [],
-      },
-      {
-        path: "/categories/",
-        name: "Categories",
-        component: () => import("../views/categories/List"),
-        children: [
-          {
-            path: "#add",
-            name: "Add Category",
-            component: () => import("../views/categories/Add"),
-          },
-          {
-            path: "edit/:slug/",
-            name: "Edit Category",
-            component: () => import("../views/categories/Add"),
-          },
-        ],
-      },
+      ...order_urls,
+      ...banner_ads_urls,
+      ...categories_urls,
+      ...product_urls,
     ],
   },
 

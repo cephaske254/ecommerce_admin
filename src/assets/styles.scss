@@ -72,9 +72,21 @@ textarea {
 }
 input[type="checkbox"] {
   border-color: var(--bs-primary);
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='%23e14eca'/></svg>");
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='%23ccc'/></svg>") !important;
 }
-
+.loadingImg {
+  z-index: 1;
+  width: 100%;
+  padding: 45%;
+  /* background-color: white; */
+}
+.card-img-top.abs {
+  z-index: 1;
+  left: 0;
+  top: 0;
+  position: absolute;
+  cursor: pointer;
+}
 .spin {
   -webkit-animation: spin 1.2s infinite linear;
   -moz-animation: spin 1.2s infinite linear;

@@ -85,18 +85,23 @@
                 ></button>
               </div>
             </form>
-            <router-link
-              v-if="!reset"
-              class="text-muted text-decoration-none"
-              :to="{ hash: '#reset' }"
-              >Forgot Password</router-link
-            >
-            <router-link
-              v-else
-              class="text-muted text-decoration-none"
-              :to="{ name: 'Login' }"
-              >Login</router-link
-            >
+            <div class="d-flex">
+              <router-link
+                v-if="!reset"
+                class="text-muted text-decoration-none"
+                :to="{ hash: '#reset' }"
+                >Forgot Password</router-link
+              >
+              <router-link
+                v-else
+                class="text-muted text-decoration-none"
+                :to="{ name: 'Login' }"
+                >Login</router-link
+              >
+              <div class="position-absolute w-100">
+                <loadingsm :loading="loading" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -105,15 +110,18 @@
 </template>
 
 <script>
+import Loadingsm from "../../subcomponents/Loadingsm.vue";
 import validators, { ValidateEmail } from "../products/validators";
 validators;
 export default {
+  components: { Loadingsm },
   data() {
     return {
       email: null,
       password: null,
       errors: {},
       touched: [],
+      loading: false,
     };
   },
   computed: {
@@ -143,14 +151,13 @@ export default {
       this.touched = ["password", "email"];
 
       if (!this.email || !this.password) return;
-
+      this.loading = true;
       this.$store
         .dispatch("login", {
           email: this.email,
           password: this.password,
         })
-        .then((data) => {
-          console.log(data);
+        .then(() => {
           this.checkLogin();
         })
         .catch((error) => {
@@ -159,7 +166,8 @@ export default {
             ? error.data
             : { detail: "A network error occured!" };
           this.touched = this.touched.filter((i) => i !== "password");
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     blur(e) {
       const id = e.target.id;

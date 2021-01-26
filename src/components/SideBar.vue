@@ -50,10 +50,10 @@
               to="/categories"
               >CATEGORIES</router-link
             >
+
             <router-link @focus="click" to="/products" class="nav-link"
               >PRODUCTS</router-link
             >
-            <!-- <a href="#" class="nav-link">MANUFACTURERS</a> -->
           </div>
         </li>
 
@@ -76,6 +76,16 @@
             >
           </div>
         </li>
+        <router-link
+          @focus="click"
+          class="text-white nav-link nav-item"
+          :to="{ name: 'Banner Ads' }"
+        >
+          <div class="top">
+            <i class="icon" v-html="lightning"></i>
+            <div class="text">BANNER ADS</div>
+          </div>
+        </router-link>
         <hr class="my-1" />
         <router-link
           @focus="click"
@@ -102,7 +112,12 @@
   </div>
 </template>
 <script>
+import { lightning } from "../globalAssets";
+
 export default {
+  data() {
+    return { lightning };
+  },
   methods: {
     click: function () {
       setTimeout(() => {
@@ -261,6 +276,10 @@ export default {
   padding: 0.2rem;
   width: 40px;
   height: 40px;
+}
+.icon svg {
+  width: 2rem;
+  height: 1.8rem;
 }
 .links a.nav-link {
   margin-left: 2rem;

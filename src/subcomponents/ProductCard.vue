@@ -13,7 +13,7 @@
             :src="product.image"
             alt=""
             loading="lazy"
-            class="card-img-top"
+            class="card-img-top abs"
             @error="$emit('error', $event)"
           />
         </div>
@@ -87,20 +87,5 @@ export default {
   font-weight: 600;
   letter-spacing: 0.07rem;
   margin-left: 0.5rem;
-}
-
-.loadingImg {
-  z-index: 1;
-  width: 100%;
-  padding: 45%;
-  /* background-color: white; */
-}
-
-.card-img-top {
-  z-index: 1;
-  left: 0;
-  top: 0;
-  position: absolute;
-  cursor: pointer;
 }
 </style>

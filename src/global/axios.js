@@ -1,6 +1,7 @@
 import axios from "axios";
 import LocalStorageService from "./localStorageService";
 import router from "../router";
+import store from "../store";
 
 // LocalstorageService
 const localStorageService = LocalStorageService.getService();
@@ -30,10 +31,7 @@ axios.interceptors.response.use(
   function(error) {
     const originalRequest = error.config;
 
-    if (
-      error.response.status === 401 &&
-      originalRequest.url === `${devUrl}/token/`
-    ) {
+    if (error.response.status === 401 && originalRequest.url === `/token/`) {
       router.push("/login");
       return Promise.reject(error);
     }
@@ -45,18 +43,26 @@ axios.interceptors.response.use(
       !originalRequest._retry &&
       refreshToken
     ) {
+      if (!refreshToken) {
+        store.dispatch("logout");
+        return Promise.reject(error);
+      }
       originalRequest._retry = true;
       return axios
         .post("/token/refresh/", {
-          refresh_token: refreshToken,
+          refresh: refreshToken,
         })
         .then((res) => {
-          if (res.status === 201) {
-            localStorageService.setToken(res.data);
+          if (res.status > 100 && res.status < 400) {
+            localStorageService.setAccessToken(res.data["access"]);
             axios.defaults.headers.common["Authorization"] =
-              "Bearer " + localStorageService.getAccessToken();
+              "Bearer " + res.data["access"];
             return axios(originalRequest);
           }
+        })
+        .catch(() => {
+          store.dispatch("logout");
+          return error;
         });
     }
     return Promise.reject(error);

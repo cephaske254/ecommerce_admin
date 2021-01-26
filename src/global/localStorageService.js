@@ -17,6 +17,9 @@ const LocalStorageService = (function() {
   function _getRefreshToken() {
     return localStorage.getItem("refresh");
   }
+  function _setAccessToken(access) {
+    localStorage.setItem("access", access);
+  }
   function _clearToken() {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
@@ -27,6 +30,7 @@ const LocalStorageService = (function() {
     getAccessToken: _getAccessToken,
     getRefreshToken: _getRefreshToken,
     clearToken: _clearToken,
+    setAccessToken: _setAccessToken,
   };
 })();
 export default LocalStorageService;
