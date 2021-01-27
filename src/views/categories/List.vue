@@ -1,5 +1,6 @@
 <template>
-  <div v-if="!loading && !errored" class="container-fluid">
+  <loadingsm v-if="loading && !categories.length" :loading="loading" />
+  <div v-else-if="!errored && categories" class="container-fluid">
     <div class="bg-lighter p-2 rounded text-light d-flex">
       <div class="d-flex w-100">
         <i class="bi-filter h4 m-0"></i>
@@ -16,7 +17,7 @@
         <div class="btn-group float-end">
           <button
             title="refresh"
-            class="btn btn-outline-primary btn-sm"
+            class="btn btn-outline-primary"
             @click="getCategories('refresh')"
           >
             <i
@@ -24,10 +25,7 @@
               :class="[loading ? 'spin' : '']"
             ></i>
           </button>
-          <router-link
-            :to="{ name: 'Add Category' }"
-            class="btn btn-sm btn-primary"
-          >
+          <router-link :to="{ name: 'Add Category' }" class="btn btn-primary">
             <i class="bi bi-plus"></i>
           </router-link>
         </div>
@@ -76,16 +74,18 @@
         </tr>
       </tbody>
     </table>
-    <div class="mt-4" v-if="!errored && !categories.length">
-      No categories to show
-    </div>
+    <h4
+      class="text-center text-muted mt-5"
+      v-if="!errored && !categories.length"
+    >
+      NO CATEGORIES TO SHOW
+    </h4>
   </div>
 
   <error-abstract
     :onRetry="searchQuery ? search : getCategories"
     v-else-if="errored"
   />
-  <loadingsm v-if="!errored" :loading="loading" />
   <router-view />
 </template>
 

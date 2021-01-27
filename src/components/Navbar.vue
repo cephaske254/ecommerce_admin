@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky-top bg-dark w-100 container-fluid">
+  <div class="sticky-top bg-dark w-100 container-fluid" id="nav-cont">
     <nav
       class="navbar d-flex navbar-expand-lg navbar main-panel topNav navbar-dark"
     >

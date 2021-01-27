@@ -23,12 +23,16 @@ export default {
       state.next = payload.next;
       state.count = payload.count;
     },
+    [types.RESET_BANNER_ADS_STATE](state) {
+      state.data = [];
+    },
   },
   actions: {
     [types.GET_BANNER_ADS]({ commit, state }, payload) {
       return new Promise((resolve, reject) => {
         apiGetBannerAds(payload, state.next)
           .then((data) => {
+            if (payload === "refresh") commit(types.RESET_BANNER_ADS_STATE);
             commit(types.COMMIT_BANNER_ADS, data.data);
             resolve(data);
           })

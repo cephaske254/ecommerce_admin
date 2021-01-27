@@ -174,10 +174,9 @@ export default {
     max-width: 260px;
     width: min-content !important;
     height: max-content;
-    top: calc(7.5vh + 1rem) !important;
-    position: sticky !important;
-    left: 0;
+    position: relative !important;
     height: max-content;
+    display: block;
   }
   .sidebar:before {
     content: unset;

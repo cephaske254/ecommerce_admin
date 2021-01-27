@@ -1,5 +1,6 @@
 <template>
-  <div v-if="!errored && !loading" class="container-fluid">
+  <loadingsm v-if="loading && !products.length" :loading="loading" />
+  <div v-else-if="!errored" class="container-fluid">
     <div class="bg-lighter p-2 rounded text-light d-flex">
       <div class="w-100">
         <i class="bi-filter h4 m-0"></i>
@@ -17,17 +18,14 @@
           <button
             title="refresh"
             @click="refresh"
-            class="btn btn-outline-primary btn-sm"
+            class="btn btn-outline-primary"
           >
             <i
               class="bi bi-arrow-counterclockwise"
               :class="[loading ? 'spin' : '']"
             ></i>
           </button>
-          <router-link
-            :to="{ name: 'Add Product' }"
-            class="btn btn-sm btn-primary"
-          >
+          <router-link :to="{ name: 'Add Product' }" class="btn btn-primary">
             <i class="bi bi-plus"></i>
           </router-link>
         </div>
@@ -46,7 +44,6 @@
         :onError="error"
       />
     </div>
-    <loadingsm :next="next" :loading="loading" />
   </div>
   <error-abstract :onRetry="refresh" v-else-if="errored" />
 </template>
@@ -56,9 +53,10 @@ import * as types from "@/store/types";
 import errorImage from "@/assets/images/error.png";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 import { apiGetProducts } from "../../api/products";
+import Loadingsm from "../../subcomponents/Loadingsm.vue";
 
 export default {
-  components: { ProductCard, ErrorAbstract },
+  components: { ProductCard, ErrorAbstract, Loadingsm },
   computed: {
     products() {
       return this.$store.getters["products/getProducts"];

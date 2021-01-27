@@ -1,5 +1,7 @@
 <template>
-  <div class="container-fluid">
+  <loadingsm v-if="loading && !bannerAds" :loading="loading" />
+  <error-abstract v-else-if="errored" :onRetry="refresh" />
+  <div v-else class="container-fluid">
     <div class="bg-lighter p-2 rounded text-light d-flex">
       <div class="w-100 d-flex">
         <div class="bg-dark p-1 rounded">
@@ -17,63 +19,53 @@
       </form>
       <div class="w-100">
         <div class="btn-group float-end">
-          <button
-            title="refresh"
-            @click="refresh"
-            class="btn btn-outline-primary btn-sm"
-          >
+          <button title="refresh" @click="refresh" class="btn btn-primary">
             <i
               class="bi bi-arrow-counterclockwise"
               :class="[loading ? 'spin' : '']"
             ></i>
           </button>
           <router-link
-            :to="{ name: 'Add Product' }"
-            class="btn btn-sm btn-primary"
+            :to="{ name: 'Preview Banner Ads' }"
+            class="btn btn-outline-primary"
           >
+            <i class="bi bi-eye"></i>
+          </router-link>
+          <router-link :to="{ name: 'Add Banner Ad' }" class="btn btn-primary">
             <i class="bi bi-plus"></i>
           </router-link>
         </div>
       </div>
     </div>
+    <h4 v-if="!bannerAds.length" class="py-5 text-center">
+      NO BANNER ADS TO SHOW
+    </h4>
+
     <div class="d-flex flex-wrap">
       <card v-for="ad in bannerAds" :key="ad.slug" :item="ad" />
     </div>
   </div>
+  <router-view />
 </template>
 
 <script>
-import { GET_BANNER_ADS } from "../../store/types";
+import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
+import Loadingsm from "../../subcomponents/Loadingsm.vue";
 import Card from "./Card.vue";
 export default {
-  components: { Card },
+  props: ["bannerAds", "loading", "errored"],
+  components: { Card, Loadingsm, ErrorAbstract },
   data() {
     return {
-      loading: false,
-      errored: false,
       searchQuery: null,
     };
-  },
-  computed: {
-    bannerAds() {
-      return this.$store.getters.getBannerAds || [];
-    },
   },
   created() {
     this.$options.currentPage("Banner Ads");
   },
-  mounted() {
-    if (!this.bannerAds.length) {
-      this.loading = true;
-      this.$store
-        .dispatch(GET_BANNER_ADS)
-        .catch(() => (this.errored = true))
-        .finally(() => (this.loading = false));
-    }
-  },
+  mounted() {},
+  methods: {},
 };
 </script>
 
-<style
-Card>
-</style>
+<style></style>

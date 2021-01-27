@@ -37,7 +37,6 @@
 import { trimText } from "../../utils/functions";
 export default {
   props: ["item"],
-  data() {},
   methods: {
     trimText,
   },

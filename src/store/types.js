@@ -24,3 +24,4 @@ export const UPDATE_CATEGORY = "updageCategory";
 
 export const GET_BANNER_ADS = "getBannerAds";
 export const COMMIT_BANNER_ADS = "commitBannerAds";
+export const RESET_BANNER_ADS_STATE = "resetBannerAdsState";

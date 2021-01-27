@@ -9573,4 +9573,10 @@ textarea.form-control-lg {
 .bi-lg {
   font-size: 1.2rem;
 }
+
+.bi {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
 /*# sourceMappingURL=styles.css.map */
