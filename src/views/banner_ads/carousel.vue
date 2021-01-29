@@ -15,11 +15,13 @@
       >
         <div class="carousel-caption">
           <p class="title">{{ item.title }}</p>
-          <!-- <p class="h5" hidden>
-            {item.price} &nbsp; {item.old_price != null ? (
-            <strike class="text-muted">{item.old_price}</strike>
+          <p class="h5" v-if="item.product">
+            {{ item.product.price }}
+            <span class="text-muted strike">{{
+              item.product.market_price
+            }}</span>
             ) : ( "" )}
-          </p> -->
+          </p>
           <button class="btn shop-now">SHOP NOW</button>
         </div>
       </div>
@@ -30,8 +32,7 @@
       role="button"
       data-bs-slide="prev"
     >
-      <i class="fas fa-chevron-circle-left fa-lg" aria-hidden="true"></i>
-      <span class="sr-only">Previous</span>
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     </a>
     <a
       class="carousel-control-next"
@@ -39,15 +40,17 @@
       role="button"
       data-bs-slide="next"
     >
-      <i class="fas fa-chevron-circle-right fa-lg" aria-hidden="true"></i>
-      <span class="sr-only">Next</span>
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
     </a>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["carouselItems"],
+  props: ["carouselItems", "errored", "loading"],
+  data() {
+    return {};
+  },
   mounted() {
     document.getElementsByTagName("html")[0].classList.add("fullscreen");
   },
@@ -77,14 +80,14 @@ export default {
   z-index: 1 !important;
   transition: 0.4s;
   width: 100%;
-  background-color: #0000004b;
+  background-color: rgba(0, 0, 0, 0.552);
   text-align: start !important;
   padding-left: 3em;
   left: 0% !important;
   bottom: 16% !important;
 }
 .carousel-caption:hover {
-  background-color: #000000b3;
+  background-color: rgba(0, 0, 0, 0.774);
 }
 .carousel-caption .shop-now {
   padding: 8px 16px;
@@ -113,5 +116,11 @@ export default {
   padding: 10px 16px !important;
   border-radius: 40rem !important;
   letter-spacing: 4px;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+  background: rgba(0, 0, 0, 0.863);
+  border-radius: 50%;
 }
 </style>

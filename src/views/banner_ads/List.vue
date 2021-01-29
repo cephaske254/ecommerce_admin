@@ -1,6 +1,6 @@
 <template>
   <loadingsm v-if="loading && !bannerAds" :loading="loading" />
-  <error-abstract v-else-if="errored" :onRetry="refresh" />
+  <error-abstract v-else-if="!loading && errored" :onRetry="onRetry" />
   <div v-else class="container-fluid">
     <div class="bg-lighter p-2 rounded text-light d-flex">
       <div class="w-100 d-flex">
@@ -19,7 +19,7 @@
       </form>
       <div class="w-100">
         <div class="btn-group float-end">
-          <button title="refresh" @click="refresh" class="btn btn-primary">
+          <button title="refresh" @click="onRetry" class="btn btn-primary">
             <i
               class="bi bi-arrow-counterclockwise"
               :class="[loading ? 'spin' : '']"
@@ -53,7 +53,7 @@ import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 import Loadingsm from "../../subcomponents/Loadingsm.vue";
 import Card from "./Card.vue";
 export default {
-  props: ["bannerAds", "loading", "errored"],
+  props: ["bannerAds", "loading", "errored", "onRetry"],
   components: { Card, Loadingsm, ErrorAbstract },
   data() {
     return {
@@ -63,6 +63,7 @@ export default {
   created() {
     this.$options.currentPage("Banner Ads");
   },
+
   mounted() {},
   methods: {},
 };

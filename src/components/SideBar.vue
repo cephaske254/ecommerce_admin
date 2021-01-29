@@ -1,5 +1,9 @@
 <template>
-  <div class="sidebar hide-scroll" id="sidebar">
+  <div
+    class="sidebar hide-scroll"
+    id="sidebar"
+    :style="`height:${$store.getters.getNavbarHeight}px`"
+  >
     <div class="wrapper hide-scroll">
       <ul class="p-0 m-0 px-1 dash">
         <router-link @focus="click" class="text-white nav-link nav-item" to="/">
@@ -169,13 +173,11 @@ export default {
 
 @media screen and (min-width: 1200px) {
   .sidebar {
-    height: 90vh !important;
+    min-height: 90vh !important;
     min-width: 200px;
     max-width: 260px;
     width: min-content !important;
-    height: max-content;
     position: relative !important;
-    height: max-content;
     display: block;
   }
   .sidebar:before {
@@ -201,6 +203,9 @@ export default {
 @media only screen and (max-width: 1200px) {
   .nav-open .sidebar {
     z-index: 10001 !important;
+  }
+  .sidebar {
+    height: 100vh !important;
   }
 }
 @media (min-width: 992px) and (max-width: 1200px) {

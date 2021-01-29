@@ -58,7 +58,8 @@ html,
 input:focus,
 input:hover,
 .btn:hover,
-.btn:focus {
+.btn:focus,
+textarea {
   outline: none;
   box-shadow: none !important;
 }
@@ -122,6 +123,15 @@ input[type="checkbox"] {
   background-repeat: no-repeat;
   border: none !important;
   background: linear-gradient(95deg, var(--bs-primary) 50%, #007ef3 100%);
+}
+span.required::after {
+  margin-left:.2rem;
+  content: "*";
+  color: var(--bs-primary);
+}
+
+.strike {
+  text-decoration: line-through;
 }
 
 @import "../../node_modules/bootstrap/scss/functions";

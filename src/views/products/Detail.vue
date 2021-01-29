@@ -1,7 +1,8 @@
 <template>
+  <loading v-if="loading" :loading="loading" />
   <div
     class="container text-light-tr"
-    v-if="product && product.name && errored === false"
+    v-else-if="product && product.name && !errored"
   >
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-7 py-2 imagesScroll">
@@ -90,11 +91,13 @@
 import * as types from "@/store/types";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 import { formatPrice } from "../../utils/functions";
+import Loading from "../../subcomponents/Loading.vue";
 export default {
-  components: { ErrorAbstract },
+  components: { ErrorAbstract, Loading },
   data() {
     return {
       errored: false,
+      loading: false,
     };
   },
   computed: {
@@ -108,12 +111,14 @@ export default {
   methods: {
     formatPrice,
     getProduct() {
+      this.loading = true;
       this.$store
         .dispatch("products/" + types.GET_PRODUCT_DETAIL, this.productId)
         .then(() => (this.errored = false))
         .catch(() => {
           this.errored = true;
-        });
+        })
+        .finally(() => (this.loading = false));
     },
   },
   mounted: function () {

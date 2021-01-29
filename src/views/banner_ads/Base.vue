@@ -1,5 +1,10 @@
 <template>
-  <router-view :bannerAds="bannerAds" :errored="errored" :loading="loading" />
+  <router-view
+    :bannerAds="bannerAds"
+    :errored="errored"
+    :loading="loading"
+    :onRetry="() => fetch('refresh')"
+  />
 </template>
 
 <script>

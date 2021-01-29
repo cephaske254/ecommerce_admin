@@ -5,6 +5,7 @@ import LocalStorageService from "../../global/localStorageService";
 const localStorageService = LocalStorageService.getService();
 
 const defaultState = {
+  navbarHeight: "500px",
   token: {
     access: localStorageService.getAccessToken(),
     refresh: localStorageService.getRefreshToken(),
@@ -19,6 +20,9 @@ export default {
         ? true
         : false;
     },
+    getNavbarHeight(state) {
+      return state.navbarHeight;
+    },
   },
   mutations: {
     setToken(state, payload) {
@@ -28,6 +32,9 @@ export default {
     clearToken(state) {
       localStorageService.clearToken();
       state.token = {};
+    },
+    setNavbarHeight(state, payload) {
+      state.navbarHeight = payload;
     },
   },
   actions: {
@@ -46,6 +53,9 @@ export default {
           })
           .catch((error) => reject(error));
       });
+    },
+    navbarHeight({ commit }, payload) {
+      commit("setNavbarHeight", payload);
     },
   },
 };

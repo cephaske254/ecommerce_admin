@@ -1,73 +1,71 @@
 <template>
-  <div>
-    <div class="form-group">
-      <label class="btn border-primary text-primary btn-sm" for="imgUpload">
-        <span class="d-flex align-items-center">
-          ADD PRODUCT IMAGE
-          <i class="bi bi-image mx-1 font-weight-bold"></i>
-        </span>
-      </label>
-      <input
-        hidden
-        id="imgUpload"
-        ref="croppieInput"
-        type="file"
-        accept="image/*"
-        @change="load"
-        :multiple="false"
-      />
+  <div class="form-group mt-1" v-show="max && !images.length >= max">
+    <label class="btn border-primary text-primary btn-sm" for="imgUpload">
+      <span class="d-flex align-items-center">
+        <span v-html="[title ? title : 'ADD PRODUCT IMAGE']"></span>
+        <i class="bi bi-image mx-1 font-weight-bold"></i>
+      </span>
+    </label>
+    <input
+      hidden
+      id="imgUpload"
+      ref="croppieInput"
+      type="file"
+      accept="image/*"
+      @change="load"
+      :multiple="false"
+      :disabled="images.length >= max"
+    />
+  </div>
+  <div class="cr-cont" v-show="cropping && cropping.length">
+    <div class="controls">
+      <button type="button" class="btn btn-primary" @click="crop">
+        <i class="bi bi-crop"></i>
+      </button>
     </div>
-    <div class="cr-cont d-flex">
-      <div class="controls" v-if="cropping">
-        <button type="button" class="btn btn-primary" @click="crop">
-          <i class="bi bi-crop"></i>
-        </button>
-      </div>
-      <div class="cr-mount" ref="croppieRef" id="item"></div>
-    </div>
+    <div class="cr-mount" ref="croppieRef" id="item"></div>
+  </div>
 
-    <div v-if="images.length">
-      <hr />
-      <div class="card bg-lighter mb-2">
-        <div class="card-header">
-          <span v-if="cropping"
-            class="float-end badge text-primary border py-2 border-primary p-1 d-flex align-items-center rounded px-1"
-          >
-            <i class="bi bi-images mx-1"></i>
-            {{ images.length }}
-          </span>
-          <h6 class="card-title">SELECTED IMAGES</h6>
-        </div>
-        <div class="card-body">
-          <div class="d-flex disp-img py-1" v-for="img in images" :key="img.id">
-            <div class="w-100 align-self-center">
-              <p class="small m-0">{{ trimText(img.name, 32) }}</p>
-              <div class="w-100">
-                <button
-                  @click="remove(img.id)"
-                  type="button"
-                  class="btn btn-danger btn-sm mx-1"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
-                  title="Delete Image"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-                <button
-                  @click="restoreCrop(img.id)"
-                  type="button"
-                  title="Re-crop Image"
-                  class="btn btn-light btn-sm mx-1"
-                >
-                  <i class="bi bi-crop"></i>
-                </button>
-              </div>
+  <div v-if="images.length">
+    <div class="card bg-lighter">
+      <div class="card-header">
+        <span
+          class="float-end badge text-primary py-2 border-primary p-1 d-flex align-items-center rounded px-1"
+        >
+          <i class="bi bi-images mx-1"></i>
+          {{ images.length }}
+        </span>
+        <h6 class="card-title">SELECTED IMAGES</h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex disp-img py-1" v-for="img in images" :key="img.id">
+          <div class="w-100 align-self-center">
+            <p class="small m-0">{{ trimText(img.name, 32) }}</p>
+            <div class="w-100">
+              <button
+                @click="remove(img.id)"
+                type="button"
+                class="btn btn-danger btn-sm mx-1"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Delete Image"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+              <button
+                @click="restoreCrop(img.id)"
+                type="button"
+                title="Re-crop Image"
+                class="btn btn-light btn-sm mx-1"
+              >
+                <i class="bi bi-crop"></i>
+              </button>
             </div>
-            <img
-              class="rounded shadow-sm"
-              :src="[img.current && img.original ? img.current : img.original]"
-            />
           </div>
+          <img
+            class="rounded shadow-sm"
+            :src="[img.current && img.original ? img.current : img.original]"
+          />
         </div>
       </div>
     </div>
@@ -80,10 +78,18 @@ import "croppie/croppie.css";
 import { trimText } from "@/utils/functions";
 
 export default {
-  props: ["config", "onChange", "rawImages", "edit", "onRemoveImage"],
+  props: [
+    "config",
+    "onChange",
+    "rawImages",
+    "edit",
+    "onRemoveImage",
+    "title",
+    "onCropImage",
+    "max",
+  ],
   data() {
     return {
-      croppieImage: "",
       images: [],
       cropping: null,
       options: {
@@ -115,10 +121,15 @@ export default {
         const image = self.images.find((img) => img.id === self.cropping);
         image["current"] = result;
 
-        self.images = [
+        let images = [
           ...self.images.filter((img) => img.id !== self.cropping),
           image,
         ];
+
+        if (self.max !== undefined && Number.isInteger(self.max))
+          self.images = images.splice(0, self.max);
+        else if (self.max) return;
+        else self.images = images;
 
         setTimeout(() => {
           self.cropping = null;
@@ -131,7 +142,7 @@ export default {
       const image = self.images.find((img) => img.id === id);
 
       if (window.confirm("Sure to delete? This action cant be reversed!")) {
-        self.$emit("removeImage", image);
+        if (this.onRemoveImage) self.$emit("removeImage", image);
         self.images = self.images.filter((img) => img !== image);
       }
     },
@@ -182,7 +193,7 @@ export default {
       document.getElementsByTagName("html")[0].classList.remove("fullscreen");
     },
     sendImages() {
-      this.$emit("change", this.images);
+      if (this.onChange) this.$emit("change", this.images);
     },
     enventHandler(e) {
       if (e.code === "Escape") {
@@ -193,9 +204,9 @@ export default {
     },
   },
   beforeUnmount() {
-    this.croppie.destroy();
     document.removeEventListener("keydown", this.enventHandler);
     this.closeCroppie();
+    this.croppie.destroy();
   },
   beforeMount() {
     document.addEventListener("keydown", this.enventHandler);
@@ -260,6 +271,8 @@ export default {
 
 .cr-boundary {
   background: transparent !important;
+  height: max-content !important;
+  width: max-content !important;
 }
 .cr-slider-wrap {
   display: none !important;
@@ -275,6 +288,10 @@ export default {
 }
 .disp-img:last-child:not(:nth-child(1)) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.124);
+}
+.cr-mount {
+  padding: 0;
+
 }
 </style>
 

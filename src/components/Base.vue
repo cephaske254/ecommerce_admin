@@ -1,10 +1,10 @@
 <template>
   <navbar-vue />
   <section class="d-flex">
-    <side-bar-vue height="navbarHeight" />
+    <side-bar-vue />
     <div
-      class="main-panel hidse-scroll"
-      :style="`height:${navbarHeight}px !important`"
+      class="main-panel hide-scroll"
+      :style="`height:${$store.getters.getNavbarHeight}px !important`"
     >
       <router-view />
     </div>
@@ -21,9 +21,7 @@ import SideBarVue from "./SideBar.vue";
 
 export default {
   data() {
-    return {
-      navbarHeight: null,
-    };
+    return {};
   },
   components: {
     NavbarVue,
@@ -33,14 +31,15 @@ export default {
   mounted() {
     this.setHeight();
     const self = this;
-    window.onresize = () => {
-      self.setHeight();
-    };
+    window.onload = () => self.setHeight();
+    window.onresize = () => self.setHeight();
   },
   methods: {
     setHeight() {
-      this.navbarHeight =
-        window.innerHeight - document.getElementById("nav-cont").clientHeight;
+      this.$store.dispatch(
+        "navbarHeight",
+        window.innerHeight - document.getElementById("nav-cont").clientHeight
+      );
     },
   },
 };

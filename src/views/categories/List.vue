@@ -124,19 +124,15 @@ export default {
   },
   methods: {
     getCategories(param) {
-      const self = this;
       this.loading = true;
       this.errored = false;
 
       this.$store
         .dispatch("categories/" + types.GET_CATEGORIES, param)
-        .then(() => {
-          setTimeout(() => (self.loading = false), 500);
-        })
         .catch(() => {
           this.errored = true;
-          this.loading = false;
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     search(e) {
       if (e) e.preventDefault();

@@ -36,7 +36,14 @@
           </div>
         </div>
       </div>
-      <div class="d-flex mt-1 p-2 justify-self-end">
+      <div class="w-100 py-1">
+        <router-link
+          :to="{ name: 'Add Banner Ad', query: { product: product.slug } }"
+          class="btn btn-sm float-end btn-dark"
+          v-html="lightning"
+        ></router-link>
+      </div>
+      <div class="d-flex justify-self-end">
         <button
           @click="$emit('edit', product.slug)"
           class="btn btn-mono btn-gradient btn-sm w-100"
@@ -52,11 +59,13 @@
 import loadingSvg from "../assets/images/loader.svg";
 import { trimText } from "@/utils/functions";
 import { formatPrice } from "../utils/functions";
+import { lightning } from "../globalAssets";
 export default {
   props: ["product", "onView", "onEdit", "onDelete", "onError"],
   data() {
     return {
       loadingSvg,
+      lightning,
     };
   },
   methods: {
