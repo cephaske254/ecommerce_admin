@@ -1,5 +1,5 @@
 <template>
-  <loadingsm v-if="loading && !bannerAds" :loading="loading" />
+  <loadingsm v-if="loading && !bannerAds.length" :loading="loading" />
   <error-abstract v-else-if="!loading && errored" :onRetry="onRetry" />
   <div v-else class="container-fluid">
     <div class="bg-lighter p-2 rounded text-light d-flex">
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <h4 v-if="!bannerAds.length" class="py-5 text-center">
+    <h4 v-if="!bannerAds.length && !loading" class="py-5 text-center">
       NO BANNER ADS TO SHOW
     </h4>
 
