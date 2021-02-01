@@ -10,14 +10,6 @@
       />
       <div class="card-body">
         <h5 class="card-title text-light-tr">{{ item.title }}</h5>
-        <p class="card-text">
-          {{
-            trimText(
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius voluptate, neque quasi doloremque maxime ducimus ipsa fuga impedit, facilis, dolorum est omnis magni quaerat iste explicabo. Ipsam exercitationem possimus atque!",
-              100
-            )
-          }}
-        </p>
       </div>
       <div class="card-footer">
         <div class="form-check form-switch">

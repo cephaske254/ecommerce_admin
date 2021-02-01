@@ -31,9 +31,6 @@
           >
             <i class="bi bi-eye"></i>
           </router-link>
-          <router-link :to="{ name: 'Add Banner Ad' }" class="btn btn-primary">
-            <i class="bi bi-plus"></i>
-          </router-link>
         </div>
       </div>
     </div>

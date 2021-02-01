@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group mt-1" v-show="max && !images.length >= max">
+  <div class="form-group mt-1">
     <label class="btn border-primary text-primary btn-sm" for="imgUpload">
       <span class="d-flex align-items-center">
         <span v-html="[title ? title : 'ADD PRODUCT IMAGE']"></span>
@@ -17,7 +17,7 @@
       :disabled="images.length >= max"
     />
   </div>
-  <div class="cr-cont" v-show="cropping && cropping.length">
+  <div class="cr-cont" v-show="cropping">
     <div class="controls">
       <button type="button" class="btn btn-primary" @click="crop">
         <i class="bi bi-crop"></i>
@@ -78,16 +78,16 @@ import "croppie/croppie.css";
 import { trimText } from "@/utils/functions";
 
 export default {
-  props: [
-    "config",
-    "onChange",
-    "rawImages",
-    "edit",
-    "onRemoveImage",
-    "title",
-    "onCropImage",
-    "max",
-  ],
+  props: {
+    config: Object,
+    onChange: null,
+    rawImages: Array,
+    edit: Boolean,
+    onRemoveImage: null,
+    title: String,
+    onCropImage: null,
+    max: Number(0),
+  },
   data() {
     return {
       images: [],
@@ -291,7 +291,6 @@ export default {
 }
 .cr-mount {
   padding: 0;
-
 }
 </style>
 

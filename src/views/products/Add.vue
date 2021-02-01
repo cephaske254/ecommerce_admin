@@ -201,7 +201,7 @@
     <router-view />
   </div>
   <error-abstract v-if="errored" :onRetry="getProduct" />
-  <loadingsm :loading="loading" :noNav="true" />
+  <loadingsm :loading="loading" />
 </template> 
 <script>
 import Croppie from "@/subcomponents/Croppie.vue";
@@ -433,7 +433,11 @@ export default {
     },
   },
   mounted() {
-    if (this.slug) this.getProduct();
+    if (this.slug) {
+      this.getProduct();
+    } else {
+      this.$options.currentPage("Add Product");
+    }
     this.buildEditor();
   },
   // eslint-disable-next-line

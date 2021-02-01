@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home";
 import FourOFour from "../views/handlers/404";
+import FiveHundred from "../views/handlers/500";
 import Base from "../components/Base";
 import authGuard from "./authGuard";
 
@@ -34,6 +35,7 @@ const routes = [
     component: () => import("../views/handlers/Login"),
   },
   { path: "/404/", component: FourOFour },
+  { path: "/500/", component: FiveHundred },
 
   { path: "/:pathMatch(.*)*", component: FourOFour, replace: true },
 ];

@@ -38,7 +38,7 @@
       </div>
       <div class="w-100 py-1">
         <router-link
-          :to="{ name: 'Add Banner Ad', query: { product: product.slug } }"
+          :to="{ name: 'Banner Ad Detail', params: { slug: product.slug } }"
           class="btn btn-sm float-end btn-dark"
           v-html="lightning"
         ></router-link>

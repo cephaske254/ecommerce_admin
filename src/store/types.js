@@ -22,6 +22,9 @@ export const COMMIT_CATEGORY = "commitCategory";
 export const GET_CATEGORY = "getCategory";
 export const UPDATE_CATEGORY = "updageCategory";
 
+export const GET_BANNER_AD = "getBannerAd";
+export const COMMIT_BANNER_AD = "commitBannerAd";
+
 export const GET_BANNER_ADS = "getBannerAds";
 export const COMMIT_BANNER_ADS = "commitBannerAds";
 export const RESET_BANNER_ADS_STATE = "resetBannerAdsState";

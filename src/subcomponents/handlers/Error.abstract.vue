@@ -56,7 +56,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 svg {
   position: absolute;
   top: 50%;
@@ -103,6 +103,8 @@ svg {
     transform: translateY(25px);
   }
 }
+</style>
+<style scoped>
 @media (max-width: 450px) {
   svg {
     position: absolute;

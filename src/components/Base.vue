@@ -36,10 +36,12 @@ export default {
   },
   methods: {
     setHeight() {
-      this.$store.dispatch(
-        "navbarHeight",
-        window.innerHeight - document.getElementById("nav-cont").clientHeight
-      );
+      try {
+        this.$store.dispatch(
+          "navbarHeight",
+          window.innerHeight - document.getElementById("nav-cont").clientHeight
+        );
+      } catch {}
     },
   },
 };

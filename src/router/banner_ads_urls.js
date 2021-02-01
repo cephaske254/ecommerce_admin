@@ -9,9 +9,9 @@ export default [
         component: () => import("../views/banner_ads/List"),
         children: [
           {
-            path: "add/",
-            name: "Add Banner Ad",
-            component: () => import("../views/banner_ads/Add"),
+            path: ":slug/",
+            name: "Banner Ad Detail",
+            component: () => import("../views/banner_ads/Detail"),
           },
         ],
       },
