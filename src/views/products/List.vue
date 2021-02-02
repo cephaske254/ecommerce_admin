@@ -53,10 +53,9 @@ import * as types from "@/store/types";
 import errorImage from "@/assets/images/error.png";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 import { apiGetProducts } from "../../api/products";
-import Loadingsm from "../../subcomponents/Loadingsm.vue";
 
 export default {
-  components: { ProductCard, ErrorAbstract, Loadingsm },
+  components: { ProductCard, ErrorAbstract },
   computed: {
     products() {
       return this.$store.getters["products/getProducts"];

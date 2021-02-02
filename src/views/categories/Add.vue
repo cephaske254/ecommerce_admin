@@ -49,9 +49,7 @@
 
 <script>
 import { ADD_CATEGORY, GET_CATEGORY, UPDATE_CATEGORY } from "../../store/types";
-import Loadingsm from "../../subcomponents/Loadingsm.vue";
 export default {
-  components: { Loadingsm },
   data() {
     return {
       touched: [],

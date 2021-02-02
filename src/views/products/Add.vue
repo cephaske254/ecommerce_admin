@@ -213,7 +213,6 @@ import { commaValues } from "../../utils/functions";
 import CommaSeparated from "./CommaSeparated.vue";
 import Uploading from "../../subcomponents/Uploading.vue";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
-import Loadingsm from "../../subcomponents/Loadingsm.vue";
 
 export default {
   data() {
@@ -246,7 +245,6 @@ export default {
     CommaSeparated,
     Uploading,
     ErrorAbstract,
-    Loadingsm,
   },
   computed: {
     editor() {

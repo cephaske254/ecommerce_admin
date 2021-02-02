@@ -1,5 +1,5 @@
 <template>
-  <error-abstract :code="500" message="" />
+  <error-abstract :code="500" />
 </template>
 
 <script>

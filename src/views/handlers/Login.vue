@@ -110,11 +110,9 @@
 </template>
 
 <script>
-import Loadingsm from "../../subcomponents/Loadingsm.vue";
 import validators, { ValidateEmail } from "../products/validators";
 validators;
 export default {
-  components: { Loadingsm },
   data() {
     return {
       email: null,

@@ -26,6 +26,7 @@
             ></i>
           </button>
           <router-link
+            v-if="bannerAds.length"
             :to="{ name: 'Preview Banner Ads' }"
             class="btn btn-outline-primary"
           >
@@ -47,11 +48,15 @@
 
 <script>
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
-import Loadingsm from "../../subcomponents/Loadingsm.vue";
 import Card from "./Card.vue";
 export default {
-  props: ["bannerAds", "loading", "errored", "onRetry"],
-  components: { Card, Loadingsm, ErrorAbstract },
+  props: {
+    bannerAds: Array,
+    loading: Boolean,
+    errored: Boolean,
+    onRetry: null,
+  },
+  components: { Card, ErrorAbstract },
   data() {
     return {
       searchQuery: null,

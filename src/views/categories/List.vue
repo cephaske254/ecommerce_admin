@@ -90,13 +90,12 @@
 </template>
 
 <script>
-import Loadingsm from "../../subcomponents/Loadingsm.vue";
 import * as types from "../../store/types";
 import { apiGetCategories } from "../../api/categories";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
 
 export default {
-  components: { Loadingsm, ErrorAbstract },
+  components: { ErrorAbstract },
   data() {
     return {
       loading: false,

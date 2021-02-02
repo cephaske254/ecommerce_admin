@@ -13,13 +13,16 @@ import carousel from "./carousel.vue";
 import { x } from "../../globalAssets";
 
 export default {
-  props: ["errored", "loading", 'bannerAds'],
+  props: ["errored", "loading", "bannerAds", "onRetry"],
   components: { carousel },
   data() {
     return { x };
   },
   created() {
     this.$options.currentPage(this.$route.name);
+  },
+  mounted() {
+    if (!this.bannerAds.length) this.$router.replace({ name: "Banner Ads" });
   },
 };
 </script>

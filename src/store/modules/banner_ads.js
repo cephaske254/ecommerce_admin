@@ -1,4 +1,4 @@
-import { apiGetBannerAds } from "../../api/banner_ads";
+import { apiGetBannerAd, apiGetBannerAds } from "../../api/banner_ads";
 import * as types from "../types";
 
 const defaultState = {
@@ -39,6 +39,16 @@ export default {
           .catch((error) => {
             reject(error);
           });
+      });
+    },
+    // eslint-disable-next-line
+    [types.GET_BANNER_AD]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiGetBannerAd(payload)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((error) => reject(error));
       });
     },
   },

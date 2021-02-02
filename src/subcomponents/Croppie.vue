@@ -14,7 +14,7 @@
       accept="image/*"
       @change="load"
       :multiple="false"
-      :disabled="images.length >= max"
+      :disabled="images.length >= max && replace"
     />
   </div>
   <div class="cr-cont" v-show="cropping">
@@ -26,7 +26,7 @@
     <div class="cr-mount" ref="croppieRef" id="item"></div>
   </div>
 
-  <div v-if="images.length">
+  <div v-if="images.length && !hideResults">
     <div class="card bg-lighter">
       <div class="card-header">
         <span
@@ -84,9 +84,11 @@ export default {
     rawImages: Array,
     edit: Boolean,
     onRemoveImage: null,
-    title: String,
+    title: null,
     onCropImage: null,
     max: Number(0),
+    hideResults: Boolean,
+    replace: Boolean,
   },
   data() {
     return {
@@ -127,8 +129,9 @@ export default {
         ];
 
         if (self.max !== undefined && Number.isInteger(self.max))
-          self.images = images.splice(0, self.max);
-        else if (self.max) return;
+          self.images = images.splice(-1, self.max);
+        else if (self.max && !Number.isInteger(self.max))
+          self.images = images[-1];
         else self.images = images;
 
         setTimeout(() => {

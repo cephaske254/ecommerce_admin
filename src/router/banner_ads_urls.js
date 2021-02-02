@@ -7,13 +7,11 @@ export default [
         path: "",
         name: "Banner Ads",
         component: () => import("../views/banner_ads/List"),
-        children: [
-          {
-            path: ":slug/",
-            name: "Banner Ad Detail",
-            component: () => import("../views/banner_ads/Detail"),
-          },
-        ],
+      },
+      {
+        path: ":slug/",
+        name: "Banner Ad Detail",
+        component: () => import("../views/banner_ads/Detail"),
       },
       {
         path: "preview/",

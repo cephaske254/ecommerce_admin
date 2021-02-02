@@ -6,17 +6,26 @@
       <p v-if="message">{{ message }}</p>
       <div class="buttons-con">
         <div class="action-link-wrap">
-          <button
-            @click="$emit('retry')"
-            v-if="onRetry"
-            type="submit"
-            class="btn btn-lg btn-primary"
-          >
-            RETRY
-          </button>
-          <router-link v-else to="/" class="btn btn-primary btn-sm">
-            BACK HOME
-          </router-link>
+          <div class="w-100 btn-group">
+            <button
+              @click="$emit('retry')"
+              v-if="onRetry"
+              type="submit"
+              class="btn border-primary text-primary btn-sm"
+            >
+              RETRY
+            </button>
+            <button
+              v-else
+              @click="retry"
+              class="btn border-primary text-primary btn-sm"
+            >
+              RETRY
+            </button>
+            <router-link to="/" class="btn btn-primary btn-sm">
+              HOME
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -25,7 +34,7 @@
 
 <script>
 export default {
-  props: ["code", "reason", "retry", "onRetry"],
+  props: ["code", "reason", "onRetry"],
   data() {
     return {
       svgIcon: `
@@ -40,6 +49,9 @@ export default {
 </svg>`,
     };
   },
+  mounted() {
+    if (this.code) this.$options.currentPage(this.code);
+  },
   computed: {
     message() {
       if (this.reason) return this.reason;
@@ -48,35 +60,23 @@ export default {
           return "The page you're looking for doesnt exist!";
         case 500 || "500":
           return "The server couldnt process your request";
-
         default:
           return "An network error occured. Please Check your internet connection";
       }
     },
   },
+  methods: {
+    retry() {
+      const path = this.$route.path;
+      const safeRoutes = ["/404/", "/404", "/500", "/500/"];
+
+      if (this.$router.options.history && safeRoutes.includes(path))
+        this.$router.go(-1);
+    },
+  },
 };
 </script>
 <style>
-svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -250px;
-  margin-left: -400px;
-}
-.message-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  color: #fff;
-  font-weight: 300;
-}
-.message-box h1 {
-  font-size: 60px;
-  line-height: 46px;
-  margin-bottom: 40px;
-}
 #Polygon-1,
 #Polygon-2,
 #Polygon-3,
@@ -105,6 +105,26 @@ svg {
 }
 </style>
 <style scoped>
+svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -250px;
+  margin-left: -400px;
+}
+.message-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  color: #fff;
+  font-weight: 300;
+}
+.message-box h1 {
+  font-size: 60px;
+  line-height: 46px;
+  margin-bottom: 40px;
+}
 @media (max-width: 450px) {
   svg {
     position: absolute;
