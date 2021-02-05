@@ -6,7 +6,7 @@
       <div class="w-100 d-flex">
         <div class="bg-dark p-1 rounded">
           <span class="bi-files-alt"></span>
-          <span class="badge">4/12</span>
+          <span class="badge">{{ $store.getters.getTotalCount }}</span>
         </div>
       </div>
       <form class="w-100" @submit="search">

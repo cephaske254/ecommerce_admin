@@ -1,6 +1,7 @@
 import * as types from "../types";
 import {
   apiAddCategory,
+  apiDeleteCategory,
   apiGetCategories,
   apiGetCategory,
   apiUpdateCategory,
@@ -45,6 +46,9 @@ export default {
       }
       state.data = data;
     },
+    [types.DELETE_CATEGORY](state, payload) {
+      state.data = state.data.filter((i) => i.slug !== payload);
+    },
   },
   actions: {
     [types.GET_CATEGORIES]({ commit, state }, payload) {
@@ -85,6 +89,16 @@ export default {
         apiUpdateCategory(payload)
           .then((data) => {
             commit(types.COMMIT_CATEGORY, data.data);
+            resolve(data);
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    [types.DELETE_CATEGORY]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiDeleteCategory(payload)
+          .then((data) => {
+            commit(types.DELETE_CATEGORY, payload);
             resolve(data);
           })
           .catch((error) => reject(error));

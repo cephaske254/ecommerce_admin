@@ -103,4 +103,8 @@ export default {
   background: rgba(0, 0, 0, 0.863);
   border-radius: 50%;
 }
+.strike{
+  font-weight: 400;
+  opacity: .98;
+}
 </style>

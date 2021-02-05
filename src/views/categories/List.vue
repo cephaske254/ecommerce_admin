@@ -66,7 +66,17 @@
               >
                 <i class="bi bi-pen"></i>
               </router-link>
-              <button title="Delete" class="btn btn-sm text-danger">
+              <button
+                @click="
+                  () =>
+                    $router.push({
+                      name: 'Delete Category',
+                      params: { slug: category.slug },
+                    })
+                "
+                title="Delete"
+                class="btn btn-sm text-danger"
+              >
                 <i class="bi bi-trash"></i>
               </button>
             </div>

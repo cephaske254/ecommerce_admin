@@ -1,5 +1,10 @@
-import { apiGetProducts, apiAddProduct, apiGetProduct } from "@/api/products";
-import { apiUpdateProduct } from "../../api/products";
+import {
+  apiGetProducts,
+  apiAddProduct,
+  apiGetProduct,
+  apiDeleteProduct,
+  apiUpdateProduct,
+} from "@/api/products";
 import * as types from "../types";
 
 const defaultState = {
@@ -53,6 +58,9 @@ export default {
     [types.RESET_PRODUCT_STATE](state) {
       state.data = [];
     },
+    [types.DELETE_PRODUCT](state, payload) {
+      state.data = state.data.filter((i) => i.slug !== payload);
+    },
   },
   actions: {
     [types.GET_PRODUCTS]({ commit, state }, payload) {
@@ -95,6 +103,18 @@ export default {
             resolve(data);
           })
           .catch((error) => reject(error));
+      });
+    },
+    [types.DELETE_PRODUCT]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiDeleteProduct(payload)
+          .then((data) => {
+            commit(types.DELETE_PRODUCT, payload);
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     },
   },

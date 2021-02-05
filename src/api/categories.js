@@ -22,3 +22,8 @@ export const apiAddCategory = (payload) => {
   let url = "/categories/";
   return axios.post(url, payload);
 };
+
+export const apiDeleteCategory = (payload) => {
+  let url = `/categories/${payload}`;
+  return axios.delete(url);
+};

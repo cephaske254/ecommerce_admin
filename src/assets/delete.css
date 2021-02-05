@@ -1,0 +1,27 @@
+.del .card-cont {
+  background: linear-gradient(
+    40deg,
+    rgb(225, 78, 78),
+    rgb(225, 78, 202),
+    rgb(12, 119, 220),
+    rgb(12, 220, 185)
+  );
+}
+@media screen and (max-width: 768px) {
+  .del .card-cont {
+    margin-bottom: 8rem;
+  }
+}
+.del .card {
+  border-radius: 0.1rem;
+  min-height: 40vh;
+  z-index: 12;
+}
+.del .card-body {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.del .bi {
+  font-size: 7rem;
+}

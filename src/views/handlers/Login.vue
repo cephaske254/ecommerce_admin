@@ -88,15 +88,21 @@
             <div class="d-flex">
               <router-link
                 v-if="!reset"
-                class="text-muted text-decoration-none"
+                class="col text-muted text-decoration-none"
                 :to="{ hash: '#reset' }"
                 >Forgot Password</router-link
               >
               <router-link
                 v-else
-                class="text-muted text-decoration-none"
+                class="col text-muted text-decoration-none"
                 :to="{ name: 'Login' }"
                 >Login</router-link
+              >
+
+              <router-link
+                class="col btn py-0 btn-light"
+                :to="{ name: 'Test Credentials' }"
+                >GET TEST CREDENTIALS</router-link
               >
               <div class="position-absolute w-100">
                 <loadingsm :loading="loading" />
@@ -107,6 +113,7 @@
       </div>
     </div>
   </div>
+  <router-view />
 </template>
 
 <script>
@@ -148,24 +155,37 @@ export default {
       e.preventDefault();
       this.touched = ["password", "email"];
 
-      if (!this.email || !this.password) return;
+      if (!this.reset && (!this.email || !this.password)) return;
+      else if (!this.email) return;
+
       this.loading = true;
-      this.$store
-        .dispatch("login", {
-          email: this.email,
-          password: this.password,
-        })
-        .then(() => {
-          this.checkLogin();
-        })
-        .catch((error) => {
-          this.password = null;
-          this.errors = error.data
-            ? error.data
-            : { detail: "A network error occured!" };
-          this.touched = this.touched.filter((i) => i !== "password");
-        })
-        .finally(() => (this.loading = false));
+      
+      if (!this.reset)
+        this.$store
+          .dispatch("login", {
+            email: this.email,
+            password: this.password,
+          })
+          .then(() => {
+            this.checkLogin();
+          })
+          .catch((error) => {
+            this.password = null;
+            this.errors = error.data
+              ? error.data
+              : { detail: "A network error occured!" };
+            this.touched = this.touched.filter((i) => i !== "password");
+          })
+          .finally(() => (this.loading = false));
+      else
+        this.$store
+          .dispatch("reset", { email: this.email })
+          .then(() => {})
+          .catch((error) => {
+            this.errors = error.data
+              ? error.data
+              : { detail: "A network error occured!" };
+          });
     },
     blur(e) {
       const id = e.target.id;

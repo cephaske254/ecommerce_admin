@@ -440,17 +440,17 @@ export default {
   },
   // eslint-disable-next-line
   beforeRouteLeave(to, from, next) {
-    if (this.submitted) {
+    // if (this.submitted) {
+    //   next();
+    //   return;
+    // } else if (
+    //   !this.submitted &&
+    //   !window.confirm("You might have unsaved changes. Do you want to leave?")
+    // ) {
+    //   return;
+    // } else {
       next();
-      return;
-    } else if (
-      !this.submitted &&
-      !window.confirm("You might have unsaved changes. Do you want to leave?")
-    ) {
-      return;
-    } else {
-      next();
-    }
+    // }
   },
 };
 </script>

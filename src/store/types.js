@@ -10,6 +10,7 @@ export const ADD_PRODUCT = "addProducts";
 export const COMMIT_PRODUCT = "pushProduct";
 
 export const UPDATE_PRODUCT = "updateProduct";
+export const DELETE_PRODUCT = "deleteProduct";
 
 export const RESET_CATEGORY_STATE = "resetCategoryState";
 
@@ -20,10 +21,14 @@ export const ADD_CATEGORY = "addCategory";
 export const COMMIT_CATEGORY = "commitCategory";
 
 export const GET_CATEGORY = "getCategory";
-export const UPDATE_CATEGORY = "updageCategory";
+export const UPDATE_CATEGORY = "updateCategory";
+export const DELETE_CATEGORY = "deleteCategory";
 
 export const GET_BANNER_AD = "getBannerAd";
+export const ADD_BANNER_AD = "addBannerAd";
+
 export const COMMIT_BANNER_AD = "commitBannerAd";
+export const UPDATE_BANNER_AD = "updateBannerAd";
 
 export const GET_BANNER_ADS = "getBannerAds";
 export const COMMIT_BANNER_ADS = "commitBannerAds";

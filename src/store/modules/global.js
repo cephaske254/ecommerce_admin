@@ -1,4 +1,4 @@
-import { apiLogin } from "../../api/auth";
+import { apiLogin, apiReset } from "../../api/auth";
 import LocalStorageService from "../../global/localStorageService";
 
 // LocalstorageService
@@ -52,6 +52,18 @@ export default {
             resolve(data);
           })
           .catch((error) => reject(error));
+      });
+    },
+    reset({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiReset(payload)
+          .then((data) => {
+            commit("setToken", {});
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     },
     navbarHeight({ commit }, payload) {

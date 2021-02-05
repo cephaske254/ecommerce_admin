@@ -33,6 +33,13 @@ const routes = [
     path: "/login/",
     name: "Login",
     component: () => import("../views/handlers/Login"),
+    children: [
+      {
+        path: "test-credentials/",
+        name: "Test Credentials",
+        component: () => import("../views/handlers/TestCredentials"),
+      },
+    ],
   },
   { path: "/404/", component: FourOFour },
   { path: "/500/", component: FiveHundred },
