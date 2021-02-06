@@ -132,6 +132,9 @@ export default {
     type: function () {
       this.mountChart();
     },
+    stats: function () {
+      this.mountChart();
+    },
   },
 };
 

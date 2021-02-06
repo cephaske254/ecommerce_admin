@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const apiGetPerformanceStats = () => {
-  return axios.get("/orders/stats/");
+  return axios.get("/order/stats/");
 };
