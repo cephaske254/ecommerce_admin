@@ -1,6 +1,13 @@
 <template>
   <div class="col-sm-12 bg-dark full-col" id="performanceCol">
     <div class="card card-stats bg-lighter">
+      <div
+        v-if="loading"
+        class="position-absolute h-100 w-100 d-flex align-items-center justify-content-center"
+        style="z-index: 12"
+      >
+        <loadingsm :loading="true" />
+      </div>
       <div class="card-header py-1">
         <div class="d-flex">
           <p class="small m-0 w-100">{{ chartNames[chart] }}</p>
@@ -68,33 +75,55 @@
 <script>
 export default {
   name: "PerformanceStats",
-  mounted: function () {
-    const self = this;
-    self.mountChart();
-    window.onresize = function () {
-      self.$options.debounce(self.mountChart);
-    };
-  },
+
   data: () => ({
     chart: "general",
     type: "line",
     chartNames,
+    loading: false,
   }),
+  computed: {
+    stats() {
+      let data = { returning: [], general: [] };
+      data = { ...data, ...this.$store.getters.getPerformanceStats };
+      return data;
+    },
+  },
   methods: {
     mountChart: function () {
       if (this.$route.name !== "Dashboard") return;
       const self = this;
       const ctx = document.getElementById("performance-stats");
       if (self.chart === "general")
-        buildGeneral(ctx.getContext("2d"))(self.type);
+        buildGeneral(ctx.getContext("2d"), this.stats["general"])(self.type);
       if (self.chart === "returning")
-        buildReturning(ctx.getContext("2d"))(self.type);
+        buildReturning(
+          ctx.getContext("2d"),
+          this.stats["returning"]
+        )(self.type);
     },
     toggleFullscreen: function () {
       document.body.classList.toggle("fullscreen");
       this.$options.hideNav();
       this.mountChart();
     },
+    getPerformanceStats() {
+      this.loading = true;
+
+      this.$store
+        .dispatch(GET_PERFORMANCE_STATS)
+        .finally(() => (this.loading = false));
+    },
+  },
+  mounted: function () {
+    const self = this;
+    self.mountChart();
+    if (!self.stats.general.length || !self.stats.returning.length)
+      this.getPerformanceStats();
+
+    window.onresize = function () {
+      self.$options.debounce(self.mountChart);
+    };
   },
   watch: {
     chart: function () {
@@ -107,7 +136,8 @@ export default {
 };
 
 import Chart from "chart.js/dist/Chart.js";
-export const chartNames = {
+import { GET_PERFORMANCE_STATS } from "../store/types";
+const chartNames = {
   general: "All Customers",
   returning: "Returning Customers",
   new: "New Customers",
@@ -155,7 +185,7 @@ const options = {
   },
 };
 
-export function buildGeneral(
+function buildGeneral(
   context,
   data = [0, 10, 5, 2, 20, 30, 25, 60, 21, 43, 33, 9]
 ) {
@@ -172,7 +202,7 @@ export function buildGeneral(
   };
 }
 
-export function buildReturning(
+function buildReturning(
   context,
   data = [0, 2, 4, 5, 7, 13, 6, 2, 5, 10, 4, 1]
 ) {

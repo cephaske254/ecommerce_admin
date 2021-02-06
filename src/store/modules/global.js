@@ -1,5 +1,7 @@
 import { apiLogin, apiReset } from "../../api/auth";
 import LocalStorageService from "../../global/localStorageService";
+import { GET_PERFORMANCE_STATS } from "../types";
+import { apiGetPerformanceStats } from "../../api/globals";
 
 // LocalstorageService
 const localStorageService = LocalStorageService.getService();
@@ -9,6 +11,10 @@ const defaultState = {
   token: {
     access: localStorageService.getAccessToken(),
     refresh: localStorageService.getRefreshToken(),
+  },
+  performanceStats: {
+    returning: [],
+    general: [],
   },
 };
 
@@ -23,6 +29,9 @@ export default {
     getNavbarHeight(state) {
       return state.navbarHeight;
     },
+    getPerformanceStats(state) {
+      return state.performanceStats;
+    },
   },
   mutations: {
     setToken(state, payload) {
@@ -35,6 +44,9 @@ export default {
     },
     setNavbarHeight(state, payload) {
       state.navbarHeight = payload;
+    },
+    [GET_PERFORMANCE_STATS](state, payload) {
+      state.performanceStats = payload;
     },
   },
   actions: {
@@ -66,6 +78,16 @@ export default {
     },
     navbarHeight({ commit }, payload) {
       commit("setNavbarHeight", payload);
+    },
+    [GET_PERFORMANCE_STATS]({ commit }) {
+      return new Promise((resolve, reject) => {
+        apiGetPerformanceStats()
+          .then((data) => {
+            commit(GET_PERFORMANCE_STATS, data.data);
+            resolve(data);
+          })
+          .catch((error) => reject(error));
+      });
     },
   },
 };

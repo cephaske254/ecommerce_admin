@@ -7,3 +7,4 @@ export const apiLogin = (email, password) => {
 export const apiReset = (email) => {
   return axios.post("/password_reset/", email);
 };
+
