@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const beforeMount = () => {
   if (!this.submitted) {
     window.addEventListener("beforeunload", function(event) {
@@ -38,13 +40,12 @@ export const fields = [
 
 function toDataUrl(image, callback) {
   if (!image || !image.image || typeof image.image == "object") return;
-
-  const xhr = new XMLHttpRequest();
-  xhr.onload = function() {
+  axios.get(image.image, { responseType: "blob" }).then((data) => {
     const reader = new FileReader();
     const name =
       "_" + new URL(image.image).pathname.replace(/\/media\/products\//gi, "");
-    reader.readAsDataURL(xhr.response);
+    reader.readAsDataURL(data.data);
+
     reader.onloadend = async () => {
       delete image["image"];
       callback({
@@ -55,11 +56,7 @@ function toDataUrl(image, callback) {
         remote: true,
       });
     };
-  };
-
-  xhr.responseType = "blob";
-  xhr.open("GET", image.image);
-  xhr.send();
+  });
 }
 
 export function buildImages(images, callback) {
