@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const beforeMount = () => {
   if (!this.submitted) {
     window.addEventListener("beforeunload", function(event) {
@@ -38,25 +36,65 @@ export const fields = [
   "images",
 ];
 
-function toDataUrl(image, callback) {
-  if (!image || !image.image || typeof image.image == "object") return;
-  axios.get(image.image, { responseType: "blob" }).then((data) => {
-    const reader = new FileReader();
-    const name =
-      "_" + new URL(image.image).pathname.replace(/\/media\/products\//gi, "");
-    reader.readAsDataURL(data.data);
+// function toDataUrl(image, callback) {
+//   if (!image || !image.image || typeof image.image == "object") return;
+//   axios
+//     .get(image.image, {
+//       responseType: "blob",
+//       headers: { crossorigin: true },
+//     })
+//     .then((data) => {
+//       const reader = new FileReader();
+//       const name =
+//         "_" +
+//         new URL(image.image).pathname.replace(/\/media\/products\//gi, "");
+//       reader.readAsDataURL(data.data);
 
-    reader.onloadend = async () => {
-      delete image["image"];
-      callback({
-        ...image,
-        name,
-        original: reader.result,
-        current: null,
-        remote: true,
-      });
-    };
-  });
+//       reader.onloadend = async () => {
+//         delete image["image"];
+//         callback({
+//           ...image,
+//           name,
+//           original: reader.result,
+//           current: null,
+//           remote: true,
+//         });
+//       };
+//     });
+// }
+
+function toDataUrl(image, callback, outputFormat = "image/png") {
+  if (!image || !image.image || typeof image.image == "object") return;
+  let src = image.image;
+  const name =
+    "_" + new URL(image.image).pathname.replace(/\/media\/products\//gi, "");
+  // ********** //
+  const img = new Image();
+  img.crossOrigin = "Anonymous";
+
+  img.onload = function() {
+    let canvas = document.createElement("CANVAS");
+    let ctx = canvas.getContext("2d");
+
+    canvas.height = this.naturalHeight;
+    canvas.width = this.naturalWidth;
+    ctx.drawImage(this, 0, 0);
+    let dataURL = canvas.toDataURL(outputFormat);
+
+    callback({
+      ...image,
+      name,
+      original: dataURL,
+      current: null,
+      remote: true,
+    });
+  };
+  img.src = src;
+  if (img.complete || img.complete === undefined) {
+    img.src =
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+    img.src = src;
+  }
 }
 
 export function buildImages(images, callback) {
