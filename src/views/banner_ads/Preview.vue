@@ -1,11 +1,13 @@
 <template>
-  <router-link
-    :to="{ name: 'Banner Ads' }"
-    class="btn m-2 btn-sm btn-light position-absolute border-lighter"
-    style="right: 0; z-index: 3"
-    v-html="x"
-  ></router-link>
-  <carousel :carouselItems="bannerAds" />
+  <div>
+    <router-link
+      :to="{ name: 'Banner Ads' }"
+      class="btn m-2 btn-sm btn-light position-absolute border-lighter"
+      style="right: 0; z-index: 3"
+      v-html="x"
+    ></router-link>
+    <carousel :carouselItems="bannerAds" />
+  </div>
 </template>
 
 <script>

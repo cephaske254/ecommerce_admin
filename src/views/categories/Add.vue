@@ -68,6 +68,7 @@ export default {
   },
   mounted() {
     if (!this.slug) return;
+
     this.$store
       .dispatch("categories/" + GET_CATEGORY, this.slug)
       .then((data) => {

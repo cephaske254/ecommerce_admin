@@ -55,15 +55,13 @@ export default {
       });
     },
     reset({ commit }, payload) {
+      commit("clearToken", null);
       return new Promise((resolve, reject) => {
         apiReset(payload)
           .then((data) => {
-            commit("setToken", {});
             resolve(data);
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     },
     navbarHeight({ commit }, payload) {

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home";
 import FourOFour from "../views/handlers/404";
 import FiveHundred from "../views/handlers/500";
-import Base from "../components/Base";
+// import Base from "../components/Base";
 import authGuard from "./authGuard";
 
 import order_urls from "./order_urls";
@@ -12,22 +12,16 @@ import product_urls from "./product_urls";
 
 const routes = [
   {
-    path: "",
-    component: Base,
-    children: [
-      {
-        path: "",
-        name: "Dashboard",
-        component: Home,
-        exact: true,
-      },
-
-      ...order_urls,
-      ...banner_ads_urls,
-      ...categories_urls,
-      ...product_urls,
-    ],
+    path: "/",
+    name: "Dashboard",
+    component: Home,
+    exact: true,
   },
+
+  ...order_urls,
+  ...banner_ads_urls,
+  ...categories_urls,
+  ...product_urls,
 
   {
     path: "/login/",

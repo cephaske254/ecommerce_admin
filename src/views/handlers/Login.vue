@@ -31,6 +31,15 @@
               class="card-title my-0"
             ></h4>
           </div>
+          <p v-if="resetSuccess" class="small text-center my-0 text-primary">
+            We've sent you a password reset email
+          </p>
+          <form-errors
+            v-else
+            name="email"
+            :errors="errors"
+            :touched="touched"
+          />
 
           <div class="card-body">
             <form class="form-floating mb-3" @submit="submit">
@@ -112,14 +121,16 @@
         </div>
       </div>
     </div>
+    <router-view />
   </div>
-  <router-view />
 </template>
 
 <script>
+import FormErrors from "../../subcomponents/formErrors.vue";
 import validators, { ValidateEmail } from "../products/validators";
 validators;
 export default {
+  components: { FormErrors },
   data() {
     return {
       email: null,
@@ -127,6 +138,7 @@ export default {
       errors: {},
       touched: [],
       loading: false,
+      resetSuccess: false,
     };
   },
   computed: {
@@ -138,7 +150,7 @@ export default {
       if (!this.email) errors["email"] = "Email is required!";
       if (this.email) errors["email"] = ValidateEmail(this.email);
       if (!this.password) errors["password"] = "Password is required!";
-      return errors;
+      return { ...errors };
     },
     reset() {
       return this.$route.hash === "#reset" ? true : false;
@@ -159,7 +171,9 @@ export default {
       else if (!this.email) return;
 
       this.loading = true;
-      
+      this.errors = {};
+      this.resetSuccess = false;
+
       if (!this.reset)
         this.$store
           .dispatch("login", {
@@ -180,12 +194,15 @@ export default {
       else
         this.$store
           .dispatch("reset", { email: this.email })
-          .then(() => {})
+          .then(() => {
+            this.resetSuccess = true;
+          })
           .catch((error) => {
-            this.errors = error.data
-              ? error.data
+            this.errors = error.response.data
+              ? error.response.data
               : { detail: "A network error occured!" };
-          });
+          })
+          .finally(() => (this.loading = false));
     },
     blur(e) {
       const id = e.target.id;
@@ -209,6 +226,7 @@ export default {
     },
     reset() {
       this.touched = [];
+      this.resetSuccess = false;
     },
   },
 };

@@ -1,207 +1,217 @@
 <template>
-  <div v-show="!errored && !loading" class="container add-cont mt-3">
-    <form @submit="submit">
-      <div class="row">
-        <div class="col-md-6 h-100">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Product Name</label>
-              <span class="required"></span>
-              <input
-                @blur="blur"
-                @focus="focus"
-                id="name"
-                v-model="product.name"
-                class="form-control input"
-                type="text"
-                placeholder="Product Name"
-              />
-              <form-errors name="name" :errors="validate" :touched="touched" />
-            </div>
-            <div class="row">
-              <div class="form-group col-md-12">
-                <label for="categories">Categories</label>
+  <div key="PaskdjbJ@k!">
+    <div v-show="!errored && !loading" class="container add-cont mt-3">
+      <form @submit="submit">
+        <div class="row">
+          <div class="col-md-6 h-100">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Product Name</label>
                 <span class="required"></span>
-                <p class="smaller float-end mt-0 mb-0 text-end text-muted">
-                  Categories that dont exist will be created automatically
-                </p>
+                <input
+                  @blur="blur"
+                  @focus="focus"
+                  id="name"
+                  v-model="product.name"
+                  class="form-control input"
+                  type="text"
+                  placeholder="Product Name"
+                />
+                <form-errors
+                  name="name"
+                  :errors="validate"
+                  :touched="touched"
+                />
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="categories">Categories</label>
+                  <span class="required"></span>
+                  <p class="smaller float-end mt-0 mb-0 text-end text-muted">
+                    Categories that dont exist will be created automatically
+                  </p>
 
-                <div
-                  class="bg-dark d-flex flex-wrap borders border-lighter py-2 rounded"
-                >
                   <div
-                    v-for="(category, index) in product.categories"
-                    :key="'axA-' + index"
-                    class="badge bg-lighter d-flex align-items-center m-1"
+                    class="bg-dark d-flex flex-wrap borders border-lighter py-2 rounded"
                   >
-                    <span>{{ category }}</span>
-                    <i
-                      @click="removeCategory(index)"
-                      class="p-0 btn text-danger bi bi-dash bi-lg"
-                    ></i>
+                    <div
+                      v-for="(category, index) in product.categories"
+                      :key="'axA-' + index"
+                      class="badge bg-lighter d-flex align-items-center m-1"
+                    >
+                      <span>{{ category }}</span>
+                      <i
+                        @click="removeCategory(index)"
+                        class="p-0 btn text-danger bi bi-dash bi-lg"
+                      ></i>
+                    </div>
+                    <CommaSeparated :onChange="setCategories" />
                   </div>
-                  <CommaSeparated :onChange="setCategories" />
+
+                  <form-errors
+                    name="categories"
+                    :errors="validate"
+                    :touched="touched"
+                  />
                 </div>
 
+                <div class="form-group col-md-6">
+                  <label for="market_price">Market Price</label>
+                  <span class="required"></span>
+                  <input
+                    @blur="blur"
+                    @focus="focus"
+                    @keyup="clean"
+                    placeholder="Price in KES"
+                    v-model="product.market_price"
+                    id="market_price"
+                    type="text"
+                    class="form-control input"
+                  />
+                  <form-errors
+                    name="market_price"
+                    :errors="validate"
+                    :touched="touched"
+                  />
+                </div>
+                <div v-if="!discount" class="col-md-6 d-flex">
+                  <button
+                    type="button"
+                    @click="
+                      ($event) => {
+                        focus({ target: { id: 'discount_price' } });
+                      }
+                    "
+                    class="btn btn-sm text-info d-flex align-items-center p-0"
+                  >
+                    <i class="bi bi-plus bi-lg"></i>
+                    Add Discount
+                  </button>
+                </div>
+                <div v-else class="form-group col-md-6">
+                  <label for="discount_price">Discount Price</label>
+                  <span class="required"></span>
+                  <button
+                    @click="
+                      product.discount_price = null;
+                      blur({ target: { id: 'discount_price' } });
+                    "
+                    class="btn btn-sm my-0 p-0 text-danger float-end"
+                  >
+                    remove
+                  </button>
+                  <input
+                    @blur="blur"
+                    @focus="focus"
+                    @keyup="clean"
+                    placeholder="Price in KES"
+                    v-model="product.discount_price"
+                    id="discount_price"
+                    type="text"
+                    class="form-control input"
+                  />
+                  <form-errors
+                    name="discount_price"
+                    :errors="validate"
+                    :touched="touched"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="brand">Brand</label>
+                <p class="smaller float-end mt-0 mb-0 text-end text-muted">
+                  Brand that dont exist will be created automatically
+                </p>
+                <input
+                  @blur="blur"
+                  @focus="focus"
+                  placeholder="Product brand"
+                  v-model="product.brand"
+                  id="brand"
+                  type="text"
+                  class="form-control input"
+                />
                 <form-errors
-                  name="categories"
+                  name="brand"
                   :errors="validate"
                   :touched="touched"
                 />
               </div>
+              <div class="form-group">
+                <label for="description">Description</label>
 
-              <div class="form-group col-md-6">
-                <label for="market_price">Market Price</label>
                 <span class="required"></span>
-                <input
-                  @blur="blur"
-                  @focus="focus"
-                  @keyup="clean"
-                  placeholder="Price in KES"
-                  v-model="product.market_price"
-                  id="market_price"
-                  type="text"
+                <textarea
+                  @click="blur"
+                  ref="ckeditor"
+                  v-model="product.description"
                   class="form-control input"
-                />
+                  id="ckeditor"
+                ></textarea>
                 <form-errors
-                  name="market_price"
-                  :errors="validate"
-                  :touched="touched"
-                />
-              </div>
-              <div v-if="!discount" class="col-md-6 d-flex">
-                <button
-                  type="button"
-                  @click="
-                    ($event) => {
-                      focus({ target: { id: 'discount_price' } });
-                    }
-                  "
-                  class="btn btn-sm text-info d-flex align-items-center p-0"
-                >
-                  <i class="bi bi-plus bi-lg"></i>
-                  Add Discount
-                </button>
-              </div>
-              <div v-else class="form-group col-md-6">
-                <label for="discount_price">Discount Price</label>
-                <span class="required"></span>
-                <button
-                  @click="
-                    product.discount_price = null;
-                    blur({ target: { id: 'discount_price' } });
-                  "
-                  class="btn btn-sm my-0 p-0 text-danger float-end"
-                >
-                  remove
-                </button>
-                <input
-                  @blur="blur"
-                  @focus="focus"
-                  @keyup="clean"
-                  placeholder="Price in KES"
-                  v-model="product.discount_price"
-                  id="discount_price"
-                  type="text"
-                  class="form-control input"
-                />
-                <form-errors
-                  name="discount_price"
+                  name="description"
                   :errors="validate"
                   :touched="touched"
                 />
               </div>
             </div>
+          </div>
+          <div class="col-md-6">
             <div class="form-group">
-              <label for="brand">Brand</label>
-              <p class="smaller float-end mt-0 mb-0 text-end text-muted">
-                Brand that dont exist will be created automatically
-              </p>
-              <input
-                @blur="blur"
-                @focus="focus"
-                placeholder="Product brand"
-                v-model="product.brand"
-                id="brand"
-                type="text"
-                class="form-control input"
-              />
-              <form-errors name="brand" :errors="validate" :touched="touched" />
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-
+              <label for="images">Product Images</label>
               <span class="required"></span>
-              <textarea
-                @click="blur"
-                ref="ckeditor"
-                v-model="product.description"
-                class="form-control input"
-                id="ckeditor"
-              ></textarea>
-              <form-errors
-                name="description"
-                :errors="validate"
-                :touched="touched"
-              />
             </div>
+            <croppie
+              :rawImages="rawImages"
+              :edit="slug ? true : false"
+              :onChange="(data) => (product.images = data)"
+              :onRemoveImage="removeImage"
+              :onCropImage="cropImage"
+            />
+            <form-errors name="images" :errors="validate" :touched="touched" />
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="images">Product Images</label>
-            <span class="required"></span>
-          </div>
-          <croppie
-            :rawImages="rawImages"
-            :edit="slug ? true : false"
-            :onChange="(data) => (product.images = data)"
-            :onRemoveImage="removeImage"
-            :onCropImage="cropImage"
-          />
-          <form-errors name="images" :errors="validate" :touched="touched" />
-        </div>
-        <div class="col-12">
-          <p class="text-muted small" hidden v-if="slug">
-            CHANGES WILL BE COMMITED AFTER CLICKING SUBMIT
-          </p>
-          <div class="w-100 d-flex my-2 card-footer bg-dark">
-            <div class="w-100 d-flex align-items-center">
-              <label class="form-check-label" for="available"
-                >Product availability</label
-              >
-              <div class="form-check form-switch mx-1 py-1">
-                <input
-                  @change="changeAvailability"
-                  class="form-check-input"
-                  type="checkbox"
-                  id="available"
-                  :checked="product && product.available === true"
-                />
+          <div class="col-12">
+            <p class="text-muted small" hidden v-if="slug">
+              CHANGES WILL BE COMMITED AFTER CLICKING SUBMIT
+            </p>
+            <div class="w-100 d-flex my-2 card-footer bg-dark">
+              <div class="w-100 d-flex align-items-center">
+                <label class="form-check-label" for="available"
+                  >Product availability</label
+                >
+                <div class="form-check form-switch mx-1 py-1">
+                  <input
+                    @change="changeAvailability"
+                    class="form-check-input"
+                    type="checkbox"
+                    id="available"
+                    :checked="product && product.available === true"
+                  />
+                </div>
+              </div>
+              <div class="fload-end d-flex">
+                <router-link
+                  :to="{ name: 'Delete Product' }"
+                  class="btn btn-danger mx-1"
+                  v-if="slug"
+                  >DELETE</router-link
+                >
+                <button
+                  type="submit"
+                  v-html="slug ? 'UPDATE' : 'SUBMIT'"
+                  class="btn btn-primary mx-1"
+                ></button>
               </div>
             </div>
-            <div class="fload-end d-flex">
-              <router-link
-                :to="{ name: 'Delete Product' }"
-                class="btn btn-danger mx-1"
-                v-if="slug"
-                >DELETE</router-link
-              >
-              <button
-                type="submit"
-                v-html="slug ? 'UPDATE' : 'SUBMIT'"
-                class="btn btn-primary mx-1"
-              ></button>
-            </div>
           </div>
         </div>
-      </div>
-    </form>
-    <uploading :uploading="uploading" :progress="progress" :failed="false" />
-    <router-view />
+      </form>
+      <uploading :uploading="uploading" :progress="progress" :failed="false" />
+      <router-view />
+    </div>
+    <error-abstract v-if="errored" :onRetry="getProduct" />
+    <loadingsm :loading="loading" />
   </div>
-  <error-abstract v-if="errored" :onRetry="getProduct" />
-  <loadingsm :loading="loading" />
 </template> 
 <script>
 import Croppie from "@/subcomponents/Croppie.vue";
@@ -449,8 +459,13 @@ export default {
     // ) {
     //   return;
     // } else {
-      next();
+    next();
     // }
+  },
+  watch: {
+    product(value) {
+      this.$options.currentPage("Edit " + value.name);
+    },
   },
 };
 </script>

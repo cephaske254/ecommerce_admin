@@ -77,7 +77,6 @@ axios.interceptors.response.use(
         })
         .catch(() => {
           store.dispatch("logout");
-          console.log("REJECT");
           return Promise.reject(error);
         });
     }

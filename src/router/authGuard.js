@@ -1,7 +1,6 @@
 import store from "../store";
 
 export default (to, from, next) => {
-  // console.log(to.path, from.path);
   const includes = [
     "/404",
     "/404/",

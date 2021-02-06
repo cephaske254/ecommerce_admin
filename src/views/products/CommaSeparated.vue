@@ -12,7 +12,7 @@
       <button
         @click="$emit('change', processed)"
         type="button"
-        class="btn btn-lighter"
+        class="btn btn-dark border-lighter"
       >
         ADD
       </button>

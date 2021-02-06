@@ -37,6 +37,8 @@ export const fields = [
 ];
 
 function toDataUrl(image, callback) {
+  if (!image || !image.image || typeof image.image == "object") return;
+
   const xhr = new XMLHttpRequest();
   xhr.onload = function() {
     const reader = new FileReader();
@@ -63,7 +65,11 @@ function toDataUrl(image, callback) {
 export function buildImages(images, callback) {
   if (!images.length) return;
   images.forEach((image) => {
-    toDataUrl(image, callback);
+    try {
+      toDataUrl(image, callback);
+    } catch {
+      return;
+    }
   });
 }
 

@@ -1,51 +1,53 @@
 <template>
-  <loadingsm v-if="loading && !products.length" :loading="loading" />
-  <div v-else-if="!errored" class="container-fluid">
-    <div class="bg-lighter p-2 rounded text-light d-flex">
-      <div class="w-100">
-        <i class="bi-filter h4 m-0"></i>
-      </div>
-      <form class="w-100" @submit="search">
-        <input
-          type="search"
-          class="form-control form-control-sm bg-dark border-0"
-          v-model="searchQuery"
-          placeholder="Search"
-        />
-      </form>
-      <div class="w-100">
-        <div class="btn-group float-end">
-          <button
-            title="refresh"
-            @click="refresh"
-            class="btn btn-outline-primary"
-          >
-            <i
-              class="bi bi-arrow-counterclockwise"
-              :class="[loading ? 'spin' : '']"
-            ></i>
-          </button>
-          <router-link :to="{ name: 'Add Product' }" class="btn btn-primary">
-            <i class="bi bi-plus"></i>
-          </router-link>
+  <div :key="$route.path">
+    <loadingsm v-if="loading && !products.length" :loading="loading" />
+    <div v-else-if="!errored" class="container-fluid">
+      <div class="bg-lighter p-2 rounded text-light d-flex">
+        <div class="w-100">
+          <i class="bi-filter h4 m-0"></i>
+        </div>
+        <form class="w-100" @submit="search">
+          <input
+            type="search"
+            class="form-control form-control-sm bg-dark border-0"
+            v-model="searchQuery"
+            placeholder="Search"
+          />
+        </form>
+        <div class="w-100">
+          <div class="btn-group float-end">
+            <button
+              title="refresh"
+              @click="refresh"
+              class="btn btn-outline-primary"
+            >
+              <i
+                class="bi bi-arrow-counterclockwise"
+                :class="[loading ? 'spin' : '']"
+              ></i>
+            </button>
+            <router-link :to="{ name: 'Add Product' }" class="btn btn-primary">
+              <i class="bi bi-plus"></i>
+            </router-link>
+          </div>
         </div>
       </div>
+      <h4 class="text-center text-muted mt-5" v-if="!products.length">
+        NO PRODUCTS TO SHOW
+      </h4>
+      <div v-else class="row">
+        <product-card
+          v-for="product in products"
+          :key="product.id || product.slug"
+          :product="product"
+          :onView="view"
+          :onEdit="edit"
+          :onError="error"
+        />
+      </div>
     </div>
-    <h4 class="text-center text-muted mt-5" v-if="!products.length">
-      NO PRODUCTS TO SHOW
-    </h4>
-    <div v-else class="row">
-      <product-card
-        v-for="product in products"
-        :key="product.id || product.slug"
-        :product="product"
-        :onView="view"
-        :onEdit="edit"
-        :onError="error"
-      />
-    </div>
+    <error-abstract :onRetry="refresh" v-else-if="errored" />
   </div>
-  <error-abstract :onRetry="refresh" v-else-if="errored" />
 </template>
 <script>
 import ProductCard from "@/subcomponents/ProductCard.vue";
@@ -149,6 +151,9 @@ export default {
     }
     if (!this.products.length) this.fetch();
   },
+  mounted() {
+    this.$options.currentPage(this.$route.name);
+  },
   watch: {
     searchQuery(val1) {
       if (val1 === "" || val1 === null || !val1) {
@@ -159,9 +164,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* .bi {
-  font-size: 1rem;
-} */
-</style>

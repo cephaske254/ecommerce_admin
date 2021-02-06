@@ -257,8 +257,9 @@ export default {
     document.getElementById("sidebar").hidden = false;
   },
   watch: {
-    item(val1) {
+    item(val1, val2) {
       const self = this;
+      if (val1.image === val2.image) return;
       buildImages([{ image: val1.image }], function (image) {
         self.item["image"] = image;
       });

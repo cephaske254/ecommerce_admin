@@ -133,7 +133,9 @@ export default {
     this.getProduct();
   },
   watch: {
-    product() {},
+    product(value) {
+      this.$options.currentPage(value.name);
+    },
   },
 };
 </script>

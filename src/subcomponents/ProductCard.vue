@@ -39,7 +39,8 @@
       <div class="w-100 py-1">
         <router-link
           :to="{ name: 'Banner Ad Detail', params: { slug: product.slug } }"
-          class="btn btn-sm float-end btn-dark"
+          class="btn btn-sm btn-dark float-end"
+          :class="[product.has_banner_ad ? 'text-primary' : ' ']"
           v-html="lightning"
         ></router-link>
       </div>
