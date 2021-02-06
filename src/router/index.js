@@ -9,20 +9,26 @@ import order_urls from "./order_urls";
 import banner_ads_urls from "./banner_ads_urls";
 import categories_urls from "./categories_urls";
 import product_urls from "./product_urls";
+import Base from "../subcomponents/Base";
 
 const routes = [
   {
     path: "/",
-    name: "Dashboard",
-    component: Home,
-    exact: true,
+    component: Base,
+    children: [
+      {
+        path: "",
+        name: "Dashboard",
+        component: Home,
+        exact: true,
+      },
+
+      ...order_urls,
+      ...banner_ads_urls,
+      ...categories_urls,
+      ...product_urls,
+    ],
   },
-
-  ...order_urls,
-  ...banner_ads_urls,
-  ...categories_urls,
-  ...product_urls,
-
   {
     path: "/login/",
     name: "Login",
