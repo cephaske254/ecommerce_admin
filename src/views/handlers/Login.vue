@@ -185,8 +185,8 @@ export default {
           })
           .catch((error) => {
             this.password = null;
-            this.errors = error.data
-              ? error.data
+            this.errors = error.response &&error.response.data
+              ? error.response && error.response.data
               : { detail: "A network error occured!" };
             this.touched = this.touched.filter((i) => i !== "password");
           })
