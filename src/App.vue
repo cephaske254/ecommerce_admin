@@ -21,16 +21,18 @@ export default {
     _("dataLoader").fade("in");
   },
 
-  methods:{
-       setHeight() {
+  methods: {
+    setHeight() {
       try {
         this.$store.dispatch(
           "navbarHeight",
           window.innerHeight - document.getElementById("nav-cont").clientHeight
         );
-      } catch {return}
+      } catch {
+        return;
+      }
     },
-  }
+  },
 };
 </script>
 

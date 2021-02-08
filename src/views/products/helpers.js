@@ -36,33 +36,6 @@ export const fields = [
   "images",
 ];
 
-// function toDataUrl(image, callback) {
-//   if (!image || !image.image || typeof image.image == "object") return;
-//   axios
-//     .get(image.image, {
-//       responseType: "blob",
-//       headers: { crossorigin: true },
-//     })
-//     .then((data) => {
-//       const reader = new FileReader();
-//       const name =
-//         "_" +
-//         new URL(image.image).pathname.replace(/\/media\/products\//gi, "");
-//       reader.readAsDataURL(data.data);
-
-//       reader.onloadend = async () => {
-//         delete image["image"];
-//         callback({
-//           ...image,
-//           name,
-//           original: reader.result,
-//           current: null,
-//           remote: true,
-//         });
-//       };
-//     });
-// }
-
 function toDataUrl(image, callback, outputFormat = "image/png") {
   if (!image || !image.image || typeof image.image == "object") return;
   let src = image.image;

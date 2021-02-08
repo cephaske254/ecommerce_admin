@@ -27,7 +27,7 @@
   </div>
 
   <div v-if="images.length && !hideResults">
-    <div class="card bg-lighter">
+    <div class="card bg-lighter mt-1">
       <div class="card-header">
         <span
           class="float-end badge text-primary py-2 border-primary p-1 d-flex align-items-center rounded px-1"

@@ -2,16 +2,16 @@
   <navbar-vue />
   <section class="d-flex">
     <side-bar-vue />
-    <div
-      class="main-panel hide-scroll"
-      :style="`height:${$store.getters.getNavbarHeight}px !important`"
-    >
-      <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component }">
+      <div
+        class="main-panel hide-scroll overflow-y-scroll"
+        :style="`height:${$store.getters.getNavbarHeight}px !important`"
+      >
         <transition :name="transitionName" @enter="afterEnter" mode="out-in">
           <component :is="Component" />
         </transition>
-      </router-view>
-    </div>
+      </div>
+    </router-view>
   </section>
 </template>
 
