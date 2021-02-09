@@ -54,11 +54,15 @@ export const apiUpdateProduct = (data) => {
 
   const recropped = data["recroppedImages"] || [];
 
-  const images = data.images.filter(
-    (img) =>
-      (img.remote === true && recropped.includes(img.id)) ||
-      img.remote === false
-  );
+  const images = data.images
+    .filter(
+      (img) =>
+        (img.remote === true && recropped.includes(img.id)) ||
+        img.remote === false
+    )
+    .map((img) => {
+      return { current: img.current || img.original };
+    });
 
   let url = `/products/${slug}/`;
   return axios

@@ -25,6 +25,7 @@ export const UPDATE_CATEGORY = "updateCategory";
 export const DELETE_CATEGORY = "deleteCategory";
 
 export const GET_BANNER_AD = "getBannerAd";
+export const DELETE_BANNER_AD = "deleteBannerAd";
 export const ADD_BANNER_AD = "addBannerAd";
 
 export const COMMIT_BANNER_AD = "commitBannerAd";

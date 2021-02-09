@@ -16,6 +16,9 @@ export const apiUpdateBannerAd = (payload) => {
   return axios.patch(url, payload);
 };
 
+export const apiDeleteBannerAd = (payload) =>
+  axios.delete(`/banners/${payload}/`);
+
 export const apiGetBannerAd = (payload) => {
   let url = `/banners/${payload}/`;
   return axios.get(url);

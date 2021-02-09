@@ -3,6 +3,7 @@ import {
   apiGetBannerAds,
   apiAddBannerAd,
   apiUpdateBannerAd,
+  apiDeleteBannerAd,
 } from "../../api/banner_ads";
 import * as types from "../types";
 
@@ -42,6 +43,9 @@ export default {
     },
     [types.RESET_BANNER_ADS_STATE](state) {
       state.data = [];
+    },
+    [types.DELETE_BANNER_AD](state, payload) {
+      state.data = state.data.filter((i) => i.slug !== payload);
     },
   },
   actions: {
@@ -84,6 +88,16 @@ export default {
           .then((data) => {
             commit(types.COMMIT_BANNER_AD, data.data);
             resolve();
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    [types.DELETE_BANNER_AD]({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        apiDeleteBannerAd(payload)
+          .then((data) => {
+            resolve(data);
+            commit(types.DELETE_BANNER_AD, payload);
           })
           .catch((error) => reject(error));
       });

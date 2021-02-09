@@ -77,11 +77,22 @@
             <div class="position-absolute">
               <loadingsm :loading="thisLoading" />
             </div>
-            <button
-              class="float-end btn btn-primary"
-              v-html="[item.vacant === true ? 'SUBMIT' : 'UPDATE']"
-              @click="submit"
-            ></button>
+            <div class="float-end">
+              <button
+                class="btn text-danger mx-1"
+                v-if="item.vacant === false"
+                type="button"
+                @click="removeBannerAd"
+              >
+                <i class="bi-trash"></i>
+              </button>
+
+              <button
+                class="btn btn-primary mx-1"
+                v-html="[item.vacant === true ? 'SUBMIT' : 'UPDATE']"
+                @click="submit"
+              ></button>
+            </div>
           </div>
         </form>
       </div>
@@ -149,6 +160,7 @@
 import { x } from "../../globalAssets";
 import {
   ADD_BANNER_AD,
+  DELETE_BANNER_AD,
   GET_BANNER_AD,
   UPDATE_BANNER_AD,
 } from "../../store/types";
@@ -210,6 +222,15 @@ export default {
   methods: {
     setImage(image) {
       this.item = { ...this.item, image: image[0] };
+    },
+    removeBannerAd() {
+      if (!window.confirm("Sure to delete? This action cant be reversed"))
+        return;
+      this.submitting = true;
+      this.$store
+        .dispatch(DELETE_BANNER_AD, this.slug)
+        .then(() => this.$router.replace({ name: "Banner Ads" }))
+        .finally(() => (this.submitting = false));
     },
     getBannerAd() {
       const banner = this.$store.getters.getBannerAds.find(

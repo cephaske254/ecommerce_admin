@@ -7,8 +7,7 @@
   justify-content: center;
 }
 .img-fluid {
-  max-width: 90% !important;
-  max-height: 90% !important;
+  width: 90% !important;
   margin: auto;
 }
 .title {

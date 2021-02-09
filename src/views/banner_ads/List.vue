@@ -42,7 +42,11 @@
 
       <div class="d-flex flex-wrap">
         <card v-for="ad in bannerAds" :key="ad.slug" :item="ad" />
-        <div v-if="!gotIt" class="col-md-4 col-sm-6 col-lg-4 p-2 text-light-tr">
+        <div
+          v-if="!gotIt || !bannerAds.length"
+          class="col-md-4 col-sm-6 col-lg-4 p-2 text-light-tr"
+          :class="[!bannerAds.length ? 'mx-auto' : '']"
+        >
           <div class="card h-100 bg-lighter shadow-sm border-dark">
             <div
               class="card-body align-items-center justify-content-center d-flex"

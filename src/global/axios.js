@@ -45,13 +45,14 @@ axios.interceptors.response.use(
   function(error) {
     const originalRequest = error.config;
 
-    if (error.response.status === 404) {
+    if (error.response && error.response.status === 404) {
       router.push("/404/");
       return Promise.reject(error);
-    } else if (error.response.status === 500) {
+    } else if (error.response && error.response.status === 500) {
       router.push("/500/");
       return Promise.reject(error);
     } else if (
+      error.response &&
       error.response.status === 401 &&
       originalRequest.url === "/token/refresh/"
     ) {
@@ -60,7 +61,11 @@ axios.interceptors.response.use(
         query: { next: router.currentRoute.value.path },
       });
       return Promise.reject(error);
-    } else if (error.response.status === 401 && !originalRequest._retry) {
+    } else if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
       const refreshToken = localStorageService.getRefreshToken();
       return axios
