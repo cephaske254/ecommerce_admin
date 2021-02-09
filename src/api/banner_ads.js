@@ -23,3 +23,10 @@ export const apiGetBannerAd = (payload) => {
   let url = `/banners/${payload}/`;
   return axios.get(url);
 };
+export const apiChangeBannerAdsOrder = (payload = []) => {
+  const data = payload.map((i, index) => ({
+    slug: i.slug,
+    order: index + 1,
+  }));
+  return axios.post(`/banners/reorder/`, data);
+};

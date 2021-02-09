@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loadingsm v-if="loading && !bannerAds.length" :loading="loading" />
+    <loadingsm v-if="loading && !sortedBanners.length" :loading="loading" />
     <error-abstract v-else-if="!loading && errored" :onRetry="onRetry" />
     <div v-else class="container-fluid">
       <div class="bg-lighter p-2 rounded text-light d-flex">
@@ -23,11 +23,11 @@
             <button title="refresh" @click="onRetry" class="btn btn-primary">
               <i
                 class="bi bi-arrow-counterclockwise"
-                :class="[loading ? 'spin' : '']"
+                :class="[loading || thisLoading ? 'spin' : '']"
               ></i>
             </button>
             <router-link
-              v-if="bannerAds.length"
+              v-if="sortedBanners.length"
               :to="{ name: 'Preview Banner Ads' }"
               class="btn btn-outline-primary"
             >
@@ -36,22 +36,44 @@
           </div>
         </div>
       </div>
-      <h4 v-if="!bannerAds.length && !loading" class="py-5 text-center">
+      <h4 v-if="!sortedBanners.length && !loading" class="py-5 text-center">
         NO BANNER ADS TO SHOW
       </h4>
-
-      <div class="d-flex flex-wrap">
-        <card v-for="ad in bannerAds" :key="ad.slug" :item="ad" />
-        <div
-          v-if="!gotIt || !bannerAds.length"
-          class="col-md-4 col-sm-6 col-lg-4 p-2 text-light-tr"
-          :class="[!bannerAds.length ? 'mx-auto' : '']"
+      <div v-else-if="sortedBanners.length">
+        <draggable
+          class="d-flex flex-wrap"
+          itemKey="slug"
+          v-model="sortedBanners"
+          @change="reOrdered = true"
         >
-          <div class="card h-100 bg-lighter shadow-sm border-dark">
-            <div
-              class="card-body align-items-center justify-content-center d-flex"
-            >
-              <p class="card-text mt-4">
+          <template #item="{ element }">
+            <card :item="element" />
+          </template>
+        </draggable>
+      </div>
+      <button
+        v-if="reOrdered"
+        class="position-fixed btn btn-sm btn-primary m-2"
+        style="right: 0; bottom: 0"
+        @click="saveOrder"
+      >
+        SAVE ORDER
+      </button>
+
+      <div
+        v-if="!gotIt || !sortedBanners.length"
+        class="col-md-4 col-sm-6 col-lg-4 p-2 text-light-tr"
+        :class="[!sortedBanners.length ? 'mx-auto' : '']"
+      >
+        <div class="card h-100 bg-lighter shadow-sm border-dark">
+          <div
+            class="card-body align-items-center justify-content-center d-flex flex-column"
+          >
+            <div class="w-100 border-bottom border-dark pb-2">
+              <span class="bi bi-info-circle bi-lg"></span>
+            </div>
+            <ol class="px-1 m-0">
+              <li class="card-text mt-2">
                 To create a banner ad, go to the
                 <router-link
                   class="text-decoration-none"
@@ -65,16 +87,14 @@
                   v-html="lightning"
                 ></button>
                 icon <br />
-              </p>
-            </div>
-            <div class="px-2">
-              <button
-                @click="setGotIt"
-                class="btn btn-primary my-2 btn-sm w-100"
-              >
-                GOT IT
-              </button>
-            </div>
+              </li>
+              <li>Drag the 'Cards' to re-order the banner ads.</li>
+            </ol>
+          </div>
+          <div class="px-2">
+            <button @click="setGotIt" class="btn btn-primary my-2 btn-sm w-100">
+              GOT IT
+            </button>
           </div>
         </div>
       </div>
@@ -86,21 +106,40 @@
 <script>
 import { lightning } from "../../globalAssets";
 import ErrorAbstract from "../../subcomponents/handlers/Error.abstract.vue";
+import draggable from "vuedraggable";
+import {
+  COMMIT_BANNER_ADS,
+  RESET_BANNER_ADS_STATE,
+  CHANGE_BANNER_ADS_ORDER,
+} from "../../store/types";
 import Card from "./Card.vue";
+
 export default {
   props: {
-    bannerAds: Array,
     loading: Boolean,
     errored: Boolean,
     onRetry: null,
   },
-  components: { Card, ErrorAbstract },
+  components: { Card, ErrorAbstract, draggable },
   data() {
     return {
       gotIt: null,
       lightning,
       searchQuery: null,
+      reOrdered: false,
+      thisLoading: false,
     };
+  },
+  computed: {
+    sortedBanners: {
+      get() {
+        return this.$store.getters.getBannerAds;
+      },
+      set(value) {
+        this.$store.commit(RESET_BANNER_ADS_STATE);
+        this.$store.commit(COMMIT_BANNER_ADS, { data: value });
+      },
+    },
   },
   created() {
     this.$options.currentPage("Banner Ads");
@@ -111,10 +150,18 @@ export default {
   },
   methods: {
     setGotIt() {
+      this.gotIt = true;
       localStorage.setItem("gotIt", JSON.stringify(true));
+    },
+    saveOrder() {
+      this.thisLoading = true;
+      this.$store
+        .dispatch(CHANGE_BANNER_ADS_ORDER, this.sortedBanners)
+        .finally(() => {
+          this.reOrdered = false;
+          this.thisLoading = false;
+        });
     },
   },
 };
 </script>
-
-<style></style>

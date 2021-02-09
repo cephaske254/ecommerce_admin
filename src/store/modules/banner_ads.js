@@ -4,6 +4,7 @@ import {
   apiAddBannerAd,
   apiUpdateBannerAd,
   apiDeleteBannerAd,
+  apiChangeBannerAdsOrder,
 } from "../../api/banner_ads";
 import * as types from "../types";
 
@@ -98,6 +99,16 @@ export default {
           .then((data) => {
             resolve(data);
             commit(types.DELETE_BANNER_AD, payload);
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    // eslint-disable-next-line
+    [types.CHANGE_BANNER_ADS_ORDER]({ commit }, payload = []) {
+      return new Promise((resolve, reject) => {
+        apiChangeBannerAdsOrder(payload)
+          .then((data) => {
+            resolve(data);
           })
           .catch((error) => reject(error));
       });

@@ -16,8 +16,10 @@
     "core-js": "^3.6.5",
     "croppie": "^2.6.5",
     "lodash.debounce": "^4.0.8",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vuedraggable": "^4.0.1",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

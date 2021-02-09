@@ -1,13 +1,13 @@
 <template>
   <div class="col-md-4 col-sm-6 col-lg-4 p-2">
-    <div class="card bg-lighter" @click="click">
+    <div class="card bg-lighter">
       <img
         :src="item.image"
         loading="lazy"
         class="card-img-top rounded"
         @error="$emit('error', $event)"
       />
-
+      <div class="float" @click="click"></div>
       <div class="card-body position-absolute py-1 text-light-tr">
         <h5 class="card-title m-0">{{ item.title }}</h5>
         <p class="card-subtitle small">~ {{ item.product.name }} ~</p>
@@ -73,5 +73,12 @@ export default {
   width: 100%;
   text-align: center;
   background: var(--bs-dark-tr);
+  z-index: 2;
+}
+.float {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  position: absolute;
 }
 </style>

@@ -34,5 +34,6 @@ export const UPDATE_BANNER_AD = "updateBannerAd";
 export const GET_BANNER_ADS = "getBannerAds";
 export const COMMIT_BANNER_ADS = "commitBannerAds";
 export const RESET_BANNER_ADS_STATE = "resetBannerAdsState";
+export const CHANGE_BANNER_ADS_ORDER = "changeBannerAdsOrder";
 
 export const GET_PERFORMANCE_STATS = "getPerformanceStats";

@@ -179,7 +179,7 @@ export default {
       item: {
         vacant: false,
         image: null,
-        active: false,
+        active: true,
         show_prices: false,
         product: {},
       },
@@ -262,13 +262,19 @@ export default {
       data["image"] = data.image.current || data.image.original;
 
       if (this.item.vacant)
-        this.$store.dispatch(ADD_BANNER_AD, data).finally(() => {
-          this.thisLoading = false;
-        });
+        this.$store
+          .dispatch(ADD_BANNER_AD, data)
+          .then(() => this.$router.replace({ name: "Banner Ads" }))
+          .finally(() => {
+            this.thisLoading = false;
+          });
       else
-        this.$store.dispatch(UPDATE_BANNER_AD, data).finally(() => {
-          this.thisLoading = false;
-        });
+        this.$store
+          .dispatch(UPDATE_BANNER_AD, data)
+          .then(() => this.$router.replace({ name: "Banner Ads" }))
+          .finally(() => {
+            this.thisLoading = false;
+          });
     },
     change(e) {
       this.item[e.target.id] = e.target.checked;
