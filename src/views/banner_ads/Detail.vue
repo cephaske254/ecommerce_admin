@@ -73,6 +73,9 @@
               />
             </div>
           </div>
+          <p v-if="item.product" class="text-center m-0 small text-muted">
+            ~{{ item.product.name }}~
+          </p>
           <div class="py-3">
             <div class="position-absolute">
               <loadingsm :loading="thisLoading" />

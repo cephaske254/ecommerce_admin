@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     bannerAds() {
-      return this.$store.getters.getBannerAds || [];
+      return this.$store.getters.getBannerAds;
     },
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-origin: border-box;
-  min-height: 100vh;
+  min-height: 100vh !important;
 }
 .carousel-control-prev,
 .carousel-control-next {
@@ -103,8 +103,8 @@ export default {
   background: rgba(0, 0, 0, 0.863);
   border-radius: 50%;
 }
-.strike{
+.strike {
   font-weight: 400;
-  opacity: .98;
+  opacity: 0.98;
 }
 </style>

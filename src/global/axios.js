@@ -54,7 +54,8 @@ axios.interceptors.response.use(
     } else if (
       error.response &&
       error.response.status === 401 &&
-      originalRequest.url === "/token/refresh/"
+      (originalRequest.url === "/token/refresh/" ||
+        originalRequest.url === "/token/")
     ) {
       router.push({
         name: "Login",

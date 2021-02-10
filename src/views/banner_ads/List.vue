@@ -116,6 +116,7 @@ import Card from "./Card.vue";
 
 export default {
   props: {
+    bannerAds: Array,
     loading: Boolean,
     errored: Boolean,
     onRetry: null,
@@ -133,7 +134,7 @@ export default {
   computed: {
     sortedBanners: {
       get() {
-        return this.$store.getters.getBannerAds;
+        return this.bannerAds;
       },
       set(value) {
         this.$store.commit(RESET_BANNER_ADS_STATE);

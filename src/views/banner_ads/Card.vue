@@ -2,7 +2,7 @@
   <div class="col-md-4 col-sm-6 col-lg-4 p-2">
     <div class="card bg-lighter">
       <img
-        :src="item.image"
+        :src="item.thumbnail || item.image"
         loading="lazy"
         class="card-img-top rounded"
         @error="$emit('error', $event)"

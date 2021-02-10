@@ -95,10 +95,10 @@ export default {
     },
     [types.DELETE_BANNER_AD]({ commit }, payload) {
       return new Promise((resolve, reject) => {
+        commit(types.DELETE_BANNER_AD, payload);
         apiDeleteBannerAd(payload)
           .then((data) => {
             resolve(data);
-            commit(types.DELETE_BANNER_AD, payload);
           })
           .catch((error) => reject(error));
       });
