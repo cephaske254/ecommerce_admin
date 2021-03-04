@@ -1,5 +1,7 @@
 # Ecommerce Admin Panel
 
+## TEST IT [HERE](https://eshop-admin.uxinfiniti.com/login/test-credentials/)
+
 ## Getting Started
 
 This application is an admin panel for [Ecommerce Client Side](https://github.com/cephaske254/ecomerce-frontend), and is powered by a Django Backend API available [Here](https://github.com/cephaske254/ecommerce-backend)
