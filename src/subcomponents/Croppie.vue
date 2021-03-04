@@ -80,6 +80,7 @@ import { trimText } from "@/utils/functions";
 export default {
   props: {
     config: Object,
+    outputConfig: Object,
     onChange: null,
     rawImages: Array,
     edit: Boolean,
@@ -106,6 +107,7 @@ export default {
         size: "original",
         type: "canvas",
         format: "png", //jpeg
+        ...this.outputConfig,
       },
     };
   },

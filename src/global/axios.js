@@ -65,7 +65,8 @@ axios.interceptors.response.use(
     } else if (
       error.response &&
       error.response.status === 401 &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      store.getters.refreshValid
     ) {
       originalRequest._retry = true;
       const refreshToken = localStorageService.getRefreshToken();
@@ -75,7 +76,7 @@ axios.interceptors.response.use(
         })
         .then((res) => {
           if (res.status >= 200 && res.status < 400) {
-            localStorageService.setToken(res.data);
+            localStorageService.setAccessToken(res.data);
             axios.defaults.headers.common["Authorization"] =
               "Bearer " + localStorageService.getAccessToken();
             return axios(originalRequest);
@@ -85,6 +86,9 @@ axios.interceptors.response.use(
           store.dispatch("logout");
           return Promise.reject(error);
         });
+    } else if (error.response.status === 401) {
+      store.dispatch("logout");
+      router.push({ query: { next: router.currentRoute.value.path } });
     }
     return Promise.reject(error);
   }
@@ -93,15 +97,3 @@ axios.interceptors.response.use(
 // GLOBAL AXIOS CONFIG
 
 axios.defaults.baseURL = baseURL;
-
-// axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response && error.response.data) {
-//       return Promise.reject(error.response);
-//     }
-//     return Promise.reject(error.message);
-//   }
-// );

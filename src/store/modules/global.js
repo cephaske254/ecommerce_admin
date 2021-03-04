@@ -2,6 +2,9 @@ import { apiLogin, apiReset } from "../../api/auth";
 import LocalStorageService from "../../global/localStorageService";
 import { GET_PERFORMANCE_STATS } from "../types";
 import { apiGetPerformanceStats } from "../../api/globals";
+import jwt from "jsonwebtoken";
+
+const SECRET_KEY = "m(z=%0s*+e&3ikj4^_%ird44!-solk_d4pm%%2s3nx1l0ckm6d";
 
 // LocalstorageService
 const localStorageService = LocalStorageService.getService();
@@ -32,6 +35,22 @@ export default {
     getPerformanceStats(state) {
       return state.performanceStats;
     },
+    accessValid(state) {
+      try {
+        jwt.verify(state.token.access, SECRET_KEY);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+    refreshValid(state) {
+      try {
+        jwt.verify(state.token.refresh, SECRET_KEY);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
   },
   mutations: {
     setToken(state, payload) {
@@ -42,6 +61,7 @@ export default {
       localStorageService.clearToken();
       state.token = {};
     },
+
     setNavbarHeight(state, payload) {
       state.navbarHeight = payload;
     },

@@ -39,6 +39,7 @@ export default {
       const banner = data.find((i) => i.product.slug === payload.product.slug);
 
       if (banner) data[data.indexOf(banner)] = { ...banner, ...payload };
+      else data.push(payload);
 
       state.data = data;
     },

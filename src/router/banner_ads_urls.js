@@ -1,6 +1,6 @@
 export default [
   {
-    path: "/banner_ads/",
+    path: "/banners/",
     component: () => import("../views/banner_ads/Base"),
     children: [
       {

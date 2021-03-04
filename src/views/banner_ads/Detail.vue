@@ -41,6 +41,7 @@
                     ? 'ADD BANNER IMAGE'
                     : 'UPDATE BANNER IMAGE',
                 ]"
+                :outputConfig="outputConfig"
               />
             </div>
             <form-errors :errors="validate" name="image" :touched="touched" />
@@ -189,6 +190,9 @@ export default {
       config: {
         viewport: { width: 400, height: 300 },
       },
+      outputConfig: {
+        format: "jpeg", //png
+      },
       x,
     };
   },
@@ -236,15 +240,6 @@ export default {
         .finally(() => (this.submitting = false));
     },
     getBannerAd() {
-      const banner = this.$store.getters.getBannerAds.find(
-        (i) => i.product.slug === this.slug
-      );
-
-      if (banner) {
-        this.item = { ...this.item, ...banner };
-        return;
-      }
-
       this.thisLoading = true;
       this.$store
         .dispatch(GET_BANNER_AD, this.slug)

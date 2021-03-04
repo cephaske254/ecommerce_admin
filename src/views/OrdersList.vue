@@ -85,6 +85,14 @@
         </tbody>
       </table>
     </div>
+    <p class="text-center text-muted small m-0">Working on this page still 🙂</p>
+    <div class="small text-center">
+      You can explore the
+      <router-link :to="{ name: 'Products' }">Products</router-link>,
+      <router-link :to="{ name: 'Banner Ads' }">Banner Ads</router-link>, and
+      the
+      <router-link :to="{ name: 'Categories' }">Categories</router-link> pages.
+    </div>
   </div>
 </template>
 

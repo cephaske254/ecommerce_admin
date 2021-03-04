@@ -20,6 +20,11 @@ export default {
   beforeUnmount() {
     _("dataLoader").fade("in");
   },
+  computed: {
+    accessValid() {
+      return this.$store.getters.accessValid;
+    },
+  },
 
   methods: {
     setHeight() {
@@ -31,6 +36,11 @@ export default {
       } catch {
         return;
       }
+    },
+  },
+  watch: {
+    accessValid(val1) {
+      if (val1 === false) this.$store.dispatch("logout");
     },
   },
 };
